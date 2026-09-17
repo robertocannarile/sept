@@ -295,6 +295,23 @@
     #about .about-text   { order: 2; margin-top: auto; }
     .about-label--family { order: 3; }
     .about-family-mobile { display: none; }   /* solo mobile, vedi blocco <=768 */
+
+    /* ── Etichette di sezione "Our Brands / Our Space / Our Radio" (17.09.26) ──
+       Stessa modalita' di "Our Story" / "Our Family": riusano `.about-label` (font, misura per
+       breakpoint, animazione a righe) e cambiano solo il colore, perche' qui lo sfondo e' nero.
+       - Brands: primo elemento del flex della sezione, sopra i nomi (fitBrands ne tiene conto);
+       - Space: in cima, SOPRA le immagini (scelta di Roberto): strip e testo scendono di --sez-lab;
+       - Radio: in cima, sopra le cover. */
+    .section .sez-label { color: rgba(255,255,255,0.4); }
+    #space { --sez-lab: calc(1.5rem * 1.1 + 16px); }   /* altezza etichetta + distacco */
+    .sez-label--space,
+    .sez-label--radio {
+      position: absolute;
+      top: 64px;
+      left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px));   /* come il testo di Space/Brands */
+      z-index: 10;
+      pointer-events: none;
+    }
     .about-label {
       font-family: 'SharpGrotesk', sans-serif;
       font-size: 1.5rem;
@@ -437,7 +454,7 @@
 
     .space-strip {
       position: absolute;
-      top: 64px;
+      top: calc(64px + var(--sez-lab));
       left: max(8px, calc((100vw - 104px) / 12 * 3 + 32px));
       display: flex;
       gap: 8px;
@@ -463,7 +480,7 @@
 
     .space-text {
       position: absolute;
-      top: calc(64px + 4 * (100vh - 56px) / 6 + 24px + 8px);
+      top: calc(64px + var(--sez-lab) + 4 * (100vh - 56px) / 6 + 24px + 8px);
       left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px)); /* shifted 1 col left, aligned to About/Brands */
       right: var(--indent);
       display: flex;
@@ -818,7 +835,8 @@
     body.home-zoomed #home-svg-root { cursor: grab; }
 
     #home #home-zoom-hint {
-      position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+      /* top 52: centrata, poco sotto il logo .sept (fondo a 46 px) — Roberto 17.09.26, era 16 */
+      position: absolute; top: 52px; left: 50%; transform: translateX(-50%);
       z-index: 400; font-family: 'SharpGrotesk'; font-size: 10px; font-weight: 500;
       letter-spacing: 0.08em; text-transform: uppercase; color: white;
       opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
@@ -1131,7 +1149,7 @@
     }
     .mobile-nav-item {
       font-family: 'SharpGrotesk', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.9rem;   /* era 1.5rem: voci un po' piu' grandi (Roberto 17.09.26) */
       font-weight: 500;
       letter-spacing: -0.04em;
       text-transform: uppercase;
@@ -1153,7 +1171,7 @@
     }
     .mobile-menu-footer a {
       font-family: 'SharpGrotesk', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.5rem;   /* era 1.25rem (Roberto 17.09.26) */
       font-weight: 500;
       letter-spacing: -0.04em;
       text-transform: uppercase;
@@ -1220,7 +1238,7 @@
 
       #home > #home-zoom-hint {
         position: fixed;
-        top: 8px;
+        top: 54px;   /* poco sotto il logo .sept (fondo a 48 px), era 8 — Roberto 17.09.26 */
         left: 50%;
         transform: translateX(-50%);
         font-size: 0;
@@ -1234,6 +1252,25 @@
 
       /* Navbar */
       #mobile-nav { top: 8px; }
+      /* ⚠️ NIENTE mix-blend-mode su mobile (17.09.26). Il blend "difference" sulla barra FISSA
+         obbligava l'iPhone a ricomporre a ogni frame tutto cio' che scorre sotto: i bordi delle
+         sezioni tremavano, in tutte le sezioni, anche col JS spento (isolato con
+         `?prova=noblend`, confronto con le pagine minime _prova_scroll/A e B). Al posto del
+         blend il colore lo decide il JS (`navSuChiaro`): nero sulle sezioni chiare, bianco sulle
+         scure. Stessi motivi per i due testi della home che avevano il blend. */
+      /* ⚠️ `#home #...` e non `#home-brand-label`: la regola originale ha DUE id e batteva la
+         versione con uno solo, lasciando il blend acceso (trovato confrontando gli stili calcolati
+         con `?prova=noblend`). Basta UN elemento col blend dentro #app per far tremare tutto.
+         Sidebar e specchio del logo qui sono nascosti, ma si spengono lo stesso per sicurezza. */
+      #mobile-nav,
+      #home #home-zoom-hint,
+      #home #home-brand-label,
+      #sidebar,
+      #home-logo-mirror { mix-blend-mode: normal; }
+      #mobile-nav #mobile-menu-btn { transition: color 0.2s ease; }
+      #mobile-nav .logo img { transition: filter 0.2s ease; }
+      #mobile-nav.su-chiaro #mobile-menu-btn { color: #000; }
+      #mobile-nav.su-chiaro .logo img { filter: invert(1); }
       #mobile-nav .logo,
       .mobile-menu-top .logo { width: calc((100vw - 88px) / 4 + 8px); height: auto; }
       #mobile-nav .logo img,
@@ -1280,8 +1317,10 @@
       }
 
       /* Space mobile — keep sticky scroll, override strip position */
+      #space { --sez-lab: calc(1.75rem * 1.1 + 8px); }   /* gap 8 come "Our Story" su mobile */
+      .sez-label--space, .sez-label--radio { left: 16px; }
       #space-strip {
-        top: 64px;
+        top: calc(64px + var(--sez-lab));
         left: 16px;
       }
       /* immagini piu' grandi (Roberto 16.09.26): 56vw → 80vw → 100vw, per TUTTI i telefoni.
@@ -1290,9 +1329,9 @@
       .space-parallax-frame { height: 100vw; min-height: 160px; }
       /* PROVA `?prova=space` (16.09.26): Space col limite di prima, per isolare il blocco a Campaigns */
       html.prova-space .space-parallax-frame { height: min(100vw, calc(100svh - 380px)); }
-      html.prova-space .space-text { top: calc(64px + min(100vw, calc(100svh - 380px)) + 16px) !important; }
+      html.prova-space .space-text { top: calc(64px + var(--sez-lab) + min(100vw, calc(100svh - 380px)) + 16px) !important; }
       .space-text {
-        top: calc(64px + 100vw + 16px);
+        top: calc(64px + var(--sez-lab) + 100vw + 16px);
         bottom: 24px;                    /* margin from section bottom */
         left: 16px;
         right: 16px;
@@ -1343,6 +1382,9 @@
       /* meno nero fra Brands e Space (Roberto 16.09.26): 30vh su telefono erano quasi un
          terzo di schermo vuoto, sommati al fondo di Brands e ai 64 px sopra la strip */
       #space-scroll-wrapper { margin-top: 5vh; }
+      /* (17.09.26) stesso discorso fra Campaigns e Organic Noise: 30vh erano fino a 415 px di nero
+         su 654 */
+      #radio-scroll-wrapper { margin-top: 5vh; }
 
       /* Contact alta quanto lo schermo VISIBILE (vedi #app): con 100vh il fondo, e con lui la
          scritta .sept, finiva sotto la barra di Safari */
@@ -1542,15 +1584,16 @@
         padding-bottom: 48px;
       }
       /* ⚠️ 136 px e non 16: qui c'e' la sidebar (120 px) e strip e testo ci finivano sotto */
+      .sez-label--space, .sez-label--radio { left: 136px; }
       .space-strip {
-        top: 64px;
+        top: calc(64px + var(--sez-lab));
         left: 136px;
       }
       .space-parallax-frame { height: 40vw; min-height: 200px; }
       /* testo a DUE COLONNE finche' c'e' la sidebar, come su desktop (Roberto 16.09.26):
          la colonna unica vale solo sotto i 768 */
       .space-text {
-        top: calc(64px + 40vw + 24px);
+        top: calc(64px + var(--sez-lab) + 40vw + 24px);
         left: 136px;
         right: 16px;
         bottom: auto;
@@ -1575,7 +1618,32 @@
 
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script>if (/[?&]prova=[^&]*space/.test(location.search)) document.documentElement.classList.add('prova-space');</script>
+  <script>if (/[?&]prova=[^&]*space/.test(location.search)) document.documentElement.classList.add('prova-space');
+  // PROVA `?prova=vh` (17.09.26): #app torna alto 100vh (prima di ieri), per vedere se il tremolio
+  // dei bordi su iPhone viene da 100dvh che cambia quando si muovono le barre di Safari
+  if (/[?&]prova=[^&]*\bvh\b/.test(location.search)) document.documentElement.classList.add('prova-vh');</script>
+  <style>html.prova-vh #app { height: 100vh !important; }</style>
+  <script>
+  // PROVA `?prova=noblend` (17.09.26): via mix-blend-mode dagli elementi FISSI sopra lo scroll
+  // (#mobile-nav, #sidebar, #home-logo-mirror...). Sospetto per "su iPhone i bordi delle sezioni
+  // tremano, in tutte le sezioni, anche col JS spento": il blend su un layer fisso obbliga a
+  // ricomporre a ogni frame cio' che scorre sotto.
+  if (/[?&]prova=[^&]*noblend/.test(location.search))
+    document.write('<style>*, *::before, *::after { mix-blend-mode: normal !important; }</style>');
+  </script>
+  <script>
+  // PROVA `?solo=about,space` (17.09.26): nasconde tutte le sezioni tranne quelle elencate, per
+  // trovare QUALE fa tremare i bordi su iPhone (le pagine di prova minime non tremano, il sito si').
+  // Nomi: home about brands space campaigns radio contact
+  (function () {
+    const m = location.search.match(/[?&]solo=([^&]*)/); if (!m) return;
+    const tieni = decodeURIComponent(m[1]).split(',');
+    const tutte = { home: '#home', about: '#about-scroll-wrapper', brands: '#brands-scroll-wrapper',
+      space: '#space-scroll-wrapper', campaigns: '#campaigns-scroll-wrapper', radio: '#radio-scroll-wrapper', contact: '#contact' };
+    const via = Object.keys(tutte).filter(k => !tieni.includes(k)).map(k => tutte[k]);
+    if (via.length) document.write('<style>' + via.join(',') + '{display:none !important}</style>');
+  })();
+  </script>
 </head>
 <body>
 
@@ -1602,8 +1670,8 @@
     <a class="mobile-nav-item mobile-ui-text" href="#brands">Brands</a>
     <a class="mobile-nav-item mobile-ui-text" href="#space">Space</a>
     <a class="mobile-nav-item mobile-ui-text" href="#campaigns">Campaigns</a>
-    <a class="mobile-nav-item mobile-ui-text" href="#contact">Contact</a>
     <a class="mobile-nav-item mobile-ui-text" href="#sept-radio">Organic Noise</a>
+    <a class="mobile-nav-item mobile-ui-text" href="#contact">Contact</a>
   </nav>
   <div class="mobile-menu-footer">
     <a href="mailto:hello@sept-showroom.com">Mail</a>
@@ -1714,6 +1782,7 @@
 
     <div id="brands-scroll-wrapper">
       <section class="section" id="brands" data-label="Brands">
+        <span class="about-label sez-label">Our Brands</span>
 
         <p class="brands-text"><a href="#">A BATHING APE</a> <a href="#">ACUPUNCTURE 1993</a> <a href="#">ALPHA INDUSTRIES</a> <a href="#">AMISH SUPPLIES</a> <a href="#">ARIES</a> <a href="#">ARTE ANTWERP</a> <a href="#">CHAMPION PINNACLE</a> <a href="#">CIELE ATHLETICS</a> <a href="#">COOKMAN</a> <a href="#">COTOPAXI</a> <a href="#">CROCS EXP</a> <a href="#">DAILY PAPER</a> <a href="#">EVISU</a> <a href="#">GR10K</a> <a href="#">HIKING PATROL</a> <a href="#">KAPPY</a> <a href="#">KEEN</a> <a href="#">LEE 101</a> <a href="#">LEVI'S</a> <a href="#">MONO</a> <a href="#">NEW AMSTERDAM SURF ASSOCIATION</a> <a href="#">NO PROBLEMO</a> <a href="#">NORDA</a> <a href="#">NORTHWAVE ESPRESSO</a> <a href="#">PEACEMAKER OAMC</a> <a href="#">PRESIDENT'S</a> <a href="#">PURAAI</a> <a href="#">PYRENEX</a> <a href="#">REEBOK</a> <a href="#">REPLICATED GR10K</a> <a href="#">RHIZOME</a> <a href="#">SAMSØE SAMSØE</a> <a href="#">SANTHA</a> <a href="#">SATISFY</a> <a href="#">SESSÙN</a> <a href="#">TEVA</a> <a href="#">THE SKATEROOM</a> <a href="#">WRANGLER</a> <a href="#">XLARGE</a></p>
 
@@ -1730,6 +1799,7 @@
 
     <div id="space-scroll-wrapper">
     <section class="section" id="space" data-label="Space">
+      <span class="about-label sez-label sez-label--space">Our Space</span>
       <div class="space-strip" id="space-strip">
         <div class="space-parallax-frame"><img fetchpriority="low" decoding="async" src="assets/space/1754688326414.jpeg" alt=""></div>
         <div class="space-parallax-frame"><img fetchpriority="low" decoding="async" src="assets/space/1754688326463.jpeg" alt=""></div>
@@ -1762,6 +1832,7 @@
 
     <div id="radio-scroll-wrapper">
     <section class="section" id="sept-radio" data-label="Organic Noise">
+      <span class="about-label sez-label sez-label--radio">Our Radio</span>
 
       <div class="radio-boxes" data-lenis-prevent>
         <div class="radio-box" data-title="Organic Noise 030 - Fabio Kalosh" data-href="https://open.spotify.com/playlist/504QjAjEYhss09hTxaEsgg"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72ce14ca0d84941c2d84325417f" alt=""></div>
@@ -1860,12 +1931,15 @@
   // ── Lenis smooth scroll ─────────────────────────
   // `?debug=1&fx=nolenis` fa a meno di Lenis: scroll nativo del browser. Serve a capire se i
   // frame persi su Safari vengono dal fatto che la posizione la scrive JS a ogni frame.
-  const FX_NOLENIS = /[?&]fx=[^&]*nolenis/.test(location.search) && /[?&]debug=1/.test(location.search);
+  // `?nolenis=1` (17.09.26): stessa prova ma SENZA il pannello di debug, che pesa da solo
+  const FX_NOLENIS = (/[?&]fx=[^&]*nolenis/.test(location.search) && /[?&]debug=1/.test(location.search))
+                  || /[?&]nolenis=1/.test(location.search);
   // valori scelti · con `?dito=` e `?lancio=` nell'indirizzo si provano altri valori senza toccare il file
-  // scelti da Roberto sull'iPhone col pannello `?regola=1` (16.09.26): dito 0.7, lancio 10
-  // (prima provato 4: il tap in Contact non riportava piu' su)
-  const SCROLL_DITO   = +((location.search.match(/[?&]dito=([\d.]+)/)   || [])[1] || 0.7);
-  const SCROLL_LANCIO = +((location.search.match(/[?&]lancio=([\d.]+)/) || [])[1] || 10);
+  // scelti da Roberto sull'iPhone col pannello `?regola=1` (17.09.26, dopo il fix del blend):
+  // dito 1, lancio 9, morbidezza 0.07. (16.09: dito 0.7, lancio 4 → 10)
+  const SCROLL_DITO   = +((location.search.match(/[?&]dito=([\d.]+)/)   || [])[1] || 1);
+  const SCROLL_LANCIO = +((location.search.match(/[?&]lancio=([\d.]+)/) || [])[1] || 9);
+  const SCROLL_MORBIDEZZA = +((location.search.match(/[?&]morbidezza=([\d.]+)/) || [])[1] || 0.07);
   const lenis = FX_NOLENIS ? null : new Lenis({
     wrapper: appEl,
     content: mainEl,
@@ -1899,6 +1973,9 @@
     //  - LANCIO: quanto scivola dopo che lasci il dito
     touchMultiplier:        SCROLL_DITO,
     touchInertiaMultiplier: SCROLL_LANCIO,
+    //  - MORBIDEZZA: `syncTouchLerp`, come arriva la scivolata dopo il rilascio. Basso = lunga e
+    //    morbida, 1 = niente lerp (arriva subito). Col dito appoggiato Lenis non usa lerp comunque.
+    syncTouchLerp:          SCROLL_MORBIDEZZA,
   });
   window.lenis = lenis;   // accessibile alle IIFE (es. stop/start in zoom home)
   if (FX_NOLENIS) {
@@ -1946,8 +2023,13 @@
   // invece di indovinare. Fuori da debug il ramo non esiste nemmeno.
   const SCROLL_DEBUG = /[?&]debug=1/.test(location.search);
   const scrollCallbackCost = [];
+  // PROVA `?prova=fermo` (17.09.26): nessun effetto legato allo scroll (strip, parallassi, colori,
+  // nav...). Serve a capire se il "tremolio" dei bordi delle sezioni ferme su iPhone viene dal JS
+  // che aggiorna gli effetti a ogni frame o da Safari stesso (sticky dentro un div che scrolla).
+  const PROVA_FERMO = /[?&]prova=[^&]*fermo/.test(location.search);
   function runScrollFrame() {
     scrollRafPending = false;
+    if (PROVA_FERMO) return;
     if (SCROLL_DEBUG) {
       for (let i = 0; i < scrollCallbacks.length; i++) {
         const t0 = performance.now();
@@ -2013,7 +2095,8 @@
       const par = sec.parentElement;
       const box = (par && /-scroll-wrapper$/.test(par.id || '')) ? par : sec;
       return { id: sec.id, label: sec.dataset.label,
-               top: box.offsetTop, bottom: box.offsetTop + box.offsetHeight };
+               top: box.offsetTop, bottom: box.offsetTop + box.offsetHeight,
+               chiaro: sfondoChiaro(sec) };
     }).sort((a, b) => a.top - b.top);
   }
   let activeSectionId = null;
@@ -2039,12 +2122,37 @@
     activeLabel.textContent = hit.label;
     navItems.forEach(a => a.classList.toggle('active', a.dataset.target === hit.id));
   }
+  // ── colore della barra mobile (al posto di mix-blend-mode, vedi CSS) ──
+  // Una sezione e' "chiara" se il suo sfondo e' chiaro: lo si legge dal CSS a ogni misura, cosi'
+  // se un domani cambia uno sfondo non c'e' niente da aggiornare qui. Negli stacchi fra le
+  // sezioni si vede #app, nero. Per frame: un confronto fra numeri, e il DOM si tocca solo
+  // quando il colore cambia davvero.
+  const mobileNav = document.getElementById('mobile-nav');
+  const NAV_Y = 28;   // centro della barra dal bordo alto (top 8 + 40/2)
+  let navChiaro = null;
+  function sfondoChiaro(el) {
+    const m = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
+    if (!m || (m[3] !== undefined && +m[3] < 0.5)) return false;
+    return (0.2126 * m[0] + 0.7152 * m[1] + 0.0722 * m[2]) / 255 > 0.6;
+  }
+  function navSuChiaro() {
+    if (!mobileNav) return;
+    const y = appEl.scrollTop + NAV_Y;
+    let chiaro = false;
+    for (const r of sectionRanges) { if (y >= r.top && y < r.bottom) { chiaro = r.chiaro; break; } }
+    if (chiaro === navChiaro) return;
+    navChiaro = chiaro;
+    mobileNav.classList.toggle('su-chiaro', chiaro);
+  }
+
   measureSections();
   onScroll(updateActiveSection);
+  onScroll(navSuChiaro);
   updateActiveSection();
+  navSuChiaro();
   // rete di sicurezza: a `load` le immagini hanno altezza definitiva
-  window.addEventListener('load', () => { measureSections(); updateActiveSection(); });
-  window.addEventListener('resize', () => { measureSections(); updateActiveSection(); });
+  window.addEventListener('load', () => { measureSections(); updateActiveSection(); navSuChiaro(); });
+  window.addEventListener('resize', () => { measureSections(); updateActiveSection(); navSuChiaro(); });
 
 
   // ── about parallax ──────────────────────────────
@@ -2217,7 +2325,10 @@
       const cs = getComputedStyle(sezione);
       const visibile = Math.min(appEl.clientHeight, sonda.offsetHeight || appEl.clientHeight,
                                 window.visualViewport ? window.visualViewport.height : Infinity);
-      const spazio = visibile - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      // l'etichetta "Our Brands" sta sopra i nomi: il suo spazio (altezza + gap del flex) non e' dei nomi
+      const etichetta = sezione.querySelector('.sez-label');
+      const occupato = etichetta ? etichetta.getBoundingClientRect().height + (parseFloat(cs.rowGap) || 0) : 0;
+      const spazio = visibile - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - occupato;
       if (spazio <= 0) return;
       let basso = MIN, alto = MAX;
       testo.style.fontSize = alto + 'px';
@@ -2566,6 +2677,12 @@
   let spaceTravelX   = 0;
   let spaceStripX    = 0;   // translateX gia' applicato allo strip (per correggere i rect letti)
 
+  // px di scroll verticale per px di viaggio orizzontale della strip di Space. Era 2.2 su tutti i
+  // device; (17.09.26) "su mobile le immagini di Space sono troppo lente e richiedono tanto scroll"
+  // → 1.4 su mobile, desktop/tablet invariati. Regolabile da `?regola=1` o `?spacesosta=`.
+  let SPACE_SOSTA = +((location.search.match(/[?&]spacesosta=([\d.]+)/) || [])[1]
+                      || (window.matchMedia('(max-width: 768px)').matches ? 0.6 : 2.2));   // mobile 0.6 scelto da Roberto (17.09.26)
+  window.__septSpace = { get sosta() { return SPACE_SOSTA; }, set sosta(v) { SPACE_SOSTA = v; initSpaceScroll(); } };
   function initSpaceScroll() {
     spaceStrip.style.transform = '';
     spaceStripX = 0;
@@ -2575,7 +2692,7 @@
     // colonna 4 su desktop): prima era ricalcolata qui a mano e su tablet valeva 16
     const col4Left = parseFloat(getComputedStyle(spaceStrip).left) || 16;
     spaceTravelX   = Math.max(0, col4Left + totalW - viewW);
-    spaceWrapper.style.height = (window.innerHeight + spaceTravelX * 2.2) + 'px';
+    spaceWrapper.style.height = (window.innerHeight + spaceTravelX * SPACE_SOSTA) + 'px';
     measureSections();   // cambia l'altezza del wrapper → i range delle sezioni vanno rifatti
     updateSpace();
   }
@@ -2802,6 +2919,10 @@
   // ── text reveal animation ────────────────────────
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.defaults({ scroller: appEl });
+  // PROVA `?prova=nost` (17.09.26): niente ScrollTrigger (i testi compaiono subito, senza animazione)
+  if (/[?&]prova=[^&]*nost/.test(location.search)) {
+    window.addEventListener('load', () => { ScrollTrigger.getAll().forEach(t => t.kill()); gsap.set('.line', { opacity: 1, y: 0 }); ScrollTrigger.disable && ScrollTrigger.disable(); });
+  }
 
   const animSelectors = [
     '.section-title',
@@ -3491,6 +3612,7 @@
       // essere ridisegnato. Serve a vedere se i frame persi vengono da li' anche quando la
       // home e' lontana dallo schermo.
       if (/[?&]debug=1/.test(location.search) && /[?&]fx=[^&]*noloops/.test(location.search)) return;
+      if (/[?&]prova=[^&]*noloops/.test(location.search)) return;   // PROVA 17.09.26, senza debug
       if (vibRunning) return;
       vibRunning = true;
       const t0 = performance.now();
@@ -3958,8 +4080,17 @@
       // Qui la strip parte quando la sezione e' salita al 40% dello schermo (PARTENZA, come
       // Space) e arriva in fondo quando sta uscendo in alto (ne resta visibile USCITA di
       // schermo). Lineare come lo scroll.
-      const USCITA   = 0.15;
-      const PARTENZA = 0.4;
+      // (17.09.26) "le immagini di About sono troppo veloci": la corsa ora parte appena la sezione
+      // entra dal basso (PARTENZA 1) e finisce con la strip al bordo alto (USCITA 0) = la corsa piu'
+      // lunga senza sosta: con USCITA -0.25 ~0.9 px per px a 402x654 (prima 0.4 / 0.15 = ~1.25).
+      // Regolabili dal pannello `?regola=1` o con `?aboutpartenza=` / `?aboutuscita=`.
+      //  PARTENZA: a che frazione di schermo dall'alto e' la testa della sezione quando parte
+      //            (piu' alto = parte prima = piu' lenta). USCITA: quanto schermo resta sopra la
+      //            strip quando finisce (piu' basso = finisce dopo = piu' lenta).
+      const leggi = (k, d) => { const m = location.search.match(new RegExp('[?&]' + k + '=(-?[\\d.]+)')); return m ? +m[1] : d; };
+      // scelti da Roberto sull'iPhone col pannello (17.09.26): partenza 0.45, uscita -0.2
+      let USCITA   = leggi('aboutuscita', -0.2);   // negativo = la strip e' gia' in parte sopra il bordo
+      let PARTENZA = leggi('aboutpartenza', 0.45);
       let travelX = 0, stripX = 0, attiva = false, inizio = 0, fine = 1;
 
       function misura() {
@@ -3979,7 +4110,7 @@
         const r  = images.getBoundingClientRect();
         // parte quando la sezione e' salita al 40% dell'altezza dello schermo (Roberto 16.09.26)
         inizio = section.getBoundingClientRect().top + y - vh * PARTENZA;
-        fine   = r.bottom + y - vh * USCITA;      // quasi uscita dall'alto
+        fine   = r.top + y - vh * USCITA;         // strip al bordo alto (meno USCITA)
         measureSections();
         aggiorna();
       }
@@ -4036,6 +4167,11 @@
       window.addEventListener('load', misura);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(misura);
       onScroll(aggiorna);
+      // per il pannello `?regola=1`
+      window.__septAbout = {
+        get partenza() { return PARTENZA; }, set partenza(v) { PARTENZA = v; misura(); },
+        get uscita()   { return USCITA; },   set uscita(v)   { USCITA = v; misura(); },
+      };
     })();
 
   })();
@@ -4069,6 +4205,16 @@
 
 
 
+<!-- PROVA `?prova=radio` (17.09.26): toglie data-lenis-prevent dalle cover di Organic Noise, per
+     capire se e' quello a bloccare lo scroll da mobile prima della sezione -->
+<script>
+if (/[?&]prova=[^&]*radio/.test(location.search)) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const r = document.querySelector('.radio-boxes'); if (r) r.removeAttribute('data-lenis-prevent');
+  });
+}
+</script>
+
 <!-- ══ REGOLA SCROLL (solo con ?regola=1) ══════════════════════════════════════════
      Due cursori per scegliere a sensazione, sul telefono, la velocita' dello scroll col dito.
      Cambiano le opzioni di Lenis SOLO quando muovi il cursore (niente lavoro a ogni frame) e
@@ -4078,33 +4224,54 @@
 (function () {
   if (!/[?&]regola=1/.test(location.search)) return;
   document.addEventListener('DOMContentLoaded', () => {
-    const L = window.lenis; if (!L || !L.options) return;
+    const L = window.lenis || {};
+    const conLenis = !!(window.Lenis && L instanceof window.Lenis);   // con `?nolenis=1` Lenis non c'e': restano i cursori delle strip
     const box = document.createElement('div');
     box.setAttribute('data-lenis-prevent', '');   // i cursori si trascinano senza scrollare la pagina
     box.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:rgba(0,0,0,.9);'
       + 'color:#fff;font:14px/1.3 -apple-system,system-ui,sans-serif;padding:12px 14px;border:1px solid #fff;border-radius:10px';
-    function riga(nome, chiave, min, max, step, spiega) {
+    function riga(nome, chiave, min, max, step, spiega, bersaglio) {
+      const T = bersaglio || L.options;
       const w = document.createElement('label');
       w.style.cssText = 'display:block;margin:4px 0 10px';
       const t = document.createElement('div');
       const r = document.createElement('input');
-      r.type = 'range'; r.min = min; r.max = max; r.step = step; r.value = L.options[chiave];
+      r.type = 'range'; r.min = min; r.max = max; r.step = step; r.value = T[chiave];
       r.style.cssText = 'width:100%;height:32px';
       const scrivi = () => { t.innerHTML = `<b>${nome}: ${(+r.value).toFixed(step < 1 ? 2 : 0)}</b> <span style="opacity:.6">${spiega}</span>`; };
       r.addEventListener('input', () => {
-        L.options[chiave] = +r.value; scrivi();
+        T[chiave] = +r.value; scrivi();
         const u = new URL(location.href); u.searchParams.set(nome, r.value); history.replaceState(null, '', u);
       });
       scrivi(); w.appendChild(t); w.appendChild(r); box.appendChild(w);
     }
-    riga('dito',   'touchMultiplier',        0.2, 1.5, 0.05, '— mentre il dito tocca (1 = normale)');
-    riga('lancio', 'touchInertiaMultiplier', 0,   40,  1,    '— quanto scivola quando lo lasci (35 = normale)');
+    if (conLenis) riga('dito',   'touchMultiplier',        0.2, 1.5, 0.05, '— mentre il dito tocca (1 = normale)');
+    if (conLenis) riga('lancio', 'touchInertiaMultiplier', 0,   40,  1,    '— quanto scivola quando lo lasci (35 = normale)');
+    if (conLenis) riga('morbidezza', 'syncTouchLerp',      0.02, 1,  0.01, '— lerp della scivolata (1 = niente lerp, 0.075 = normale)');
+    // velocita' delle strip: oggetti esposti da aboutModes e da initSpaceScroll
+    function rigaObj(nome, obj, chiave, min, max, step, spiega) {
+      if (!obj) return;
+      riga(nome, chiave, min, max, step, spiega, obj);
+    }
+    rigaObj('aboutpartenza', window.__septAbout, 'partenza', 0.2, 1.5, 0.05, '— About: piu\' alto = parte prima = piu\' lenta');
+    rigaObj('aboutuscita',   window.__septAbout, 'uscita',   -0.5, 0.6, 0.05, '— About: piu\' basso = finisce dopo = piu\' lenta');
+    rigaObj('spacesosta',    window.__septSpace, 'sosta',    0.5, 3,   0.1,  '— Space: scroll per px di immagini (meno = piu\' veloce)');
+    // "nascondi" riduce il pannello a un bottoncino "regola" che lo riapre (prima lo toglieva e non
+    // c'era modo di riaverlo senza ricaricare)
     const chiudi = document.createElement('button');
     chiudi.textContent = 'nascondi';
     chiudi.style.cssText = 'font:13px system-ui;background:#fff;color:#000;border:0;border-radius:6px;padding:6px 12px';
-    chiudi.addEventListener('click', () => box.remove());
+    const riapri = document.createElement('button');
+    riapri.textContent = 'regola';
+    riapri.setAttribute('data-lenis-prevent', '');
+    riapri.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;font:13px system-ui;background:#fff;'
+      + 'color:#000;border:0;border-radius:6px;padding:8px 14px;box-shadow:0 0 0 1px #000';
+    riapri.hidden = true;
+    chiudi.addEventListener('click', () => { box.hidden = true; riapri.hidden = false; });
+    riapri.addEventListener('click', () => { box.hidden = false; riapri.hidden = true; });
     box.appendChild(chiudi);
     document.body.appendChild(box);
+    document.body.appendChild(riapri);
   });
 })();
 </script>
