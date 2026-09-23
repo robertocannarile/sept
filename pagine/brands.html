@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it" data-pagina="brands">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sept — Brands</title>
+  <link rel="stylesheet" href="css/sept.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script>if (/[?&]prova=[^&]*space/.test(location.search)) document.documentElement.classList.add('prova-space');
+  // PROVA `?prova=vh` (17.09.26): #app torna alto 100vh (prima di ieri), per vedere se il tremolio
+  // dei bordi su iPhone viene da 100dvh che cambia quando si muovono le barre di Safari
+  if (/[?&]prova=[^&]*\bvh\b/.test(location.search)) document.documentElement.classList.add('prova-vh');</script>
+  <style>html.prova-vh #app { height: 100vh !important; }</style>
+  <script>
+  // PROVA `?prova=noblend` (17.09.26): via mix-blend-mode dagli elementi FISSI sopra lo scroll
+  // (#mobile-nav, #sidebar, #home-logo-mirror...). Sospetto per "su iPhone i bordi delle sezioni
+  // tremano, in tutte le sezioni, anche col JS spento": il blend su un layer fisso obbliga a
+  // ricomporre a ogni frame cio' che scorre sotto.
+  if (/[?&]prova=[^&]*noblend/.test(location.search))
+    document.write('<style>*, *::before, *::after { mix-blend-mode: normal !important; }</style>');
+  </script>
+</head>
+<body data-pagina="brands">
+
+<!-- ══ MOBILE NAV ══ -->
+<nav id="mobile-nav">
+  <a class="logo" href="index.html"><img src="assets/sept_header.svg" alt=".sept"></a>
+  <button id="mobile-menu-btn" class="mobile-ui-text" aria-label="Open menu">Menu</button>
+</nav>
+
+<!-- ══ MOBILE MENU ══ -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="mobile-menu-top">
+    <a class="logo" href="index.html" id="mobile-logo-link"><img src="assets/sept_header.svg" alt=".sept"></a>
+    <button id="mobile-menu-close" class="mobile-ui-text" aria-label="Close menu">Close</button>
+  </div>
+  <nav class="mobile-menu-nav">
+    <a class="mobile-nav-item mobile-ui-text" href="about.html">About</a>
+    <a class="mobile-nav-item mobile-ui-text" aria-current="page" href="brands.html">Brands</a>
+    <a class="mobile-nav-item mobile-ui-text" href="space.html">Space</a>
+    <a class="mobile-nav-item mobile-ui-text" href="campaigns.html">Campaigns</a>
+    <a class="mobile-nav-item mobile-ui-text" href="organic-noise.html">Organic Noise</a>
+    <a class="mobile-nav-item mobile-ui-text" href="contact.html">Contact</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="mailto:hello@sept-showroom.com">Mail</a>
+    <a href="https://instagram.com/septshowroom" target="_blank">Instagram</a>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ══ SIDEBAR ══ -->
+  <img id="home-logo-mirror" src="assets/peace-about.svg" alt="">
+
+  <nav id="sidebar">
+
+    <div>
+      <a class="logo" href="index.html">
+        <img src="assets/sept_header.svg" alt=".sept">
+      </a>
+      <div class="nav-group">
+        <a class="nav-item" href="about.html"     data-target="about">About</a>
+        <a class="nav-item active" aria-current="page" href="brands.html"    data-target="brands">Brands</a>
+        <a class="nav-item" href="space.html"     data-target="space">Space</a>
+        <a class="nav-item" href="campaigns.html" data-target="campaigns">Campaigns</a>
+        <a class="nav-item" href="organic-noise.html" data-target="sept-radio">Organic Noise</a>
+        <a class="nav-item" href="contact.html"    data-target="contact">Contact</a>
+      </div>
+    </div>
+
+    <div class="active-label" id="active-label">Brands</div>
+
+    <div class="sidebar-footer">
+
+      <div class="footer-row" data-overlay="mail">
+        <span class="nav-item">Mail</span>
+        <div class="footer-sub-actions">
+          <a href="#" id="copy-email-btn">Copy email</a>
+          <a href="mailto:hello@sept-showroom.com">Write an email</a>
+        </div>
+      </div>
+
+      <div class="footer-row" data-overlay="instagram">
+        <span class="nav-item">Instagram</span>
+        <div class="footer-sub-actions">
+          <a href="#" id="copy-ig-btn">Copy link</a>
+          <a href="https://instagram.com/septshowroom" target="_blank">Go to IG profile</a>
+        </div>
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- ══ SECTIONS ══ -->
+  <main id="main">
+
+    <div id="brands-scroll-wrapper">
+      <section class="section" id="brands" data-label="Brands">
+        <!-- "Our Brands" tolta (Roberto 23.09.26) -->
+
+        <p class="brands-text"><a href="#">A BATHING APE</a> <a href="#">ACUPUNCTURE 1993</a> <a href="#">ALPHA INDUSTRIES</a> <a href="#">AMISH SUPPLIES</a> <a href="#">ARIES</a> <a href="#">ARTE ANTWERP</a> <a href="#">CHAMPION PINNACLE</a> <a href="#">CIELE ATHLETICS</a> <a href="#">COOKMAN</a> <a href="#">COTOPAXI</a> <a href="#">CROCS EXP</a> <a href="#">DAILY PAPER</a> <a href="#">EVISU</a> <a href="#">GR10K</a> <a href="#">HIKING PATROL</a> <a href="#">KAPPY</a> <a href="#">KEEN</a> <a href="#">LEE 101</a> <a href="#">LEVI'S</a> <a href="#">MONO</a> <a href="#">NEW AMSTERDAM SURF ASSOCIATION</a> <a href="#">NO PROBLEMO</a> <a href="#">NORDA</a> <a href="#">NORTHWAVE ESPRESSO</a> <a href="#">PEACEMAKER OAMC</a> <a href="#">PRESIDENT'S</a> <a href="#">PURAAI</a> <a href="#">PYRENEX</a> <a href="#">REEBOK</a> <a href="#">REPLICATED GR10K</a> <a href="#">RHIZOME</a> <a href="#">SAMSØE SAMSØE</a> <a href="#">SANTHA</a> <a href="#">SATISFY</a> <a href="#">SESSÙN</a> <a href="#">TEVA</a> <a href="#">THE SKATEROOM</a> <a href="#">WRANGLER</a> <a href="#">XLARGE</a></p>
+
+        <div class="brand-card-container" id="brand-card">
+          <div class="brand-card-img">
+            <img id="brand-card-img-a" src="" alt="">
+            <img id="brand-card-img-b" src="" alt="">
+          </div>
+          <div class="brand-card-info" id="brand-card-info-el"></div>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ══ FOOTER OVERLAY ══ -->
+<div id="footer-overlay">
+  <div class="overlay-big-text" id="overlay-big-text"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Observer.min.js"></script>
+<script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/brands.js"></script>
+<script src="js/testo.js"></script>
+<script src="js/strumenti.js"></script>
+</body>
+</html>

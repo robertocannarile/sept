@@ -1,0 +1,1803 @@
+    @font-face {
+      font-family: 'SharpGrotesk';
+      src: url('../fonts/SharpGroteskPETrialMedium-20-BF646589e602b75.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── TYPE SCALE ─────────────────────────────────
+       3 breakpoints — mobile / tablet / desktop      */
+    html { font-size: clamp(10px, 1.25vw, 16px); }
+
+    .t-48 {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 3rem;
+      line-height: 100%;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+    .t-24 {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      line-height: 110%;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+    .t-20 {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.25rem;
+      line-height: 110%;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+    .t-12 {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 0.75rem;
+      line-height: 110%;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+    /* ─────────────────────────────────────────────── */
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--sfondo); color: white;
+      font-family: 'SharpGrotesk', sans-serif;
+      overflow: hidden;
+      max-width: 100vw;
+    }
+
+    /* ── layout ─────────────────────────────────── */
+    #app {
+      display: flex;
+      height: 100vh;
+      /* ⚠️ dvh (16.09.26): su iPhone scorre #app e non la pagina, quindi le barre di Safari
+         restano SEMPRE visibili, e 100vh conta anche lo spazio sotto la barra in basso: il
+         fondo delle sezioni finiva li' sotto (la scritta .sept di Contact "non si vede", i
+         nomi di Brands tagliati). Su desktop dvh = vh. Chi non lo conosce tiene 100vh. */
+      height: 100dvh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      overscroll-behavior: none;
+      background: var(--sfondo);
+      /* CSS scroll-snap disabled — soft-snap handled in JS via lenis.scrollTo */
+    }
+    #app.lenis-smooth { scroll-behavior: auto; }
+    #app::-webkit-scrollbar { width: 0; display: none; }
+    #app { scrollbar-width: none; }
+
+    /* ── preloader ───────────────────────────────── */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--sfondo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    #preload-pct {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    body.preloaded #preloader {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    /* ── sidebar ─────────────────────────────────── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 120px;
+      height: 100vh;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px;
+      z-index: 300;
+      mix-blend-mode: difference;
+    }
+
+    /* logo */
+    #sidebar .logo {
+      display: block;
+      width: 100%;
+      flex-shrink: 0;
+    }
+    #sidebar .logo img { width: 100%; height: auto; object-fit: contain; display: block; }
+
+    /* nav group (top) */
+    #sidebar .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 16px;
+      line-height: 1;
+    }
+
+    /* active section label (center) */
+    #sidebar .active-label {
+      font-size: 14px;   /* come .nav-item: misura fissa, vedi il commento li' */
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+      color: white;
+      white-space: nowrap;
+      position: fixed;
+      top: 50vh;
+      transform: translateY(-50%);
+      left: 8px;
+    }
+
+    /* footer links (bottom) */
+    #sidebar .sidebar-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* nav items shared */
+    .nav-item {
+      /* ⚠️ px, non rem: `html` ha `font-size: clamp(10px, 1.25vw, 16px)`, quindi in rem le voci
+         di menu si rimpicciolivano man mano che si stringeva la finestra. L'interfaccia resta
+         della stessa misura a ogni larghezza (richiesta Roberto, 16.09.26). */
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 0;
+      transition: color 0.3s ease;
+    }
+    .nav-item:hover       { color: rgba(255,255,255,0.7); }
+    .nav-item.active      { color: white; }
+
+    /* ── main content ────────────────────────────── */
+    #main {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    /* 1/12 of viewport = left indent shared by about + brands */
+    :root {
+      --indent: max(8px, calc(100vw / 12 - 120px));
+      /* black gap inserted before pinned sections — one knob for all */
+      --section-gap: 30vh;
+      /* SFONDO di tutte le pagine (23.09.26, Roberto): prima nero, con About bianca. Si cambia solo qui. */
+      --sfondo: #4F14AD;
+    }
+
+    /* each section */
+    .section {
+      width: 100%;
+      min-height: 100vh;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding-top: 64px;
+      padding-bottom: 64px;
+      scroll-snap-align: none;
+      background: var(--sfondo);
+    }
+
+    /* section title — centered, sticky at vertical center */
+    .section-title {
+      font-size: clamp(48px, 8vw, 140px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: white;
+      text-align: center;
+      line-height: 0.9;
+      position: sticky;
+      top: calc(50vh - 0.45em);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ── ABOUT ──────────────────────────────────── */
+
+    #about {
+      display: block;
+      min-height: 110vh;
+      height: auto;
+      background: var(--sfondo);
+      padding-top: 64px;
+      padding-bottom: 64px;
+      padding-left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px));
+      padding-right: var(--indent);
+      scroll-snap-align: none;
+      position: relative;
+      z-index: 10;
+    }
+    .about-layout {
+      display: grid;
+      /* colonna del testo da 1/3 a META' griglia: a 1/3 il paragrafo andava a capo ogni
+         quattro parole (riga di 389 px su 1200 di finestra), a 5/12 ancora quasi uguale */
+      grid-template-columns:
+        calc((100vw - 104px) / 2 + 24px)
+        calc((100vw - 104px) / 12)
+        calc((100vw - 104px) / 4 + 16px);
+      column-gap: 8px;
+      align-items: stretch;
+    }
+    .about-images {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .about-parallax-frame {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: var(--sfondo);
+    }
+    .about-parallax-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.2) translate3d(0, 0, 0);
+      transform-origin: center center;
+      backface-visibility: hidden;
+    }
+    .about-text-block {
+      /* flex e non piu' grid: con la griglia "Our Family" poteva stare solo in posizione
+         assoluta in fondo al blocco, staccata dal testo. In colonna invece va SUBITO SOTTO
+         il paragrafo, che a sua volta resta spinto in basso da `margin-top: auto`. */
+      display: flex;
+      flex-direction: column;
+      max-width: 780px;
+      position: relative;
+    }
+    .about-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .about-label--family {
+      margin-top: 16px;   /* subito sotto il paragrafo */
+    }
+    /* l'ordine nell'HTML e': Our Family · Our Story+intro · paragrafo — qui si rimette
+       nell'ordine di lettura, col paragrafo spinto in fondo alla colonna */
+    .about-inner         { order: 1; }
+    #about .about-text   { order: 2; margin-top: auto; }
+    .about-label--family { order: 3; }
+    .about-family-mobile { display: none; }   /* solo mobile, vedi blocco <=768 */
+
+    /* ── Etichette di sezione "Our Brands / Our Space / Our Radio" (17.09.26) ──
+       Stessa modalita' di "Our Story" / "Our Family": riusano `.about-label` (font, misura per
+       breakpoint, animazione a righe) e cambiano solo il colore, perche' qui lo sfondo e' nero.
+       - Brands: primo elemento del flex della sezione, sopra i nomi (fitBrands ne tiene conto);
+       - Space: in cima, SOPRA le immagini (scelta di Roberto): strip e testo scendono di --sez-lab;
+       - Radio: in cima, sopra le cover. */
+    .section .sez-label { color: rgba(255,255,255,0.4); }
+    #space { --sez-lab: calc(1.5rem * 1.1 + 16px); }   /* altezza etichetta + distacco */
+    .sez-label--space,
+    .sez-label--radio {
+      position: absolute;
+      top: 64px;
+      left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px));   /* come il testo di Space/Brands */
+      z-index: 10;
+      pointer-events: none;
+    }
+    .about-label {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+    }
+    .about-intro {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .about-text {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* ── BRANDS ─────────────────────────────────── */
+    #brands-scroll-wrapper {
+      scroll-snap-align: none;
+    }
+
+    /* (23.09.26) nomi in colonna che si leggono scorrendo la pagina: la sezione non e' piu'
+       sticky (era il pin in cui i nomi si accendevano a sezione ferma) */
+    #brands {
+      position: relative;
+      height: auto;
+      min-height: 100vh;
+      scroll-snap-align: none;
+      overflow: visible;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding-top: 64px;
+      padding-bottom: 64px;
+      gap: 32px;
+      padding-left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px));
+      padding-right: var(--indent);
+    }
+
+    /* ── BRAND CARD ──────────────────────────────── */
+    /* fixed (era absolute sulla sezione): la sezione ora e' lunga quanto la lista e scorre,
+       la card resta al centro dello SCHERMO */
+    .brand-card-container {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 0;
+      opacity: 0;
+      transform: scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.1s ease,
+                  transform 0.1s ease;
+      will-change: opacity, transform;
+    }
+    .brand-card-container.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    .brand-card-img {
+      position: relative;
+      max-height: 55vh;
+      max-width: 55vw;
+      width: 55vw;
+      height: 55vh;
+    }
+    .brand-card-img img {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.82);
+      max-height: 55vh;
+      max-width: 55vw;
+      width: auto;
+      height: auto;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .brand-card-img img.visible {
+      opacity: 0.7;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .brand-card-info { display: none; }
+
+    .brands-text {
+      position: relative;
+      z-index: 1;
+      font-family: 'SharpGrotesk', sans-serif;
+      /* fluido: i 39 nomi devono stare in un viewport. Su desktop il termine vh non morde quasi
+         mai → resta 48 px come prima; si rimpicciolisce solo dove servirebbe piu' spazio.
+         Per il fit conta anche la LARGHEZZA (piu' stretto = piu' righe): mobile ha un suo
+         coefficiente nella media query sotto. */
+      /* (23.09.26) misura FISSA, niente piu' "tutti in uno schermo" (via anche fitBrands):
+         48 px come il disegno originale, un po' meno sugli schermi stretti */
+      font-size: clamp(32px, 3.4vw, 48px);
+      font-weight: 500;
+      font-style: normal;
+      color: rgba(255,255,255,0.1);
+      letter-spacing: -0.04em;
+      line-height: 96%;
+      text-transform: uppercase;
+      width: 100%;
+    }
+    .brands-text .hl { color: white; }
+    /* un nome per riga (23.09.26, Roberto). Lo spazio in fondo alla lista (padding-bottom
+       della sezione) fa arrivare anche l'ultimo nome a meta' schermo, dove si accende. */
+    .brands-text a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .brands-text a:hover { color: white; }
+
+    /* ── SPACE ──────────────────────────────────────── */
+    #space-scroll-wrapper {
+      scroll-snap-align: none;
+      /* black gap between Brands and Space */
+      margin-top: var(--section-gap);
+    }
+
+    #space {
+      position: sticky;
+      top: 0;
+      height: auto;
+      min-height: 110vh;
+      overflow: visible;
+      scroll-snap-align: none;
+      padding: 0;
+      display: block;
+    }
+
+    .space-strip {
+      position: absolute;
+      top: calc(64px + var(--sez-lab));
+      left: max(8px, calc((100vw - 104px) / 12 * 3 + 32px));
+      display: flex;
+      gap: 8px;
+      padding-right: 8px;
+      will-change: transform;
+    }
+
+    .space-parallax-frame {
+      position: relative;
+      /* altezza ORIGINALE anche sugli schermi bassi (Roberto 17.09.26): provato a restringerla per
+         far stare il testo nello schermo, ma la sezione si rimpiccioliva male. Se il testo esce
+         sotto, si legge col secondo scroll. */
+      height: calc(4 * (100vh - 56px) / 6 + 24px);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .space-parallax-frame img {
+      height: 100%;
+      width: auto;
+      display: block;
+      object-fit: cover;
+      transform: scale(1.2) translateX(0%);
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    .space-text {
+      position: absolute;
+      top: calc(64px + var(--sez-lab) + 4 * (100vh - 56px) / 6 + 24px + 8px);
+      left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px)); /* shifted 1 col left, aligned to About/Brands */
+      right: var(--indent);
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+
+    .space-text-main {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      color: white;
+      flex: 0 0 auto;
+      width: calc((100vw - 104px) / 2 + 40px);
+    }
+
+    .space-text-side {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      color: white;
+      flex: 1 1 auto;      /* fill the width freed by the left shift → fewer wraps, shorter */
+      min-width: 0;
+    }
+
+    .space-text-main p,
+    .space-text-side p { margin: 0; }
+    /* (17.09.26) la seconda parte del testo di Space ("It's divided into two rooms…") dopo una
+       riga vuota, tutte le misure. 1.1em = una riga (line-height 110%). */
+    .space-text-main p + p { margin-top: 1.1em; }   /* una riga vuota (Roberto 23.09.26 "portalo su"); il 17.09 era stato raddoppiato a 2.2em */
+
+    /* ── Blocco "We are open… For collaboration…" come ADESIVO (17.09.26) ──
+       Scelta "schiaffo" dalla pagina _prova_sticker. Su TUTTE le misure il blocco resta unito, ruotato
+       di -8°, ed entra con lo schiaffo (JS: `schiaffoAdesivo`). La rotazione vive qui nel CSS: GSAP
+       anima e a fine corsa toglie i suoi transform (clearProps).
+       margin-top: ruotato, l'angolo destro sale di ~25-30 px e toccava cio' che sta sopra. */
+    .space-text-side { transform: rotate(-8deg); transform-origin: 50% 50%; margin-top: 1.2em; }
+    /* il testo di Space sborda sotto la sezione: con lo z-index resta visibile sopra lo stacco nero
+       verso Campaigns invece di esserne coperto a meta' */
+    #space-scroll-wrapper { position: relative; z-index: 2; }
+    @media (max-width: 768px) {
+      .space-text-side { margin-top: 1.6em; }
+    }
+
+    /* ── CONTACT ────────────────────────────────────── */
+    #contact {
+      position: relative;
+      height: 100vh;
+      min-height: 100vh;
+      max-height: 100vh;
+      background: var(--sfondo);
+      overflow: hidden;
+      padding: 0;
+      display: block;
+      scroll-snap-align: start;
+    }
+
+    .contact-top {
+      position: absolute;
+      top: calc((100vh - 16px) / 6 + 16px);
+      left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px));
+      right: max(8px, var(--indent));
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .contact-left {
+      flex: 0 0 calc((100vw - 104px) / 12 * 5 + 32px);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-top p,
+    .contact-top a {
+      display: block;
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      color: white;
+      text-decoration: none;
+      margin: 0;
+    }
+
+    .contact-sept {
+      position: absolute;
+      bottom: -0.13em;
+      left: -0.02em;
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: min(27vw, 50vh);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      text-transform: lowercase;
+      color: white;
+      pointer-events: none;
+      z-index: 1;
+      margin: 0;
+    }
+
+    .contact-corner {
+      position: absolute;
+      width: auto;
+      height: 1rem;
+      filter: brightness(0) invert(1);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .contact-corner--tr { top: 8px; right: 8px; }
+    .contact-corner--br { bottom: 8px; right: 8px; }
+
+    /* ── CAMPAIGNS ──────────────────────────────────── */
+    #campaigns-scroll-wrapper {
+      scroll-snap-align: start;
+      /* black gap between Space and Campaigns */
+      margin-top: var(--section-gap);
+    }
+
+    #campaigns {
+      position: sticky;
+      top: 0;
+      height: auto;
+      /* must stay <= its wrapper height (100vh + img overflow) so the
+         sticky release is smooth — 110vh caused a jump at section end */
+      min-height: 100vh;
+      overflow: visible;
+      padding: 0;
+      scroll-snap-align: none;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    /* fixed viewport layer — shown only while Campaigns is in view.
+       JS drives translateY to track the section: centered while pinned,
+       rises on exit. Decoupled from the section's reflow → no click bob. */
+    #camp-nav {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;             /* the layer never blocks clicks/scroll */
+      transition: opacity 0.3s ease;
+      z-index: 250;
+      will-change: transform;
+    }
+    #camp-nav.visible { opacity: 1; }
+    #camp-nav.visible .camp-btn { pointer-events: auto; }
+
+    .camp-btn {
+      position: absolute;               /* relative to the fixed #camp-nav layer */
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 14px;   /* come .nav-item, il menu laterale (Roberto 16.09.26) */
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 10;
+      transition: color 0.15s ease, opacity 0.15s ease;
+    }
+    .camp-btn:hover { color: white; }
+    .camp-btn:active { opacity: 0.4; }
+    .camp-btn:disabled { color: rgba(255,255,255,0.15); cursor: default; }
+    .camp-prev { left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px)); }
+    .camp-next { left: auto; right: 144px; }
+
+    .camp-scrollable {
+      position: absolute;
+      left: calc(50% - 312px + (100vw - 104px) / 12);
+      top: 0;
+      width: 504px;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      will-change: transform;
+    }
+    .camp-scrollable img {
+      width: 100%;
+      height: auto;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .camp-caption {
+      position: absolute;
+      left: calc(50% + 208px + (100vw - 104px) / 12);
+      top: calc(50% + 154.5px);
+      transform: translateY(-50%);
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 110%;
+      text-transform: uppercase;
+      color: white;
+      pointer-events: none;
+      user-select: none;
+    }
+    .camp-caption span { display: block; }
+    .camp-caption .camp-gap { height: 1.1em; }
+
+    /* ── SIDEBAR FOOTER ROWS ────────────────────────── */
+    .footer-row {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .footer-row .nav-item {
+      pointer-events: none;
+    }
+    .footer-row.active .nav-item { color: white; }
+
+    .footer-sub-actions {
+      display: none;
+      align-items: center;
+      gap: 32px;
+      margin-left: 80px;
+    }
+    .footer-row.active .footer-sub-actions { display: flex; }
+
+    .footer-sub-actions a {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.64px;
+      text-transform: uppercase;
+      line-height: normal;
+      color: white;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-sub-actions a:hover { color: rgba(255,255,255,0.6); }
+
+    /* ── FOOTER OVERLAY ─────────────────────────────── */
+    #footer-overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 294px;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 200;
+      transform: translateY(100%);
+      pointer-events: none;
+    }
+    #footer-overlay.ready {
+      transition: transform 0.45s cubic-bezier(0.42, 0, 0.58, 1);
+    }
+    #footer-overlay.visible {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .overlay-big-text {
+      position: absolute;
+      right: var(--indent);
+      top: calc(50% + 21px);
+      transform: translateY(-50%);
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: clamp(28px, 4.2vw, 60px);
+      font-weight: 500;
+      letter-spacing: -1.8px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      text-align: right;
+      color: white;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ── HOME INTERACTIVE ───────────────────────── */
+    #home { padding: 0; background: var(--sfondo); height: 100vh; min-height: 100vh; max-height: 100vh; position: relative; overflow: hidden; }
+
+    #home-bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: #6A00FF;                /* viola solido, nessun gradiente/bianco */
+      opacity: 0;
+      transition: opacity 2s ease;        /* fade lento viola <-> nero */
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* in zoom compare il viola solido (solo opacity, nessun cambio di colore) */
+    #home.gradient-active #home-bg-gradient { opacity: 1; }
+
+    #home > *:not(#home-bg-gradient) { position: relative; z-index: 1; }
+
+
+    #home-logo-mirror {
+      position: fixed;
+      top: 50vh;
+      right: 8px;
+      width: auto;
+      height: 1rem;
+      transform: scaleX(-1) translateY(-50%);
+      filter: brightness(0) invert(1);
+      mix-blend-mode: difference;
+      pointer-events: none;
+      z-index: 300;
+    }
+
+    #home-loader {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    #home-svg-root {
+      width: min(calc(100vh - 80px), 68vw);
+      height: min(calc(100vh - 80px), 68vw);
+      overflow: visible;
+    }
+
+    /* niente will-change qui: sono ~132 .item dentro un solo <svg> e Chrome
+       prova a promuoverli a layer separati → esplosione di memoria GPU. */
+    #home-imgs .item { cursor: pointer; }
+    /* Il collage e' disegnato dal CANVAS. L'SVG sopra resta solo per gli eventi:
+       contiene 192 <rect> trasparenti e statiche (hit-test di hover/click), che
+       non dipingono nulla e seguono lo zoom tramite il viewBox. */
+    /* Selettore "gonfiato" apposta: esiste `#home > :not(#home-bg-gradient)` che
+       impone position:relative, e il :not() con un ID dentro pesa come un ID →
+       specificita' 0,2,0. Con il solo `#home-canvas` (0,1,0) il canvas restava in
+       flusso e, essendo #home un flex container, schiacciava l'SVG.
+       Posizione e dimensioni le mette il JS: il canvas deve ricalcare ESATTAMENTE
+       il riquadro di #home-svg-root, che non riempie il viewport ma e' un quadrato
+       centrato di min(100vh - 80px, 68vw) — e cambia nelle media query. */
+    #home > canvas#home-canvas { position: absolute; inset: 0; width: 100%; height: 100%;
+                                 display: block; pointer-events: none; }
+    #home-imgs .item { fill: transparent; }
+    /* niente will-change qui: lo zoom della home riscrive l'attributo viewBox
+       (vedi setCam), NON un transform CSS. Promuoveva un layer grande quanto il
+       viewport per una proprieta' che non cambia mai — e quel layer va ricaricato
+       sulla GPU a ogni repaint dell'SVG, cioe' 30 volte al secondo per il loop
+       vibration. Su Safari si sentiva parecchio. */
+    body.home-zoomed #home-svg-root { cursor: grab; }
+
+    #home #home-zoom-hint {
+      /* top 52: centrata, poco sotto il logo .sept (fondo a 46 px) — Roberto 17.09.26, era 16 */
+      position: absolute; top: 52px; left: 50%; transform: translateX(-50%);
+      z-index: 400; font-family: 'SharpGrotesk'; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: white;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      mix-blend-mode: difference; white-space: nowrap;
+    }
+    body.home-zoomed #home #home-zoom-hint { opacity: 1; }
+
+    /* brand name of the hovered image — small, centered on screen (desktop).
+       #home prefix beats "#home > *:not(#home-bg-gradient){position:relative}" so it
+       stays out of the flex flow (otherwise it shifts the centered logo on hover). */
+    #home #home-brand-label {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 400; font-family: 'SharpGrotesk'; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: white;
+      mix-blend-mode: difference; pointer-events: none; white-space: nowrap;
+      opacity: 0; transition: opacity 0.2s ease;
+    }
+    #home #home-brand-label.show { opacity: 1; }
+
+    /* text animation — lines revealed on scroll */
+    .anim-line-wrap { overflow: hidden; display: block; }
+
+    /* ── SEPT RADIO ─────────────────────────────── */
+    #radio-scroll-wrapper {
+      /* dwell: Organic Noise resta ferma per questo scroll in piu' prima di lasciare andare
+         la pagina. Tolto e poi RIMESSO il 16.09.26: la sensazione di "blocco" non veniva da
+         qui ma dallo scroll morbido di Lenis su Safari (vedi `smoothWheel`). Piu' grande =
+         sosta piu' lunga. */
+      height: calc(100vh + 40vh);
+      /* black gap between Campaigns and Organic Noise */
+      margin-top: var(--section-gap);
+    }
+
+    #sept-radio {
+      /* sticky = il pin che realizza il dwell qui sopra. ⚠️ Ha senso solo FINCHE' il wrapper
+         e' piu' alto della sezione: sticky in un contenitore alto quanto se' stessa si
+         aggancia e si stacca nello stesso istante, ed e' esattamente quello che produceva lo
+         scatto su Campaigns. Se togli il dwell, rimetti `relative`. */
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      min-height: 100vh;
+      overflow: visible;
+      padding: 0;
+      /* Sticky + contenuto in preserve-3d (31 cover) = ripaint dell'intera pagina a ogni
+         frame di scroll, e su Safari l'artefatto per cui la sezione sembrava disegnata due
+         volte. `contain: paint` chiude il ripaint dentro la sezione; il layer proprio evita
+         che venga ricomposta insieme al resto. Misurato prima: p95 75 ms, picco 208 ms. */
+      contain: paint;
+      will-change: transform;
+    }
+
+    #sept-radio .section-title {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .radio-boxes {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      position: absolute;
+      top: 0; left: 0;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      touch-action: none;
+    }
+
+    .radio-box {
+      transform-style: preserve-3d;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 20vmin;
+      width: 20vmin;
+      min-height: 200px;
+      min-width: 200px;
+      display: none;
+      -webkit-box-reflect: below 0.5vmin linear-gradient(transparent 0 50%, rgba(255,255,255,0.15) 100%);
+    }
+
+    .radio-box img {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0; left: 0;
+      object-fit: cover;
+    }
+
+    .radio-caption {
+      position: absolute;
+      top: calc(50% + clamp(158px, 17.3vmin, 17.3vmin));
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 250;
+      pointer-events: none;
+      color: #fff;
+      width: max-content;
+      max-width: 60vw;
+    }
+
+    .radio-caption .r-title {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .radio-caption .r-artist {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      opacity: 0.65;
+      margin-top: 2px;
+    }
+
+    .radio-controls {
+      position: absolute;
+      top: calc(50% + clamp(160px, 18vmin, 18vmin) + 32px);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      z-index: 300;
+    }
+
+    .radio-prev-btn,
+    .radio-next-btn {
+      height: 56px;
+      width: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 0;
+      opacity: 0.5;
+      transition: opacity 0.2s ease;
+    }
+
+    .radio-prev-btn:hover,
+    .radio-next-btn:hover { opacity: 1; }
+
+    .radio-prev-btn svg,
+    .radio-next-btn svg {
+      width: 30px;
+      height: 30px;
+      stroke: white;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* volume control */
+    .radio-volume {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 300;
+    }
+
+    .radio-volume svg {
+      width: 18px;
+      height: 18px;
+      stroke: white;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .radio-volume svg:hover { opacity: 1; }
+
+    .radio-volume input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80px;
+      height: 2px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 1px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .radio-volume input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+    }
+
+    .radio-volume input[type=range]::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .drag-proxy-radio {
+      visibility: hidden;
+      position: absolute;
+    }
+
+    /* ── MOBILE NAV ─────────────────────────────────── */
+    #mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      background: transparent;
+      mix-blend-mode: difference;
+      z-index: 350;
+      padding: 0 8px;
+      align-items: center;
+      justify-content: space-between;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #mobile-nav .logo { height: 20px; width: auto; display: block; }
+    #mobile-nav .logo img { height: 100%; width: auto; display: block; }
+
+    .mobile-ui-text {
+      font-size: 1.25rem;
+    }
+
+    #mobile-menu-btn {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── MOBILE MENU ────────────────────────────────── */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--sfondo);
+      z-index: 500;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px;
+      transform: translateY(-100%);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #mobile-menu.open { transform: translateY(0); }
+
+    .mobile-menu-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 48px;
+      flex-shrink: 0;
+    }
+    .mobile-menu-top .logo { height: 20px; width: auto; }
+    .mobile-menu-top .logo img { height: 100%; width: auto; display: block; }
+
+    #mobile-menu-close {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+      color: rgba(255,255,255,0.4);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-grow: 1;
+      justify-content: center;
+    }
+    .mobile-nav-item {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.9rem;   /* era 1.5rem: voci un po' piu' grandi (Roberto 17.09.26) */
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+      color: white;
+      text-decoration: none;
+      display: block;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: color 0.2s ease;
+    }
+    .mobile-nav-item:active { color: rgba(255,255,255,0.4); }
+
+    .mobile-menu-footer {
+      display: flex;
+      gap: 16px;
+      padding-top: 24px;
+      flex-shrink: 0;
+    }
+    .mobile-menu-footer a {
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;   /* era 1.25rem (Roberto 17.09.26) */
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 110%;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 768px) {
+      html, body { -webkit-text-size-adjust: 100%; }
+
+      #sidebar    { display: none; }
+      #mobile-nav { display: flex; }
+      #mobile-menu{ display: flex; }
+      #active-label { display: none; }
+      #footer-overlay { display: none; }
+
+      #main { margin-left: 0; width: 100%; }
+
+      :root { --indent: 16px; }
+
+      #app {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .section,
+      #brands,
+      #space,
+      #sept-radio {
+        height: auto !important;
+        min-height: 100svh;
+      }
+      #campaigns {
+        height: 100vh !important;
+        min-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      .section {
+        padding-top: 72px;
+        padding-bottom: 48px;
+      }
+
+      #home {
+        height: 100svh;
+        min-height: 100svh;
+        max-height: 100svh;
+        padding-top: 48px;
+        padding-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #home-svg-root {
+        display: block;
+        margin: 0 auto;
+      }
+
+      #home-logo-mirror { display: none; }
+
+      #home > #home-zoom-hint {
+        position: fixed;
+        top: 54px;   /* poco sotto il logo .sept (fondo a 48 px), era 8 — Roberto 17.09.26 */
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0;
+      }
+      #home > #home-zoom-hint::after {
+        content: 'Tap to esc';
+        font-size: 10px;
+      }
+
+      /* Global text — handled by html font-size breakpoints + rem classes */
+
+      /* Navbar */
+      #mobile-nav { top: 8px; }
+      /* ⚠️ NIENTE mix-blend-mode su mobile (17.09.26). Il blend "difference" sulla barra FISSA
+         obbligava l'iPhone a ricomporre a ogni frame tutto cio' che scorre sotto: i bordi delle
+         sezioni tremavano, in tutte le sezioni, anche col JS spento (isolato con
+         `?prova=noblend`, confronto con le pagine minime _prova_scroll/A e B). Al posto del
+         blend il colore lo decide il JS (`navSuChiaro`): nero sulle sezioni chiare, bianco sulle
+         scure. Stessi motivi per i due testi della home che avevano il blend. */
+      /* ⚠️ `#home #...` e non `#home-brand-label`: la regola originale ha DUE id e batteva la
+         versione con uno solo, lasciando il blend acceso (trovato confrontando gli stili calcolati
+         con `?prova=noblend`). Basta UN elemento col blend dentro #app per far tremare tutto.
+         Sidebar e specchio del logo qui sono nascosti, ma si spengono lo stesso per sicurezza. */
+      #mobile-nav,
+      #home #home-zoom-hint,
+      #home #home-brand-label,
+      #sidebar,
+      #home-logo-mirror { mix-blend-mode: normal; }
+      #mobile-nav #mobile-menu-btn { transition: color 0.2s ease; }
+      #mobile-nav .logo img { transition: filter 0.2s ease; }
+      #mobile-nav.su-chiaro #mobile-menu-btn { color: #000; }
+      #mobile-nav.su-chiaro .logo img { filter: invert(1); }
+      #mobile-nav .logo,
+      .mobile-menu-top .logo { width: calc((100vw - 88px) / 4 + 8px); height: auto; }
+      #mobile-nav .logo img,
+      .mobile-menu-top .logo img { width: 100%; height: auto; }
+
+      /* About */
+      #about-scroll-wrapper { scroll-snap-align: none; }
+      #about {
+        position: sticky;
+        top: 0;
+        height: 100svh !important;
+        min-height: 100svh !important;
+        overflow: hidden;
+        background: var(--sfondo);
+        padding: 0;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+      }
+      .about-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: static;
+        grid-template-columns: unset;
+        column-gap: 0;
+      }
+      /* Brands */
+      #brands {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      /* mobile: un nome per riga; i piu' lunghi (NEW AMSTERDAM SURF ASSOCIATION) vanno a capo */
+      .brands-text {
+        font-size: 32px;
+      }
+      .brand-card-img {
+        width: 80vw;
+        height: 55vw;
+      }
+      .brand-card-img img {
+        max-width: 80vw;
+        max-height: 55vw;
+      }
+
+      /* Space mobile — keep sticky scroll, override strip position */
+      #space { --sez-lab: calc(1.75rem * 1.1 + 8px); }   /* gap 8 come "Our Story" su mobile */
+      .sez-label--space, .sez-label--radio { left: 16px; }
+      #space-strip {
+        top: calc(64px + var(--sez-lab));
+        left: 16px;
+      }
+      /* immagini piu' grandi (Roberto 16.09.26): 56vw → 80vw → 100vw, per TUTTI i telefoni.
+         Sui telefoni bassi il testo esce sotto la sezione e non si legge tutto: scelta di
+         Roberto ("non fa nulla"). Provato un limite `min(100vw, 100svh - 380px)` e tolto. */
+      .space-parallax-frame { height: 100vw; min-height: 160px; }
+      /* PROVA `?prova=space` (16.09.26): Space col limite di prima, per isolare il blocco a Campaigns */
+      html.prova-space .space-parallax-frame { height: min(100vw, calc(100svh - 380px)); }
+      html.prova-space .space-text { top: calc(64px + var(--sez-lab) + min(100vw, calc(100svh - 380px)) + 16px) !important; }
+      .space-text {
+        top: calc(64px + var(--sez-lab) + 100vw + 16px);
+        bottom: 24px;                    /* margin from section bottom */
+        left: 16px;
+        right: 16px;
+        flex-direction: column;
+        justify-content: flex-start;     /* il blocco laterale segue il testo, niente spread */
+        gap: 1.1em;                      /* ~una riga vuota: paragrafo a se', non staccato */
+      }
+      .space-text-main { width: 100%; max-width: 100%; flex: none; font-size: 1.75rem; }
+      .space-text-side { width: 100%; max-width: 100%; flex: none; margin-left: 0; font-size: 1.75rem; }
+
+      /* Campaigns */
+      /* il titolo ha la misura degli altri testi (1.75rem, Roberto 16.09.26). `font-size` anche
+         qui perche' il `top` delle immagini e' in em: 4.4em = le 4 righe del titolo */
+      .camp-scrollable {
+        left: calc(50% - (75vw - 26px) / 2);
+        width: calc(75vw - 26px);
+        font-size: 1.75rem;
+        top: calc(48px + 4.4em + 16px);
+      }
+      .camp-caption {
+        font-size: 1.75rem;
+        left: calc(50% - (75vw - 26px) / 2);
+        transform: none;
+        width: calc(75vw - 26px);
+        top: 48px;
+        bottom: auto;
+      }
+      .camp-btn { font-size: 1.5rem; }  /* come "Menu" su mobile (#mobile-menu-btn: 1.5rem) */
+      .camp-prev { left: 8px; top: 50%; bottom: auto; transform: translateY(-50%); }
+      .camp-next { right: 8px; top: 50%; bottom: auto; transform: translateY(-50%); }
+
+      /* Contact — due colonne come desktop */
+      .contact-top {
+        top: 72px;
+        left: 16px;
+        right: 16px;
+        flex-direction: row;
+        gap: 12px;
+      }
+      .contact-left  { flex: 1 1 0; min-width: 0; }
+      .contact-right { flex: 1 1 0; min-width: 0; }
+      /* stessa misura di About e Space: i tre blocchi di testo del sito ora si
+         leggono uguali su telefono (era 1rem, poco piu' della meta') */
+      .contact-top p,
+      .contact-top a { font-size: 1.75rem; }
+      /* una sola colonna, centrata nell'altezza dello schermo: prima era ancorata in alto
+         (`top: 72px`) e sotto restava un vuoto enorme fino alla scritta `.sept` */
+      /* meno nero fra Brands e Space (Roberto 16.09.26): 30vh su telefono erano quasi un
+         terzo di schermo vuoto, sommati al fondo di Brands e ai 64 px sopra la strip */
+      #space-scroll-wrapper { margin-top: 5vh; }
+      /* (17.09.26) stesso discorso fra Campaigns e Organic Noise: 30vh erano fino a 415 px di nero
+         su 654 */
+      #radio-scroll-wrapper { margin-top: 5vh; }
+
+      /* Contact alta quanto lo schermo VISIBILE (vedi #app): con 100vh il fondo, e con lui la
+         scritta .sept, finiva sotto la barra di Safari */
+      #contact { height: 100svh; min-height: 100svh; max-height: 100svh; }
+
+      /* la FINE del testo (@septshowroom) a meta' dello schermo (Roberto 16.09.26) */
+      .contact-top {
+        flex-direction: column;
+        gap: 1.5rem;
+        top: auto;
+        bottom: 50%;
+        transform: none;
+      }
+      .contact-left, .contact-right { flex: none; width: 100%; gap: 0.4rem; }
+      /* ⚠️ `.sept` ancorata a `bottom: -0.13em` finiva sotto il bordo dello schermo: misurato
+         su 390x844 il suo fondo cadeva a 858 px, e su iPhone la barra di Safari la copriva del
+         tutto (da qui "da mobile non si vede"). Qui sta appoggiata al fondo vero e si tiene
+         dentro l'altezza disponibile. */
+      /* Come su desktop e tablet: appoggiata al fondo e un filo sotto (-0.13em), entra dal
+         basso con l'animazione. Ora il fondo e' quello vero (#contact 100svh), quindi si vede. */
+      .contact-sept {
+        bottom: -0.13em;
+        left: -0.02em;
+        font-size: min(34vw, 20svh);
+      }
+
+      /* Radio */
+      .radio-box {
+        height: 38vmin; width: 38vmin;
+        min-height: 120px; min-width: 120px;
+      }
+      .radio-controls { gap: 32px; }
+      .radio-volume { top: 16px; right: 16px; }
+
+      /* Home */
+      #home-svg-root {
+        width: min(calc(100svh - 80px), 92vw);
+        height: min(calc(100svh - 80px), 92vw);
+      }
+    }
+
+    /* ── TABLET (600–1024px) ────────────────────────── */
+    /* ── ABOUT senza sidebar (<=768) ─────────────────────────────────────────────
+       Colonna unica + immagini in STRIP ORIZZONTALE guidata dallo scroll verticale, come in
+       Space (initAboutScroll). Il testo e' alla stessa misura di Space e Contact: 1.75rem.
+       ⚠️ Solo fino a 768 px, cioe' dove la sidebar sparisce. Provato fino a 1024 e ritirato
+       il 16.09.26: sul tablet con la sidebar la sezione si accorciava e a Brands restava una
+       fascia nera, perche' l'altezza del wrapper di About viene calcolata sul viaggio
+       orizzontale della strip e li' non torna con il layout a tre colonne. */
+    @media (max-width: 768px) {
+      #about {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: auto !important;
+        min-height: 100svh !important;
+        overflow: hidden;           /* la strip deborda: qui viene ritagliata */
+        /* NIENTE SOSTA: la pagina continua a scorrere in verticale e la strip si muove in
+           orizzontale INSIEME (aboutModes). Il blocco mobile generale piu' su la metteva
+           `sticky`. Versione con sosta come Space: vedi CLAUDE.md. */
+        position: relative;
+      }
+
+      .about-layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        position: static;
+        grid-template-columns: unset;
+        column-gap: 0;
+      }
+      .about-text-block { display: contents; position: static; max-width: 100%; grid-template-rows: unset; }
+      .about-label--family { display: none; }
+      .about-inner { order: 1; flex-shrink: 0; gap: 8px; padding: 72px 16px 16px; }
+      .about-label { color: rgba(255,255,255,0.4); font-size: 1.75rem; }
+      .about-intro { letter-spacing: -0.04em; color: white; text-transform: uppercase; }
+      /* ⚠️ `#about` davanti non e' decorativo: la regola desktop `#about .about-text { order: 2 }`
+         ha la specificita' di un id e batteva `.about-text { order: 3 }`, mettendo il paragrafo
+         allo stesso livello delle immagini — e per ordine nell'HTML, PRIMA di loro. Ordine
+         voluto su telefono: prima frase · immagini · resto del testo. */
+      #about .about-text { order: 3; margin-top: 0; flex-shrink: 0; display: block; letter-spacing: -0.04em; text-transform: uppercase; color: white; padding: 16px 16px 24px; }
+      /* compatto, allineato a sinistra, senza sillabazione */
+      .about-intro, .about-text {
+        text-align: left;
+        -webkit-hyphens: none; hyphens: none;
+        overflow-wrap: normal; word-break: normal;
+        font-size: 1.75rem;       /* come .space-text-main / .space-text-side */
+        line-height: 110%;
+      }
+
+      /* Space e Contact alla stessa misura di About: su tablet restavano ai valori
+         desktop e i tre blocchi si leggevano di tre grandezze diverse */
+      .space-text-main,
+      .space-text-side,
+      .contact-top p,
+      .contact-top a { font-size: 1.75rem; }
+
+      /* "Our Family" + gif SOTTO il testo, a tutta colonna (richiesta Roberto 16.09.26).
+         La gif esce dalla strip: li' la sua frame (l'ultima) si nasconde. */
+      .about-images .about-parallax-frame:last-child { display: none; }
+      .about-family-mobile {
+        order: 4;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;                   /* come fra "Our Story" e la prima frase */
+        padding: 24px 16px 48px;
+      }
+      .about-family-mobile img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+      }
+
+      /* strip orizzontale: stessa meccanica di .space-strip */
+      .about-images {
+        order: 2;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px 16px 0;
+        width: max-content;         /* larghezza = somma delle frame: e' cio' che scorre */
+        will-change: transform;
+      }
+      .about-parallax-frame {
+        position: relative;
+        flex: 0 0 auto;
+        width: 75vw;
+        height: 75vw;
+        aspect-ratio: unset !important;
+        overflow: hidden;
+      }
+      .about-parallax-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.2) translate3d(0, 0, 0);
+      }
+    }
+
+    /* ⚠️ Parte da 769, non da 600: sotto i 768 comanda il blocco mobile e i due set NON devono
+       sovrapporsi. Con `min-width: 600` fra 600 e 768 si applicavano entrambi e il testo di
+       Space finiva SOPRA le immagini (misurato: 88 px di sovrapposizione a 600/700/750/768).
+       Regola generale per questo file: **le media query non si accavallano**. */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      /* ── ABOUT tablet: DUE COLONNE, testo | immagini ─────────────────────────────
+         Stessa struttura del desktop, ma con proporzioni sane: la griglia desktop e' tarata
+         su schermi larghi e qui lasciava il testo a 256-296 px, una bandiera stretta.
+         Due sole versioni in tutto il sito: **due colonne** (qui e su desktop) e **una
+         colonna** (solo sotto i 768, con la strip orizzontale). */
+      #about {
+        padding-top: 56px;
+        padding-bottom: 48px;
+        /* la sidebar e' larga 120 px (misurata): il rientro desktop qui arrivava a 140-177 px
+           e rubava spazio alle due colonne senza motivo */
+        padding-left: 136px;
+        padding-right: 16px;
+      }
+      /* ⚠️ flex e non grid: nell'HTML i due blocchi hanno `style="grid-column:1"` e
+         `style="grid-column:3"` INLINE, che battono qualsiasi regola di questo foglio e
+         rimettevano le immagini in una terza colonna fantasma (testo di nuovo a 295 px).
+         In flex quegli attributi non contano nulla. */
+      .about-layout {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        align-items: stretch;   /* la colonna del testo e' alta quanto quella delle immagini */
+      }
+      /* il testo pesa un po' piu' delle immagini: a meta' esatta restava stretto */
+      .about-text-block {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        flex: 1.25 1 0;
+        min-width: 0;
+        max-width: none;
+      }
+      /* "It comes from a strong knowledge…" sta IN FONDO alla colonna, come sul desktop
+         (dove ci arriva con `grid-template-rows`): in colonna semplice finiva attaccato
+         all'intro, cioe' in alto. */
+      #about .about-text { margin-top: auto; }
+      .about-images { flex: 1 1 0; min-width: 0; }
+      /* torna visibile: era nascosta e Roberto la vuole anche qui, sotto al paragrafo */
+      .about-label--family { display: block; margin-top: 16px; }
+
+      /* ⚠️ Space su tablet usa la stessa meccanica del telefono: strip in posizione assoluta
+         che scorre guidata dallo scroll verticale (updateSpace). Prima era
+         `position: relative; overflow-x: auto`, cioe' una barra da trascinare a mano: il
+         contenuto era largo 1154 px in 834 di finestra e **l'ultima immagine restava fuori**
+         senza modo di raggiungerla (segnalato da Roberto il 16.09.26). */
+      #space {
+        height: auto !important;
+        min-height: 100svh;
+        padding-bottom: 48px;
+      }
+      /* ⚠️ 136 px e non 16: qui c'e' la sidebar (120 px) e strip e testo ci finivano sotto */
+      .sez-label--space, .sez-label--radio { left: 136px; }
+      .space-strip {
+        top: calc(64px + var(--sez-lab));
+        left: 136px;
+      }
+      .space-parallax-frame { height: 40vw; min-height: 200px; }
+      /* testo a DUE COLONNE finche' c'e' la sidebar, come su desktop (Roberto 16.09.26):
+         la colonna unica vale solo sotto i 768 */
+      .space-text {
+        top: calc(64px + var(--sez-lab) + 40vw + 24px);
+        left: 136px;
+        right: 16px;
+        bottom: auto;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 24px;
+        width: auto;
+      }
+      .space-text-main { flex: 1.25 1 0; width: auto; min-width: 0; max-width: none; }
+      .space-text-side { flex: 1 1 0;    width: auto; min-width: 0; max-width: none; }
+
+      /* titolo della campagna alla misura degli altri testi su tablet (1.5rem, Roberto 16.09.26) */
+      .camp-caption { font-size: 1.5rem; }
+      /* Prev/Next a 14px: nella posizione desktop Prev finiva SOPRA il bordo sinistro delle
+         immagini. Qui si appoggiano ai bordi della colonna immagini (.camp-scrollable: left
+         50% - 312px + 1 colonna, larga 504), a 16 px di distanza. */
+      .camp-prev { left: auto; right: calc(100% - (50% - 312px + (100vw - 104px) / 12) + 16px); }
+      .camp-next { right: auto; left: calc(50% - 312px + (100vw - 104px) / 12 + 504px + 16px); }
+    }
+
+
+
+
+    /* ══ PAGINE SEPARATE (23.09.2026) ══════════════════════════════════════════════
+       Il sito non e' piu' una pagina sola: ogni sezione ha la sua pagina e il menu laterale
+       porta da una all'altra. Quindi:
+       - via le fasce nere fra una sezione e l'altra (`--section-gap`, e i 5vh del mobile):
+         ogni sezione ora e' in cima alla sua pagina;
+       - via la sosta di Organic Noise (wrapper 140vh + sezione sticky): serviva a fermare la
+         pagina mentre si passava da una sezione all'altra, qui farebbe solo scorrere 40vh di
+         niente. Sezione `relative` e wrapper alto quanto lei, come dice il commento li' sopra. */
+    #space-scroll-wrapper,
+    #campaigns-scroll-wrapper,
+    #radio-scroll-wrapper { margin-top: 0 !important; }
+    #radio-scroll-wrapper { height: auto; }
+    #sept-radio { position: relative; }
+
+
+    /* ══ SFONDO VIOLA, SCRITTE BIANCHE (23.09.2026) ══════════════════════════════════
+       Il `mix-blend-mode: difference` serviva a far diventare nere le scritte fisse (menu,
+       logo, simbolo di destra) quando passavano sopra About, che era bianca. Ora lo sfondo e'
+       viola ovunque e il "difference" trasformerebbe il bianco in verde chiaro (bianco meno
+       #4F14AD = #B0EB52): via ovunque, anche su desktop. Su mobile era gia' spento.
+       Selettori con gli stessi id di quelli originali, per batterli. */
+    #sidebar,
+    #mobile-nav,
+    #home-logo-mirror,
+    #home #home-zoom-hint,
+    #home #home-brand-label { mix-blend-mode: normal; }
+
+    /* ══ BRANDS (23.09.2026) — il wrapper non allunga piu' la pagina (niente pin) ══════ */
+    #brands-scroll-wrapper { height: auto !important; }
+
+    /* ══ BRANDS NASTRO INFINITO (23.09.2026) ═══════════════════════════════════════
+       La lista sale da sola in loop (brands.js): la sezione e' una finestra alta quanto lo
+       schermo, ferma, e dentro scorre `.brands-nastro` (3 copie della lista). `!important`
+       perche' la media query mobile/tablet mette `height: auto !important` a #brands.
+       Via il padding-bottom 50vh della versione "colonna letta scorrendo" (serviva a portare
+       l'ultimo nome a meta' schermo). */
+    #brands {
+      height: 100vh !important;
+      height: 100dvh !important;
+      min-height: 0 !important;
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+      display: block;
+    }
+    .brands-nastro {
+      position: relative;
+      z-index: 1;               /* sopra la card, come prima .brands-text */
+      will-change: transform;
+    }
+    .brands-nastro .brands-text { margin: 0; }
+
+    /* ══ SFONDO PER PAGINA (23.09.2026, Roberto) ═════════════════════════════════════
+       Viola (`--sfondo`) ovunque tranne: Organic Noise e Campaigns NERE (come prima), Space
+       BIANCA con menu e scritte nere. `data-pagina` sta anche su <html>, cosi' il colore copre
+       tutta la finestra (anche html/body e il rimbalzo oltre il bordo).
+       Barra mobile: il colore lo decide gia' `navSuChiaro` (core.js) leggendo lo sfondo della
+       sezione → su Space diventa nera da sola (classe `su-chiaro`). */
+    html[data-pagina="sept-radio"],
+    html[data-pagina="campaigns"] { --sfondo: black; }
+
+    html[data-pagina="space"] { --sfondo: white; }
+    html[data-pagina="space"] body { color: black; }
+    /* menu laterale */
+    html[data-pagina="space"] #sidebar .logo img { filter: invert(1); }
+    html[data-pagina="space"] .nav-item,
+    html[data-pagina="space"] .footer-row .nav-item { color: rgba(0,0,0,0.4); }
+    html[data-pagina="space"] .nav-item:hover { color: rgba(0,0,0,0.7); }
+    html[data-pagina="space"] .nav-item.active,
+    html[data-pagina="space"] .footer-row.active .nav-item,
+    html[data-pagina="space"] #sidebar .active-label,
+    html[data-pagina="space"] .footer-sub-actions a { color: black; }
+    html[data-pagina="space"] .footer-sub-actions a:hover { color: rgba(0,0,0,0.6); }
+    html[data-pagina="space"] #home-logo-mirror { filter: brightness(0); }
+    /* testi della sezione */
+    html[data-pagina="space"] .section .sez-label { color: rgba(0,0,0,0.4); }
+    html[data-pagina="space"] .space-text-main,
+    html[data-pagina="space"] .space-text-side { color: black; }
+    /* menu a tendina mobile: stesso sfondo della pagina, quindi voci nere */
+    html[data-pagina="space"] .mobile-menu-top .logo img { filter: invert(1); }
+    html[data-pagina="space"] .mobile-nav-item { color: black; }
+    html[data-pagina="space"] .mobile-nav-item:active,
+    html[data-pagina="space"] #mobile-menu-close,
+    html[data-pagina="space"] .mobile-menu-footer a { color: rgba(0,0,0,0.4); }
+
+    /* ══ SPACE FERMA SU DESKTOP (23.09.2026, Roberto "da desktop la pagina scrolla ancora") ══
+       `#space` era alta 110vh: a fine corsa della strip la sezione saliva di 10vh (90 px a
+       1440x900). Alta quanto lo schermo, resta ferma per tutto lo scroll: la rotella muove solo
+       le immagini in orizzontale. Solo desktop: sotto i 1024 px vale gia' `100svh` (media query
+       mobile/tablet), e 100vh su iPhone e' piu' alto dello schermo visibile. */
+    @media (min-width: 1025px) {
+      #space { min-height: 100vh; }
+    }
+
+    /* ══ SCHERMATA D'APERTURA DELLA HOME (23.09.2026, versione 2) ════════════════════
+       Dal Figma di Roberto "MacBook Pro 14_ - 15" (1502x864): .sept al centro del simbolo della
+       pace, sotto "Independent multibrand showroom / based in Milan". Il simbolo grande (#7243BD)
+       e i 4 simbolini bianchi sul suo bordo li disegna il canvas della home (home.js), cosi'
+       seguono il simbolo quando cresce. Qui solo .sept e il testo, dentro #preloader (trasparente,
+       copre tutto). Misure dal Figma rese proporzionali alla larghezza (1502 px → vw). */
+    /* trasparente: sotto, il canvas della home disegna gia' il simbolo mentre ci sono le scritte.
+       Menu, logo laterale e simbolo di destra nascosti finche' c'e' la schermata. */
+    #preloader { background: transparent; }
+    #preload-pct { color: rgba(255,255,255,0.4); }
+    html[data-pagina="home"] body:not(.preloaded) #sidebar,
+    html[data-pagina="home"] body:not(.preloaded) #mobile-nav,
+    html[data-pagina="home"] body:not(.preloaded) #home-logo-mirror { opacity: 0; }
+    html[data-pagina="home"] #sidebar,
+    html[data-pagina="home"] #mobile-nav,
+    html[data-pagina="home"] #home-logo-mirror { transition: opacity 0.4s ease; }
+    #intro { position: absolute; inset: 0; }
+    /* centrato SOLO su .sept (il centro del simbolo): il testo pende sotto, fuori dal calcolo */
+    .intro-blocco { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+    .intro-logo { display: block; width: clamp(150px, 16vw, 320px); height: auto; }        /* 241 px su 1502 */
+    .intro-testo {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      margin: clamp(10px, 0.9vw, 18px) 0 0; white-space: nowrap; text-align: center;
+      font-family: 'SharpGrotesk', sans-serif; font-weight: 500; color: white;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 100%;
+      font-size: clamp(11px, 0.87vw, 16px);                                                 /* 13 px */
+    }
+    /* nascosti finche' non parte l'animazione (niente lampo al caricamento) */
+    #intro .intro-logo, #intro .intro-testo { opacity: 0; }
+
+    /* ══ ABOUT FERMA, IMMAGINI CHE SCORRONO DA SOLE (23.09.2026, Roberto) ═══════════════
+       Da 769 px in su (sidebar, due colonne): la pagina non scorre, la sezione e' alta quanto lo
+       schermo. Il paragrafo "It comes from…" sta subito sotto "Sept is an independent…",
+       staccato di una riga vuota come in Space (prima era spinto in fondo con margin-top auto).
+       La colonna delle immagini occupa tutta l'altezza dello schermo (dal bordo alto al basso,
+       fuori dai padding) e dentro scorre `.about-nastro` (about.js, `nastroAbout`).
+       Sotto i 769 px resta la versione telefono (colonna unica, strip orizzontale, scorre). */
+    @media (min-width: 769px) {
+      #about {
+        height: 100vh; height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+        padding-bottom: 0;
+      }
+      /* (poi, stesso giorno) il paragrafo torna IN FONDO, vicino al bordo basso dello schermo: la
+         colonna del testo e' alta quanto quella delle immagini (tutto lo schermo) */
+      #about .about-text { margin-top: auto; }
+      .about-text-block { padding-bottom: 32px; }
+      .about-images {
+        height: 100vh; height: 100dvh;
+        margin-top: -64px;           /* = padding-top desktop: la colonna parte dal bordo alto */
+        overflow: hidden;
+        display: block;
+      }
+      .about-nastro {
+        position: relative;          /* offsetParent delle cornici: serve a misurare il giro */
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        will-change: transform;
+      }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .about-images { margin-top: -56px; }   /* padding-top tablet */
+      /* il gap 24 del blocco di testo tablet si sommava alla riga vuota: stacco 45 px invece di 26 */
+      .about-text-block { gap: 0; }
+    }
+

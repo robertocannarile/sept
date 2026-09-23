@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it" data-pagina="sept-radio">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sept — Organic Noise</title>
+  <link rel="stylesheet" href="css/sept.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script>if (/[?&]prova=[^&]*space/.test(location.search)) document.documentElement.classList.add('prova-space');
+  // PROVA `?prova=vh` (17.09.26): #app torna alto 100vh (prima di ieri), per vedere se il tremolio
+  // dei bordi su iPhone viene da 100dvh che cambia quando si muovono le barre di Safari
+  if (/[?&]prova=[^&]*\bvh\b/.test(location.search)) document.documentElement.classList.add('prova-vh');</script>
+  <style>html.prova-vh #app { height: 100vh !important; }</style>
+  <script>
+  // PROVA `?prova=noblend` (17.09.26): via mix-blend-mode dagli elementi FISSI sopra lo scroll
+  // (#mobile-nav, #sidebar, #home-logo-mirror...). Sospetto per "su iPhone i bordi delle sezioni
+  // tremano, in tutte le sezioni, anche col JS spento": il blend su un layer fisso obbliga a
+  // ricomporre a ogni frame cio' che scorre sotto.
+  if (/[?&]prova=[^&]*noblend/.test(location.search))
+    document.write('<style>*, *::before, *::after { mix-blend-mode: normal !important; }</style>');
+  </script>
+</head>
+<body data-pagina="sept-radio">
+
+<!-- ══ MOBILE NAV ══ -->
+<nav id="mobile-nav">
+  <a class="logo" href="index.html"><img src="assets/sept_header.svg" alt=".sept"></a>
+  <button id="mobile-menu-btn" class="mobile-ui-text" aria-label="Open menu">Menu</button>
+</nav>
+
+<!-- ══ MOBILE MENU ══ -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="mobile-menu-top">
+    <a class="logo" href="index.html" id="mobile-logo-link"><img src="assets/sept_header.svg" alt=".sept"></a>
+    <button id="mobile-menu-close" class="mobile-ui-text" aria-label="Close menu">Close</button>
+  </div>
+  <nav class="mobile-menu-nav">
+    <a class="mobile-nav-item mobile-ui-text" href="about.html">About</a>
+    <a class="mobile-nav-item mobile-ui-text" href="brands.html">Brands</a>
+    <a class="mobile-nav-item mobile-ui-text" href="space.html">Space</a>
+    <a class="mobile-nav-item mobile-ui-text" href="campaigns.html">Campaigns</a>
+    <a class="mobile-nav-item mobile-ui-text" aria-current="page" href="organic-noise.html">Organic Noise</a>
+    <a class="mobile-nav-item mobile-ui-text" href="contact.html">Contact</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="mailto:hello@sept-showroom.com">Mail</a>
+    <a href="https://instagram.com/septshowroom" target="_blank">Instagram</a>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ══ SIDEBAR ══ -->
+  <img id="home-logo-mirror" src="assets/peace-about.svg" alt="">
+
+  <nav id="sidebar">
+
+    <div>
+      <a class="logo" href="index.html">
+        <img src="assets/sept_header.svg" alt=".sept">
+      </a>
+      <div class="nav-group">
+        <a class="nav-item" href="about.html"     data-target="about">About</a>
+        <a class="nav-item" href="brands.html"    data-target="brands">Brands</a>
+        <a class="nav-item" href="space.html"     data-target="space">Space</a>
+        <a class="nav-item" href="campaigns.html" data-target="campaigns">Campaigns</a>
+        <a class="nav-item active" aria-current="page" href="organic-noise.html" data-target="sept-radio">Organic Noise</a>
+        <a class="nav-item" href="contact.html"    data-target="contact">Contact</a>
+      </div>
+    </div>
+
+    <div class="active-label" id="active-label">Organic Noise</div>
+
+    <div class="sidebar-footer">
+
+      <div class="footer-row" data-overlay="mail">
+        <span class="nav-item">Mail</span>
+        <div class="footer-sub-actions">
+          <a href="#" id="copy-email-btn">Copy email</a>
+          <a href="mailto:hello@sept-showroom.com">Write an email</a>
+        </div>
+      </div>
+
+      <div class="footer-row" data-overlay="instagram">
+        <span class="nav-item">Instagram</span>
+        <div class="footer-sub-actions">
+          <a href="#" id="copy-ig-btn">Copy link</a>
+          <a href="https://instagram.com/septshowroom" target="_blank">Go to IG profile</a>
+        </div>
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- ══ SECTIONS ══ -->
+  <main id="main">
+
+    <div id="radio-scroll-wrapper">
+    <section class="section" id="sept-radio" data-label="Organic Noise">
+      <span class="about-label sez-label sez-label--radio">Our Radio</span>
+
+      <div class="radio-boxes" data-lenis-prevent>
+        <div class="radio-box" data-title="Organic Noise 030 - Fabio Kalosh" data-href="https://open.spotify.com/playlist/504QjAjEYhss09hTxaEsgg"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72ce14ca0d84941c2d84325417f" alt=""></div>
+        <div class="radio-box" data-title="The Sept Summer" data-href="https://open.spotify.com/playlist/5UKIbCsupnBIoRH2WhT87e"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72cba234746383f574ddd6bdb15" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 029 - Davide Veronesi (Roa)" data-href="https://open.spotify.com/playlist/1sv9AS5dzQuBFqWaA8FWJs"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c21bf068686908889070d88be" alt=""></div>
+        <div class="radio-box" data-title="Organic Nosie 028 - Flatshop" data-href="https://open.spotify.com/playlist/46GbhtxD4IJr3ONLAp1WJN"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c2a730c9eb1d215db8f11abee" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 027 - Boysloft" data-href="https://open.spotify.com/playlist/20b0SEcqCn4Tc8t4HQ3Qi6"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c9b910390346472798d454817" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 026 - Futur" data-href="https://open.spotify.com/playlist/70KmHcOtotBZeugCiOXQzz"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72cb263da1491ff49721b6a2c38" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 025 - Giulia (One Block Down)" data-href="https://open.spotify.com/playlist/5l6o46OtWK9JikvLtaRaqv"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c0b194dd67f827ff99668e2f2" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 024 - Prest (Degli Uberti)" data-href="https://open.spotify.com/playlist/2mzMnMFPp0zRoqS5fUnIBS"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c12d9b3c6a6428b148e8503dc" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 023 - VOS Family" data-href="https://open.spotify.com/playlist/0AwM1kDprx1BJ2ergYSggf"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c6d2eb020762a17f92817837f" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 022 - Stefano (Rhizome)" data-href="https://open.spotify.com/playlist/4rgj91BUxoLn3yRr103Zsv"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c3fb3e31dc83d169cb3aa5013" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 021 - Dirty Channels" data-href="https://open.spotify.com/playlist/46GXxZMTT7qyf74Jek0nOq"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72cabf6c8d5c32b62b5706fdc66" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 020 - Gabriele (Angelo Minetti)" data-href="https://open.spotify.com/playlist/1TuJY4yH9A0EOISsd7bQem"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c5f16df6601848d172a57a325" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 019 - Nathan (Daily Paper)" data-href="https://open.spotify.com/playlist/6hz9tbuEqkQcF11TVvVeIb"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72cc1b5a44df289f108079e958a" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 018 - Fabi.Man (The Skateroom)" data-href="https://open.spotify.com/playlist/0aLSlGs6lml8wJg0PwfLtR"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c72a0f62f769b03f27b6ab0a6" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 017 - Pas De Mer" data-href="https://open.spotify.com/playlist/70vmaC1uuIjpNxWoXKg4nP"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c897808ab5f5f2e8777f56ecc" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 016 - Laura (13 Metri Quadri)" data-href="https://open.spotify.com/playlist/7BevPWvM1XSXjmPVSHD1tQ"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c5f1dae154ec7db7dd7e3e7a7" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 015 - Riccardo BHI" data-href="https://open.spotify.com/playlist/61ZY3nzkpqtAPHoox343Tz"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72ce8130d9747b9b4437e20dd27" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 014 - Desiree e Keemani (Pop Start)" data-href="https://open.spotify.com/playlist/4oWzpgpmpBH96qXtVgd3AA"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c2faafa53f46f05e83137e219" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 013 - M.I.R.K.O." data-href="https://open.spotify.com/playlist/43KLtlNuf8500sKrj43iHr"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72cae1c6d5ad9d25c7d2a2cc8c4" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 012 - Dustin Phil" data-href="https://open.spotify.com/playlist/1WaoVtxAfZND3STskI7pdc"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72ce13a7e94a2f246a6ebb3f43c" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 011 - RIccardo (Inner)" data-href="https://open.spotify.com/playlist/6pU1B5cdiYqCzJ1Q7386Zt"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c59a5d7ea88db7cb1226084c9" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 010 - Dado (The Dope Factory)" data-href="https://open.spotify.com/playlist/69eBPMdhLamZQfKjCGG6p6"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72cc33b59b29b1d349fd5c9a33a" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 009 - Gabriele (De Liberti)" data-href="https://open.spotify.com/playlist/3g7i28GqrqiJyGVY2DICTk"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c1872de80d60d42d43b5c08ec" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 008 - Pullo BeLab" data-href="https://open.spotify.com/playlist/1fl9htsB2BkOthhLotqch5"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c838562e9be86c617466eca08" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 007 - Riccardo (Slam Jam)" data-href="https://open.spotify.com/playlist/6qjoPVKLoKuPLcchAbcezj"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c093565cdc3cb73f177085a7e" alt=""></div>
+        <div class="radio-box" data-title="Organic Nosie 006 - Francesco (Rold Skov)" data-href="https://open.spotify.com/playlist/36sP7VhmS0ursBQYQ0ZsPN"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c27bb48f6192c727a3e4ff6b2" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 005 - Braca (C.R.E.A.M.)" data-href="https://open.spotify.com/playlist/3DhvRbEZPuOqveiWlTpsew"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c00666ceec69c20f9685e4992" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 004 - Lorenzo (Naive)" data-href="https://open.spotify.com/playlist/3KrDFlf4h7AHuLHZJhco3M"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c174b55d2fdca3c1f5ab81685" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 003 - Davide (One Off)" data-href="https://open.spotify.com/playlist/0QoMauUAYlpgvrLKowB1H0"><img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c999381d890ce83a329d16bee" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 002 - Dave (Refresh)" data-href="https://open.spotify.com/playlist/5yLfhXubAr8QXsP7oGZp7a"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72c08b55f6622d77ce9812643c1" alt=""></div>
+        <div class="radio-box" data-title="Organic Noise 001 - Stefano (Julian Fashion)" data-href="https://open.spotify.com/playlist/2r4n6ChAYcwCQ34ntBhsoO"><img src="https://image-cdn-fa.spotifycdn.com/image/ab67706c0000d72cef35f6ef06491779204f8b25" alt=""></div>
+
+
+        <div class="radio-caption">
+          <div class="r-title"></div>
+        </div>
+
+        <div class="radio-controls">
+          <button class="radio-prev-btn" aria-label="Previous">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="radio-next-btn" aria-label="Next">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="drag-proxy-radio"></div>
+
+    </section>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ══ FOOTER OVERLAY ══ -->
+<div id="footer-overlay">
+  <div class="overlay-big-text" id="overlay-big-text"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Observer.min.js"></script>
+<script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/radio.js"></script>
+<script src="js/testo.js"></script>
+<script src="js/strumenti.js"></script>
+</body>
+</html>
