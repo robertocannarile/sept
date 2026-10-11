@@ -11,6 +11,8 @@
       "assets/img_pool/A BATHING APE/img_1.webp",
       "assets/img_pool/A BATHING APE/img_2.webp",
       "assets/img_pool/A BATHING APE/img_3.webp",
+      "assets/img_pool/A BATHING APE/img_4.webp",
+      "assets/img_pool/A BATHING APE/img_5.webp",
       "assets/img_pool/ACUPUNCTURE 1993/img_1.webp",
       "assets/img_pool/ACUPUNCTURE 1993/img_2.webp",
       "assets/img_pool/ACUPUNCTURE 1993/img_3.webp",
@@ -21,9 +23,6 @@
       "assets/img_pool/AMISH SUPPLIES/img_2.webp",
       "assets/img_pool/AMISH SUPPLIES/img_3.webp",
       "assets/img_pool/AMISH SUPPLIES/img_4.webp",
-      "assets/img_pool/ARIES/img_1.webp",
-      "assets/img_pool/ARIES/img_2.webp",
-      "assets/img_pool/ARIES/img_3.webp",
       "assets/img_pool/ARTE ANTWERP/img_1.webp",
       "assets/img_pool/ARTE ANTWERP/img_2.webp",
       "assets/img_pool/ARTE ANTWERP/img_3.webp",
@@ -35,6 +34,8 @@
       "assets/img_pool/CHAMPION PINNACLE/img_2.webp",
       "assets/img_pool/CHAMPION PINNACLE/img_3.webp",
       "assets/img_pool/CHAMPION PINNACLE/img_4.webp",
+      "assets/img_pool/CHAMPION PINNACLE/img_5.webp",
+      "assets/img_pool/CHAMPION PINNACLE/img_6.webp",
       "assets/img_pool/CIELE ATHLETICS/img_1.webp",
       "assets/img_pool/CIELE ATHLETICS/img_2.webp",
       "assets/img_pool/CIELE ATHLETICS/img_3.webp",
@@ -45,27 +46,27 @@
       "assets/img_pool/COTOPAXI/img_1.webp",
       "assets/img_pool/COTOPAXI/img_2.webp",
       "assets/img_pool/COTOPAXI/img_3.webp",
+      "assets/img_pool/COTOPAXI/img_4.webp",
       "assets/img_pool/CROCS EXP/img_1.webp",
       "assets/img_pool/CROCS EXP/img_2.webp",
       "assets/img_pool/CROCS EXP/img_3.png.webp",
+      "assets/img_pool/CROCS EXP/img_4.webp",
       "assets/img_pool/DAILY PAPER/img_1.webp",
       "assets/img_pool/DAILY PAPER/img_2.webp",
       "assets/img_pool/DAILY PAPER/img_3.webp",
       "assets/img_pool/DAILY PAPER/img_4.webp",
-      "assets/img_pool/EVISU/img_1.webp",
-      "assets/img_pool/EVISU/img_2.webp",
-      "assets/img_pool/EVISU/img_3.webp",
-      "assets/img_pool/EVISU/img_4.webp",
-      "assets/img_pool/EVISU/img_5.webp",
-      "assets/img_pool/GR10K/img_1.webp",
-      "assets/img_pool/GR10K/img_2.webp",
-      "assets/img_pool/GR10K/img_3.webp",
-      "assets/img_pool/GR10K/img_4.webp",
+      "assets/img_pool/DAMSON MADDER/img_1.webp",
+      "assets/img_pool/DAMSON MADDER/img_2.webp",
+      "assets/img_pool/DAMSON MADDER/img_3.webp",
+      "assets/img_pool/DAMSON MADDER/img_4.webp",
+      "assets/img_pool/DAMSON MADDER/img_5.webp",
       "assets/img_pool/HIKING PATROL/img_1.webp",
       "assets/img_pool/HIKING PATROL/img_2.webp",
       "assets/img_pool/HIKING PATROL/img_3.webp",
       "assets/img_pool/HIKING PATROL/img_4.webp",
       "assets/img_pool/HIKING PATROL/img_5.webp",
+      "assets/img_pool/HIKING PATROL/img_6.webp",
+      "assets/img_pool/HIKING PATROL/img_7.webp",
       "assets/img_pool/KAPPY/img_1.webp",
       "assets/img_pool/KAPPY/img_2.webp",
       "assets/img_pool/KAPPY/img_3.webp",
@@ -79,11 +80,12 @@
       "assets/img_pool/KEEN/img_6.webp",
       "assets/img_pool/KEEN/img_7.webp",
       "assets/img_pool/KEEN/img_8.webp",
-      "assets/img_pool/LEE 101/img_2.webp",
-      "assets/img_pool/LEE 101/img_3.webp",
       "assets/img_pool/LEVI'S/img_1.webp",
       "assets/img_pool/LEVI'S/img_2.webp",
       "assets/img_pool/LEVI'S/img_3.webp",
+      "assets/img_pool/LEVI'S/img_4.webp",
+      "assets/img_pool/LEVI'S/img_5.webp",
+      "assets/img_pool/LEVI'S/img_6.webp",
       "assets/img_pool/MONO/img_1.webp",
       "assets/img_pool/MONO/img_2.webp",
       "assets/img_pool/MONO/img_3.webp",
@@ -92,37 +94,31 @@
       "assets/img_pool/NEW AMSTERDAM SURF ASSOCIATION/img_3.webp",
       "assets/img_pool/NEW AMSTERDAM SURF ASSOCIATION/img_4.webp",
       "assets/img_pool/NEW AMSTERDAM SURF ASSOCIATION/img_5.webp",
-      "assets/img_pool/NO PROBLEMO/img_1.webp",
-      "assets/img_pool/NO PROBLEMO/img_2.webp",
-      "assets/img_pool/NO PROBLEMO/img_3.webp",
-      "assets/img_pool/NO PROBLEMO/img_4.webp",
-      "assets/img_pool/NO PROBLEMO/img_5.webp",
-      "assets/img_pool/NO PROBLEMO/img_6.webp",
       "assets/img_pool/NORDA/img_1.webp",
       "assets/img_pool/NORDA/img_2.webp",
       "assets/img_pool/NORDA/img_3.webp",
+      "assets/img_pool/NORDA/img_4.webp",
+      "assets/img_pool/NORDA/img_5.webp",
+      "assets/img_pool/NORDA/img_6.webp",
       "assets/img_pool/NORTHWAVE ESPRESSO/img_1.webp",
       "assets/img_pool/NORTHWAVE ESPRESSO/img_2.webp",
       "assets/img_pool/NORTHWAVE ESPRESSO/img_3.webp",
-      "assets/img_pool/PEACEMAKER OAMC/img_1.webp",
-      "assets/img_pool/PEACEMAKER OAMC/img_2.webp",
-      "assets/img_pool/PEACEMAKER OAMC/img_3.webp",
+      "assets/img_pool/OLAF/img_1.webp",
+      "assets/img_pool/OLAF/img_2.webp",
+      "assets/img_pool/OLAF/img_3.webp",
+      "assets/img_pool/OLAF/img_4.webp",
+      "assets/img_pool/OLAF/img_5.webp",
       "assets/img_pool/PRESIDENT'S/img_1.webp",
       "assets/img_pool/PRESIDENT'S/img_2.webp",
       "assets/img_pool/PRESIDENT'S/img_3.webp",
+      "assets/img_pool/PRESIDENT'S/img_4.webp",
+      "assets/img_pool/PRESIDENT'S/img_5.webp",
       "assets/img_pool/PURAAI/img_1.webp",
       "assets/img_pool/PURAAI/img_2.webp",
       "assets/img_pool/PURAAI/img_3.webp",
-      "assets/img_pool/PYRENEX/img_1.webp",
-      "assets/img_pool/PYRENEX/img_2.webp",
-      "assets/img_pool/PYRENEX/img_3.webp",
-      "assets/img_pool/PYRENEX/img_4.webp",
-      "assets/img_pool/REEBOK/img_1.webp",
-      "assets/img_pool/REEBOK/img_2.webp",
-      "assets/img_pool/REEBOK/img_3.webp",
-      "assets/img_pool/REPLICATED GR10K/img_1.webp",
-      "assets/img_pool/REPLICATED GR10K/img_2.webp",
-      "assets/img_pool/REPLICATED GR10K/img_3.webp",
+      "assets/img_pool/PURAAI/img_4.webp",
+      "assets/img_pool/PURAAI/img_5.webp",
+      "assets/img_pool/PURAAI/img_6.webp",
       "assets/img_pool/RHIZOME/img_1.webp",
       "assets/img_pool/RHIZOME/img_2.webp",
       "assets/img_pool/RHIZOME/img_3.webp",
@@ -131,6 +127,10 @@
       "assets/img_pool/SAMSØE SAMSØE/img_1.webp",
       "assets/img_pool/SAMSØE SAMSØE/img_2.webp",
       "assets/img_pool/SAMSØE SAMSØE/img_3.webp",
+      "assets/img_pool/SAMSØE SAMSØE/img_4.webp",
+      "assets/img_pool/SAMSØE SAMSØE/img_5.webp",
+      "assets/img_pool/SAMSØE SAMSØE/img_6.webp",
+      "assets/img_pool/SAMSØE SAMSØE/img_7.webp",
       "assets/img_pool/SANTHA/img_1.webp",
       "assets/img_pool/SANTHA/img_2.webp",
       "assets/img_pool/SANTHA/img_3.webp",
@@ -142,6 +142,53 @@
       "assets/img_pool/SESSÙN/img_2.webp",
       "assets/img_pool/SESSÙN/img_3.webp",
       "assets/img_pool/SESSÙN/img_4.webp",
+      "assets/img_pool/Sept/1.webp",
+      "assets/img_pool/Sept/2.webp",
+      "assets/img_pool/Sept/A_Industries_1.webp",
+      "assets/img_pool/Sept/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright-2.webp",
+      "assets/img_pool/Sept/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright.webp",
+      "assets/img_pool/Sept/SnapInsta.to_330842960_195784483062928_1578246530559252716_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_346457565_562529522672731_5096596684176781966_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_420397953_717469730548917_2668765958583405295_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_427971984_686879213607969_8105612858602778323_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_430678865_698103682485522_8202629281121172911_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_430685671_698103925818831_2795973431690963513_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_434850167_717469820548908_398094931633592701_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_435658579_717469673882256_4778751413293467465_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_438169272_741524314810125_6145839405794960553_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_444784474_741525484810008_106472029674632954_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_448687580_758647679764455_615625312844814819_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_448755240_758647583097798_5379362336099471996_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_448760683_758647489764474_6530621644367498186_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_448796172_758647163097840_93102257879780321_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_4613343987_818306570465232_6926685773531405993_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_468043301_861320709497151_4100290394733275452_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_468301770_861322466163642_72289700985612363_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_468313693_861322792830276_5069859952554229913_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_468361387_861321889497033_1894285137542967504_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_473226376_890979739864581_2838419973582499864_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_480941776_936798545282700_880710541348340531_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_597552009_1140007161628503_5729618353512338259_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_599172435_1141529151476304_7726711735671877785_n.webp",
+      "assets/img_pool/Sept/SnapInsta.to_622454035_18098022472728981_4810470149169620197_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_712227571_18099050669173192_3109767083489245341_n.webp",
+      "assets/img_pool/Sept/Vibram_1.webp",
+      "assets/img_pool/Sept/sept_1110_1.webp",
+      "assets/img_pool/Sept/sept_1110_2.webp",
+      "assets/img_pool/Sept/sept_1110_3.webp",
+      "assets/img_pool/Sept/sept_1110_4.webp",
+      "assets/img_pool/Sept/sept_1110_5.webp",
+      "assets/img_pool/Sept/sept_1110_6.webp",
+      "assets/img_pool/Sept/sept_514253912.webp",
+      "assets/img_pool/Sept/sept_623386747.webp",
+      "assets/img_pool/Sept/sept_728861378.webp",
+      "assets/img_pool/Sept/sept_729629356.webp",
+      "assets/img_pool/Sept/sept_730275153.webp",
+      "assets/img_pool/Sept/sept_733019708.webp",
+      "assets/img_pool/Sept/sept_753267551.webp",
+      "assets/img_pool/Sept/sept_753471567.webp",
+      "assets/img_pool/Sept/sept_753707197.webp",
+      "assets/img_pool/Sept/sept_753741889.webp",
       "assets/img_pool/TEVA/img_1.webp",
       "assets/img_pool/TEVA/img_2.webp",
       "assets/img_pool/TEVA/img_3.webp",
@@ -152,54 +199,7 @@
       "assets/img_pool/THE SKATEROOM/img_3.webp",
       "assets/img_pool/THE SKATEROOM/img_4.webp",
       "assets/img_pool/THE SKATEROOM/img_5.webp",
-      "assets/img_pool/THE SKATEROOM/img_6.webp",
-      "assets/img_pool/WRANGLER/img_1.webp",
-      "assets/img_pool/WRANGLER/img_2.webp",
-      "assets/img_pool/WRANGLER/img_3.webp",
-      "assets/img_pool/XLARGE/img_1.webp",
-      "assets/img_pool/XLARGE/img_2.webp",
-      "assets/img_pool/XLARGE/img_3.webp",
-      "assets/img_pool/sept_images/1.webp",
-      "assets/img_pool/sept_images/2.webp",
-      "assets/img_pool/sept_images/A_Industries_1.webp",
-      "assets/img_pool/sept_images/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright-2.webp",
-      "assets/img_pool/sept_images/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_330842960_195784483062928_1578246530559252716_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_346457565_562529522672731_5096596684176781966_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_420397953_717469730548917_2668765958583405295_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_427971984_686879213607969_8105612858602778323_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_430678865_698103682485522_8202629281121172911_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_430685671_698103925818831_2795973431690963513_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_434850167_717469820548908_398094931633592701_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_435658579_717469673882256_4778751413293467465_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_438169272_741524314810125_6145839405794960553_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_444784474_741525484810008_106472029674632954_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_448687580_758647679764455_615625312844814819_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_448755240_758647583097798_5379362336099471996_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_448760683_758647489764474_6530621644367498186_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_448796172_758647163097840_93102257879780321_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_4613343987_818306570465232_6926685773531405993_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_468043301_861320709497151_4100290394733275452_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_468301770_861322466163642_72289700985612363_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_468313693_861322792830276_5069859952554229913_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_468361387_861321889497033_1894285137542967504_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_473226376_890979739864581_2838419973582499864_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_480941776_936798545282700_880710541348340531_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_597552009_1140007161628503_5729618353512338259_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_599172435_1141529151476304_7726711735671877785_n.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_622454035_18098022472728981_4810470149169620197_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_712227571_18099050669173192_3109767083489245341_n.webp",
-      "assets/img_pool/sept_images/Vibram_1.webp",
-      "assets/img_pool/sept_images/sept_514253912.webp",
-      "assets/img_pool/sept_images/sept_623386747.webp",
-      "assets/img_pool/sept_images/sept_728861378.webp",
-      "assets/img_pool/sept_images/sept_729629356.webp",
-      "assets/img_pool/sept_images/sept_730275153.webp",
-      "assets/img_pool/sept_images/sept_733019708.webp",
-      "assets/img_pool/sept_images/sept_753267551.webp",
-      "assets/img_pool/sept_images/sept_753471567.webp",
-      "assets/img_pool/sept_images/sept_753707197.webp",
-      "assets/img_pool/sept_images/sept_753741889.webp"
+      "assets/img_pool/THE SKATEROOM/img_6.webp"
     ];
 
     // Immagini senza sfondo (webp con canale alpha). Rigenerato da build_pool.py.
@@ -208,27 +208,33 @@
       "assets/img_pool/A BATHING APE/img_1.webp",
       "assets/img_pool/ALPHA INDUSTRIES/images-30.webp",
       "assets/img_pool/AMISH SUPPLIES/img_2.webp",
+      "assets/img_pool/COTOPAXI/img_4.webp",
+      "assets/img_pool/HIKING PATROL/img_6.webp",
       "assets/img_pool/KAPPY/img_1.webp",
       "assets/img_pool/KAPPY/img_2.webp",
+      "assets/img_pool/LEVI'S/img_6.webp",
       "assets/img_pool/NORDA/img_1.webp",
-      "assets/img_pool/PYRENEX/img_1.webp",
+      "assets/img_pool/PURAAI/img_4.webp",
       "assets/img_pool/RHIZOME/img_1.webp",
       "assets/img_pool/SESSÙN/img_1.webp",
       "assets/img_pool/SESSÙN/img_2.webp",
-      "assets/img_pool/sept_images/2.webp",
-      "assets/img_pool/sept_images/A_Industries_1.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_346457565_562529522672731_5096596684176781966_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_420397953_717469730548917_2668765958583405295_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_427971984_686879213607969_8105612858602778323_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_435658579_717469673882256_4778751413293467465_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_4613343987_818306570465232_6926685773531405993_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_480941776_936798545282700_880710541348340531_n copia.webp",
-      "assets/img_pool/sept_images/SnapInsta.to_622454035_18098022472728981_4810470149169620197_n copia.webp",
-      "assets/img_pool/sept_images/Vibram_1.webp",
-      "assets/img_pool/sept_images/sept_514253912.webp",
-      "assets/img_pool/sept_images/sept_623386747.webp",
-      "assets/img_pool/sept_images/sept_728861378.webp",
-      "assets/img_pool/sept_images/sept_753741889.webp"
+      "assets/img_pool/Sept/2.webp",
+      "assets/img_pool/Sept/A_Industries_1.webp",
+      "assets/img_pool/Sept/SnapInsta.to_346457565_562529522672731_5096596684176781966_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_420397953_717469730548917_2668765958583405295_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_427971984_686879213607969_8105612858602778323_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_435658579_717469673882256_4778751413293467465_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_4613343987_818306570465232_6926685773531405993_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_480941776_936798545282700_880710541348340531_n copia.webp",
+      "assets/img_pool/Sept/SnapInsta.to_622454035_18098022472728981_4810470149169620197_n copia.webp",
+      "assets/img_pool/Sept/Vibram_1.webp",
+      "assets/img_pool/Sept/sept_1110_2.webp",
+      "assets/img_pool/Sept/sept_1110_4.webp",
+      "assets/img_pool/Sept/sept_1110_5.webp",
+      "assets/img_pool/Sept/sept_514253912.webp",
+      "assets/img_pool/Sept/sept_623386747.webp",
+      "assets/img_pool/Sept/sept_728861378.webp",
+      "assets/img_pool/Sept/sept_753741889.webp"
     ]);
     const NOBG_MUL = 1.35;   // quanto piu' grandi le immagini senza sfondo (1 = uguali)
 
@@ -429,7 +435,7 @@
 
     // Su touch non esiste hover: in zoom si mostra il brand dell'immagine piu' vicina al centro
     // del viewport, aggiornato mentre si panna. Su desktop non fa nulla (li' comanda l'hover).
-    // Si saltano le tile senza brand (cartella sept_images): bastava una di quelle al centro
+    // Si saltano le tile senza brand (cartella Sept, ex sept_images): bastava una di quelle al centro
     // per far sparire l'etichetta, e sembrava che avesse smesso di funzionare.
     const IS_TOUCH = window.matchMedia('(hover: none)').matches;
     let centerBrandItem = null;
@@ -547,8 +553,8 @@
           nudge: { x: 0, y: 0 },           // spinta dei vicini all'hover
           anim:  { s: 1, o: 0 },           // scala e opacita' (entry, breathing, hover)
           vx: 0, vy: 0,                    // vibrazione
-          // la cartella e' il nome del brand; `sept_images` e' materiale di casa, non un brand
-          brand: (function(f) { return f === 'sept_images' ? '' : (f || ''); })(srcs[n].split('/').slice(-2)[0]),
+          // la cartella e' il nome del brand; `Sept` (ex sept_images, rinominata 11.10.26) e' materiale di casa, non un brand
+          brand: (function(f) { return f === 'Sept' ? '' : (f || ''); })(srcs[n].split('/').slice(-2)[0]),
           vibFx: 0.6 + Math.random() * 1.4, vibFy: 0.6 + Math.random() * 1.4,
           vibPx: Math.random() * Math.PI * 2, vibPy: Math.random() * Math.PI * 2,
           vibAm: 0.7 + Math.random() * 0.6,
@@ -595,7 +601,7 @@
         const ddx = it.x - HALF_W, ddy = it.y - HALF_H;
         const dist = Math.sqrt(ddx * ddx + ddy * ddy);
         const outsideFirst = 1 - dist / MAX_DIST;
-        const delay = outsideFirst * CFG.entrySpread + Math.random() * CFG.entryRand;
+        const delay = (outsideFirst * CFG.entrySpread + Math.random() * CFG.entryRand) * LENTO;
         const baseAng = Math.atan2(ddy, ddx);
         const ang = baseAng + (Math.random() - 0.5) * Math.PI;
         const d = CFG.flyDist * (0.5 + Math.random() * 0.8);
@@ -603,10 +609,10 @@
         // e' un oggetto di numeri letto dal renderer invece di un nodo SVG.
         gsap.fromTo(it.fly,
           { x: Math.cos(ang) * d, y: Math.sin(ang) * d, rot: Math.random() * 60 - 30 },
-          { x: 0, y: 0, rot: 0, duration: CFG.entryDur, delay, ease: EASE, overwrite: 'auto' });
+          { x: 0, y: 0, rot: 0, duration: CFG.entryDur * LENTO, delay, ease: EASE, overwrite: 'auto' });
         gsap.fromTo(it.anim,
           { s: 0.2, o: 0 },
-          { s: 1, o: 1, duration: CFG.entryDur, delay, ease: EASE, overwrite: 'auto' });
+          { s: 1, o: 1, duration: CFG.entryDur * LENTO, delay, ease: EASE, overwrite: 'auto' });
       }
     }
 
@@ -934,6 +940,10 @@
     // misura del simbolo durante la schermata, rispetto a quella finale del collage: 489 px su 784
     // nel Figma a 1502x864
     const SIMBOLO_INTRO = 0.62;
+    // (09.10.26 Roberto: "rallenta un po' tutta l'animazione, che si legga meglio") tutte le durate,
+    // i ritardi e gli stagger dell'apertura (schermata, fase 2, entrata delle tile) sono moltiplicati
+    // per LENTO. 1 = la versione del 23.09.
+    const LENTO = 1.35;
     const INTRO_SOSTA = 0.15;  // (23.09.26 "pause molto piu' brevi": era 1.2, poi 0.6)
     function introApertura() {
       const intro = document.getElementById('intro');
@@ -954,7 +964,7 @@
             return sp.lines;
           }));
           const logo = q('.intro-logo');
-          const su   = { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' };
+          const su   = { opacity: 1, y: 0, duration: 0.35 * LENTO, ease: 'power2.out' };
           gsap.set([...logo, ...righe], { opacity: 0, y: 10 });
           // IL SIMBOLO CRESCE SOTTO LE SCRITTE (versione 2, Figma "MacBook Pro 14_ - 15"): la
           // schermata e' trasparente e il canvas della home, dietro, disegna il simbolo #7243BD fino
@@ -963,18 +973,18 @@
           cvs.style.opacity = '1';   // l'SVG resta trasparente: e' solo lo strato eventi
           startVibration();
           gsap.timeline()
-            .fromTo(logoPace, { s: 0.15 }, { s: SIMBOLO_INTRO, duration: 0.9, ease: 'expo.out' })
-            .fromTo(logoPace, { a: 0 }, { a: 1, duration: 0.4, ease: 'power1.out' }, '<')
-            .fromTo(logoPace, { i: 0 }, { i: 1, duration: 0.4, ease: 'power1.out' }, 0.35);
+            .fromTo(logoPace, { s: 0.15 }, { s: SIMBOLO_INTRO, duration: 0.9 * LENTO, ease: 'expo.out' })
+            .fromTo(logoPace, { a: 0 }, { a: 1, duration: 0.4 * LENTO, ease: 'power1.out' }, '<')
+            .fromTo(logoPace, { i: 0 }, { i: 1, duration: 0.4 * LENTO, ease: 'power1.out' }, 0.35 * LENTO);
           // uscita: come l'entrata ma verso l'ALTO (Roberto 23.09.26): .sept e poi le righe salgono
           // di 10 px sparendo, in sequenza. La chiama avviaHome.
           introEsci = () => gsap.timeline()
-            .to(logo,  { opacity: 0, y: -10, duration: 0.3, ease: 'power2.in' })
-            .to(righe, { opacity: 0, y: -10, duration: 0.3, ease: 'power2.in', stagger: 0.04 }, '-=0.22');
-          gsap.timeline({ onComplete: resolve, delay: 0.15 })
+            .to(logo,  { opacity: 0, y: -10, duration: 0.3 * LENTO, ease: 'power2.in' })
+            .to(righe, { opacity: 0, y: -10, duration: 0.3 * LENTO, ease: 'power2.in', stagger: 0.04 * LENTO }, '-=' + 0.22 * LENTO);
+          gsap.timeline({ onComplete: resolve, delay: 0.15 * LENTO })
             .to(logo, su)
-            .to(righe, { ...su, stagger: 0.04 }, '-=0.2')
-            .to({}, { duration: INTRO_SOSTA });
+            .to(righe, { ...su, stagger: 0.04 * LENTO }, '-=' + 0.2 * LENTO)
+            .to({}, { duration: INTRO_SOSTA * LENTO });
         }
         // il font arriva dopo il primo layout: si aspetta (al massimo 1 s) per spezzare le righe giuste
         const font = document.fonts && document.fonts.ready
@@ -992,7 +1002,7 @@
       // se la schermata e' ancora in corso: nei primi ENTRATA_ANTICIPO s le tile sono trasparenti.
       // La fase 2 parte quando ci sono ENTRAMBE: schermata finita e anticipo trascorso.
       avviaHome();
-      const anticipo = new Promise(r => gsap.delayedCall(ENTRATA_ANTICIPO, r));
+      const anticipo = new Promise(r => gsap.delayedCall(ENTRATA_ANTICIPO * LENTO, r));
       Promise.all([introFatta, anticipo]).then(faseDue);
     }
     // Le tile entrano come sempre (playEntry), ma con expo.inOut restano quasi trasparenti per
@@ -1008,22 +1018,22 @@
       playEntry();
       if (!breathingStarted) {
         breathingStarted = true;
-        setTimeout(startBreathing, 3200 + ENTRATA_ANTICIPO * 1000);   // dopo l'entrata delle tile
+        setTimeout(startBreathing, (3200 + ENTRATA_ANTICIPO * 1000) * LENTO);   // dopo l'entrata delle tile
       }
     }
     // FASE 2: le scritte escono salendo, i simbolini sfumano, il simbolo cresce fino alla forma del
     // collage mentre le tile iniziano a vedersi, poi il simbolo sfuma
     function faseDue() {
       document.body.classList.add('preloaded');   // CSS: ricompaiono menu e logo laterali
-      const uscita = introEsci ? introEsci() : gsap.to(preloader, { opacity: 0, duration: 0.35 });
+      const uscita = introEsci ? introEsci() : gsap.to(preloader, { opacity: 0, duration: 0.35 * LENTO });
       gsap.to('#preload-pct', { opacity: 0, duration: 0.2 });
       uscita.eventCallback('onComplete', () => { preloader.remove(); });
-      gsap.to(logoPace, { i: 0, duration: 0.3, ease: 'power1.in' });
+      gsap.to(logoPace, { i: 0, duration: 0.3 * LENTO, ease: 'power1.in' });
       // "piu' fluido": expo.out fa quasi tutta la crescita nei primi ~0.25 s e poi si posa morbida.
       // Provate e scartate: 0.9 s power2.inOut, 0.5 s e 0.3 s power1.inOut ("quad": a scatto).
-      gsap.to(logoPace, { s: 1, duration: 0.9, ease: 'expo.out' });
+      gsap.to(logoPace, { s: 1, duration: 0.9 * LENTO, ease: 'expo.out' });
       // il simbolo sparisce mentre le immagini arrivano
-      gsap.to(logoPace, { a: 0, duration: 1.2, ease: 'power1.inOut', delay: 0.3, overwrite: 'auto' });
+      gsap.to(logoPace, { a: 0, duration: 1.2 * LENTO, ease: 'power1.inOut', delay: 0.3 * LENTO, overwrite: 'auto' });
     }
 
     // Precarica esattamente le immagini che finiscono nel collage, prese da `items`
@@ -1086,11 +1096,7 @@
       if (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) return;
 
       const later = [];
-      // 1. card dei brand (3.1 MB in tutto dopo shrink_images.py): sono le prime che incontri
-      const brandFolders = window.__septBrandFolders || [];
-      for (let i = 0; i < brandFolders.length; i++) {
-        later.push('assets/brands_img/' + encodeURIComponent(brandFolders[i]) + '/img_1.webp');
-      }
+      // 1. (tolto 09.10.26) le card dei brand: la pagina Brands ora e' solo nomi, senza immagini
       // 2. immagini delle altre pagine (strip Space, About, cover di Organic Noise). (23.09.26) Prima
       //    si leggevano dal DOM, quando tutte le sezioni stavano qui; ora sono in altre pagine,
       //    quindi si scarica il loro HTML e se ne leggono le <img>: nessuna lista da tenere a mano.

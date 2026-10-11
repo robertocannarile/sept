@@ -77,6 +77,10 @@
       let USCITA   = leggi('aboutuscita', -0.2);   // negativo = la strip e' gia' in parte sopra il bordo
       let PARTENZA = leggi('aboutpartenza', 0.45);
       let travelX = 0, stripX = 0, attiva = false, inizio = 0, fine = 1;
+      // (11.10.26 Roberto) la strip si puo' anche TRASCINARE col dito: `mano` e' lo spostamento
+      // manuale, sommato a quello dato dallo scroll della pagina (che continua a funzionare);
+      // il totale resta fra la prima e l'ultima immagine.
+      let mano = 0;
 
       function misura() {
         if (!attiva) return;
@@ -107,7 +111,8 @@
         const corsa = fine - inizio;
         if (corsa <= 0) return;
         const progress = Math.max(0, Math.min(1, (appEl.scrollTop - inizio) / corsa));
-        const nuovoX = -travelX * progress;
+        const nuovoX = Math.max(-travelX, Math.min(0, -travelX * progress + mano));
+        mano = nuovoX + travelX * progress;   // ai bordi il trascinamento non si accumula oltre
         // due fasi come in updateSpace: prima tutte le letture, poi tutte le scritture,
         // altrimenti ogni immagine costa un reflow sincrono per frame
         const vw = window.innerWidth;
@@ -129,9 +134,9 @@
       }
 
       function spegni() {
-        if (!attiva) return;
+        if (!attiva) { images.style.transform = ''; return; }
         attiva = false;
-        window.__septAboutStrip = false;
+        mano = 0;
         // si rimette tutto com'era, o tornando al desktop restano appiccicati i transform
         images.style.transform = '';
         stripX = 0;
@@ -143,7 +148,14 @@
         applyAboutParallax();
       }
 
-      function applica() { mq.matches ? accendi() : spegni(); }
+      // (11.10.26 Roberto: "anche da mobile scrollino in automatico e infinite come in desktop") la
+      // strip legata allo scroll della pagina NON si accende piu': su telefono le immagini sono un
+      // nastro automatico orizzontale (nastroAbout, sotto). Resta solo il flag che tiene ferma la
+      // parallasse verticale sotto i 768. accendi/misura/aggiorna restano per memoria.
+      function applica() {
+        spegni();
+        window.__septAboutStrip = mq.matches;
+      }
 
       applica();
       if (mq.addEventListener) mq.addEventListener('change', applica);
@@ -170,12 +182,16 @@
   // giro. La parallasse dentro le cornici resta: applyAboutParallax legge le posizioni vere.
   // Sotto i 769 px il nastro si smonta (le cornici tornano nella strip orizzontale del telefono,
   // che ha la sua meccanica in aboutModes).
+  // (11.10.26 Roberto) il nastro gira su TUTTE le misure: verticale da 769 px in su (colonna a
+  // destra), ORIZZONTALE sul telefono (prima li' la strip si muoveva con lo scroll della pagina).
+  // Sul telefono si trascina col dito; su desktop la rotella lo sposta. Non si ferma mai da solo.
   (function nastroAbout() {
     const colonna = document.querySelector('#about .about-images');
     if (!colonna) return;
-    const mq = window.matchMedia('(min-width: 769px)');
+    const telefono = window.matchMedia('(max-width: 768px)');
     const VELOCITA = 30;   // px al secondo
     const COPIE = 3;
+    const PARTENZA_TELEFONO = 16;   // all'apertura la prima immagine sta a 16 px dal bordo, come il testo
     let nastro = null, originali = [], pos = 0, giro = 0, tPrima = 0, attivo = false;
 
     function rileggiImmagini() {
@@ -185,8 +201,9 @@
     function misura() {
       if (!nastro) return;
       const prime = nastro.querySelectorAll('.about-parallax-frame');
-      // distanza fra la 1a cornice del primo giro e la 1a della copia = altezza di un giro
-      giro = prime[originali.length] ? prime[originali.length].offsetTop - prime[0].offsetTop : 0;
+      const k = prime[originali.length];
+      // distanza fra la 1a cornice del primo giro e la 1a della copia = un giro
+      giro = !k ? 0 : telefono.matches ? k.offsetLeft - prime[0].offsetLeft : k.offsetTop - prime[0].offsetTop;
     }
     function monta() {
       if (nastro) return;
@@ -204,25 +221,52 @@
       misura();
       if (!attivo) { attivo = true; tPrima = 0; requestAnimationFrame(passo); }
     }
-    function smonta() {
-      if (!nastro) return;
-      attivo = false;
-      originali.forEach(f => colonna.appendChild(f));
-      nastro.remove();
-      nastro = null;
-      rileggiImmagini();
-    }
     function passo(t) {
       if (!attivo) return;
-      if (tPrima) pos += VELOCITA * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
+      if (tPrima && !tocco) pos += VELOCITA * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
       tPrima = t;
-      if (giro) nastro.style.transform = `translate3d(0, ${-(pos % giro)}px, 0)`;
-      applyAboutParallax();
+      if (giro) {
+        const x = ((pos % giro) + giro) % giro;   // anche con pos negativo (rotella in su, dito a destra)
+        nastro.style.transform = telefono.matches ? `translate3d(${-x}px, 0, 0)` : `translate3d(0, ${-x}px, 0)`;
+      }
+      applyAboutParallax();   // sotto i 768 esce subito (flag __septAboutStrip)
       requestAnimationFrame(passo);
     }
-    function applica() { mq.matches ? monta() : smonta(); }
-    applica();
-    if (mq.addEventListener) mq.addEventListener('change', applica); else mq.addListener(applica);
+    // (11.10.26 Roberto, come il nastro di Space) rotella/trackpad sopra le immagini: sposta il
+    // nastro mentre continua a scorrere da solo.
+    colonna.setAttribute('data-lenis-prevent', '');
+    colonna.addEventListener('wheel', e => {
+      if (!nastro) return;
+      e.preventDefault();
+      const k = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;   // righe/pagine → px
+      pos += (Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX) * k;
+    }, { passive: false });
+    // dito (telefono): trascinamento orizzontale, il verticale resta alla pagina; al rilascio riparte
+    colonna.style.touchAction = 'pan-y';
+    let tocco = null;
+    colonna.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' || !telefono.matches) return;
+      tocco = { x: e.clientX, y: e.clientY, pos, oriz: null };
+    });
+    window.addEventListener('pointermove', e => {
+      if (!tocco) return;
+      const dx = e.clientX - tocco.x, dy = e.clientY - tocco.y;
+      if (tocco.oriz === null && Math.abs(dx) + Math.abs(dy) > 6) tocco.oriz = Math.abs(dx) > Math.abs(dy);
+      if (tocco.oriz) pos = tocco.pos - dx;
+    });
+    const lascia = () => { tocco = null; };
+    window.addEventListener('pointerup', lascia);
+    window.addEventListener('pointercancel', lascia);
+
+    function cambio() {
+      pos = telefono.matches ? -PARTENZA_TELEFONO : 0;
+      nastro && (nastro.style.transform = '');
+      aboutParallaxImgs.forEach(im => { im.style.transform = ''; });
+      misura();
+    }
+    monta();
+    cambio();
+    if (telefono.addEventListener) telefono.addEventListener('change', cambio); else telefono.addListener(cambio);
     window.addEventListener('resize', misura);
     window.addEventListener('load', misura);
     colonna.querySelectorAll('img').forEach(im => { if (!im.complete) im.addEventListener('load', misura, { once: true }); });

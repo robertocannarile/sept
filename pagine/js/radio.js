@@ -125,6 +125,32 @@
     gsap.set('.radio-controls button', { z: 200 });
     updateCaption();
 
+    // ── ENTRATA all'apertura (11.10.2026, Roberto: "animazioni come le altre, anche le immagini
+    // che compaiono dal basso"; poi "funziona male, salgano tutte insieme contemporaneamente") ──
+    // Le copertine visibili salgono dal basso TUTTE INSIEME; poi titolo e frecce come i testi del
+    // sito (y 10 → 0, 0.5 s). Si sposta il `.radio-box` intero con `y` (il coverflow R_LOOP usa
+    // xPercent/yPercent/rotateY/z/scale/opacity, mai `y`: GSAP li compone), cosi' il riflesso
+    // (-webkit-box-reflect) segue la copertina. ⚠️ Prima si animava l'<img> dentro il box e il
+    // riflesso si muoveva al contrario. La dissolvenza e' sull'<img> (opacita' sul box la gestisce
+    // R_LOOP; sul contenitore appiattirebbe il 3D). "Our Radio" entra gia' con testo.js.
+    (function entrataRadio() {
+      const boxes = R_BOXES.filter(b => +gsap.getProperty(b, 'opacity') > 0.05);
+      const imgs  = boxes.map(b => b.querySelector('img'));
+      const testi = [document.querySelector('.radio-caption .r-title'), ...document.querySelectorAll('.radio-controls button')];
+      gsap.set(boxes, { y: 80 });
+      gsap.set(imgs,  { opacity: 0 });
+      gsap.set(testi, { opacity: 0, y: 10 });
+      const pronte = imgs.map(im => im.complete ? Promise.resolve() : new Promise(ok => {
+        im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
+      }));
+      Promise.race([Promise.all(pronte), new Promise(ok => setTimeout(ok, 1500))]).then(() => {
+        gsap.timeline()
+          .to(boxes, { y: 0, duration: 0.9, ease: 'power3.out' })
+          .to(imgs,  { opacity: 1, duration: 0.6, ease: 'power2.out', clearProps: 'opacity' }, 0)
+          .to(testi, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.06 }, 0.35);   // niente clearProps: le frecce hanno z: 200 da GSAP
+      });
+    })();
+
     Draggable.create('.drag-proxy-radio', {
       type: 'x',
       trigger: '.radio-boxes',

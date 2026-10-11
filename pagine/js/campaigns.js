@@ -160,3 +160,25 @@
   // Initial height placeholder so page doesn't collapse before images load
   campWrapper.style.height = (window.innerHeight * 2) + 'px';
   renderCampaign(0);
+
+  // ── ENTRATA all'apertura (11.10.2026, Roberto: "animazioni come le altre, anche le immagini che
+  // compaiono dal basso") ── una volta sola, non ai cambi campagna (li' c'e' gia' lo slide).
+  // Le immagini salgono dal basso comparendo, una dopo l'altra; poi la didascalia riga per riga,
+  // con la stessa entrata dei testi del sito (testo.js: y 10 → 0, 0.5 s power2.out, sfasate 0.06).
+  // Si anima l'<img> e lo <span>, NON i contenitori: il loro transform lo scrive updateCampaign.
+  // La didascalia non passa da testo.js perche' SplitType ne fondeva gli <span> (16.09.26).
+  (function entrataCampaigns() {
+    const imgs  = [...campScrollable.querySelectorAll('img')];
+    const righe = [...campCaption.querySelectorAll('span:not(.camp-gap)')];
+    gsap.set(imgs,  { opacity: 0, y: 80 });
+    gsap.set(righe, { opacity: 0, y: 10 });
+    const pronte = imgs.map(im => im.complete ? Promise.resolve() : new Promise(ok => {
+      im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
+    }));
+    const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
+    Promise.race([Promise.all(pronte), attesa]).then(() => {
+      gsap.timeline()
+        .to(imgs,  { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.15, clearProps: 'transform,opacity' })
+        .to(righe, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.06, clearProps: 'transform,opacity' }, 0.3);
+    });
+  })();

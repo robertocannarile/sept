@@ -10,6 +10,14 @@
     /* ── TYPE SCALE ─────────────────────────────────
        3 breakpoints — mobile / tablet / desktop      */
     html { font-size: clamp(10px, 1.25vw, 16px); }
+    /* (11.10.26 Roberto) oltre il MacBook 14" (1512 px di larghezza) il testo NON si ferma a 16 px:
+       cresce in proporzione alla finestra, come colonne e immagini (misurate in vw), cosi' le
+       proporzioni testo/spazi restano quelle del 14". 1.0582vw = 16 px esatti a 1512 → nessuno
+       scatto. Vale per tutto cio' che e' in rem. ❌ Provato `zoom` sulla pagina: le misure in vw/vh
+       venivano ingrandite anch'esse (a 1920 un elemento largo 100vw diventava 2438 px). */
+    @media (min-width: 1513px) {
+      html { font-size: 1.0582vw; }
+    }
 
     .t-48 {
       font-family: 'SharpGrotesk', sans-serif;
@@ -530,13 +538,17 @@
        di -8°, ed entra con lo schiaffo (JS: `schiaffoAdesivo`). La rotazione vive qui nel CSS: GSAP
        anima e a fine corsa toglie i suoi transform (clearProps).
        margin-top: ruotato, l'angolo destro sale di ~25-30 px e toccava cio' che sta sopra. */
-    .space-text-side { transform: rotate(-8deg); transform-origin: 50% 50%; margin-top: 1.2em; }
+    /* (11.10.26 Roberto) DRITTO: tolta la rotazione di -8° e lo schiaffo d'entrata (ora entra a
+       righe come gli altri testi, testo.js). margin-top 1.2em tolto (serviva all'angolo ruotato): affiancato al
+       testo principale parte alla sua stessa altezza; su telefono, dove sta sotto, una riga vuota. */
+    .space-text-side { margin-top: 0; }
+    @media (max-width: 768px) {
+      .space-text-side { margin-top: 1.1em; }
+    }
     /* il testo di Space sborda sotto la sezione: con lo z-index resta visibile sopra lo stacco nero
        verso Campaigns invece di esserne coperto a meta' */
     #space-scroll-wrapper { position: relative; z-index: 2; }
-    @media (max-width: 768px) {
-      .space-text-side { margin-top: 1.6em; }
-    }
+
 
     /* ── CONTACT ────────────────────────────────────── */
     #contact {
@@ -790,7 +802,7 @@
     #home-bg-gradient {
       position: absolute;
       inset: 0;
-      background: #6A00FF;                /* viola solido, nessun gradiente/bianco */
+      background: var(--sfondo);          /* (11.10.26 Roberto) lo stesso viola della home fuori zoom; era #6A00FF */
       opacity: 0;
       transition: opacity 2s ease;        /* fade lento viola <-> nero */
       pointer-events: none;
@@ -1505,31 +1517,26 @@
       .contact-top p,
       .contact-top a { font-size: 1.75rem; }
 
-      /* "Our Family" + gif SOTTO il testo, a tutta colonna (richiesta Roberto 16.09.26).
-         La gif esce dalla strip: li' la sua frame (l'ultima) si nasconde. */
-      .about-images .about-parallax-frame:last-child { display: none; }
-      .about-family-mobile {
-        order: 4;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;                   /* come fra "Our Story" e la prima frase */
-        padding: 24px 16px 48px;
-      }
-      .about-family-mobile img {
-        display: block;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-      }
+      /* (11.10.26 Roberto) la gif torna NELLA STRIP con le altre, come su desktop: via il blocco
+         "Our Family" + gif sotto il testo (16.09.26). Il blocco resta nell'HTML, nascosto. */
+      .about-family-mobile { display: none; }
 
-      /* strip orizzontale: stessa meccanica di .space-strip */
+      /* (11.10.26) NASTRO AUTOMATICO ORIZZONTALE (about.js, nastroAbout): .about-images fa da finestra
+         larga tutto lo schermo, dentro scorre .about-nastro in riga (cornici + 2 copie). Prima era una
+         strip larga quanto le immagini mossa dallo scroll della pagina. */
       .about-images {
         order: 2;
+        display: block;
+        padding: 8px 0 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      .about-nastro {
+        position: relative;          /* offsetParent delle cornici: serve a misurare il giro */
+        display: flex;
         flex-direction: row;
-        align-items: stretch;
         gap: 8px;
-        padding: 8px 16px 0;
-        width: max-content;         /* larghezza = somma delle frame: e' cio' che scorre */
+        width: max-content;
         will-change: transform;
       }
       .about-parallax-frame {
@@ -1691,6 +1698,124 @@
     }
     .brands-nastro .brands-text { margin: 0; }
 
+    /* ══ BRANDS SOLO NOMI (09.10.2026, Roberto) ═══════════════════════════════════════
+       Supera il NASTRO qui sopra: niente immagini dietro, niente scorrimento. I nomi stanno uno
+       accanto all'altro, centrati, tutti bianchi, in uno schermo solo (screenshot di Roberto).
+       Ogni nome e' inline-block: non si spezza fra due righe, e testo.js lo fa entrare come una
+       riga sola. La misura scala con larghezza E altezza, cosi' i 30 nomi non escono mai. */
+    #brands {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* (11.10.26 Roberto) i nomi non passano MAI sotto la sidebar (120 px + 16 di stacco), a
+         qualsiasi larghezza sopra i 768 */
+      padding-left: 136px;
+      padding-right: max(16px, var(--indent));
+    }
+    .brand-card-container { display: none; }
+    .brands-text {
+      font-size: min(3.25rem, 3.3vw, 5.4vh);   /* 3.25rem = 52 px fino al 14", poi cresce col testo (11.10.26) */
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: white;
+      text-align: center;
+    }
+    .brands-text a {
+      display: inline-block;
+      vertical-align: top;     /* senza, l'inline-block allunga ogni riga (linea di base + strut) */
+      margin: 0 0.25em;
+      color: inherit;
+      text-decoration: none;
+      cursor: default;
+    }
+    /* (11.10.26) link all'Instagram del brand: sottolineato all'hover */
+    .brands-text a[href^="http"] { cursor: pointer; }
+    .brands-text a[href^="http"]:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 0.06em;
+      text-underline-offset: 0.12em;
+    }
+    /* "/" fra un nome e l'altro: DENTRO il link (cosi' resta attaccato al nome ed entra con lui),
+       inline-block perche' la sottolineatura non arrivi allo slash */
+    .brands-sep {
+      display: inline-block;
+      margin-left: 0.5em;
+    }
+    @media (max-width: 768px) {
+      #brands {
+        padding-top: 72px;       /* sotto la barra mobile */
+        padding-bottom: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .brands-text {
+        font-size: min(24px, 6vw, 3.2vh);
+        line-height: 1.3;
+      }
+      .brands-text a { margin: 0 0.2em; }
+      .brands-sep { margin-left: 0.4em; }
+    }
+
+    /* ══ BRANDS VARIANTE 1 — brands1.html (11.10.2026, Roberto) ═══════════════════════
+       Nomi a bandiera a sinistra, stessa misura di brands.html (11.10.26: prima riempivano la
+       pagina con una misura calcolata da uno script, tolto). */
+    html[data-variante="brands1"] #brands {
+      justify-content: center;   /* #brands e' un flex in COLONNA: questo e' l'asse verticale */
+      align-items: center;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+    html[data-variante="brands1"] .brands-text {
+      width: 100%;
+      text-align: left;
+      /* (11.10.26) misura e interlinea quelle di brands.html: niente piu' riempimento */
+    }
+    html[data-variante="brands1"] .brands-text a { margin: 0 0.25em 0 0; }
+    /* massimo 3 nomi per riga (11.10.26): <br> dopo ogni terzo nome e righe che non vanno a capo;
+       se la riga piu' lunga non ci sta, lo script in brands1.html abbassa la misura */
+    html[data-variante="brands1"] .brands-text { white-space: nowrap; }
+    html[data-variante="brands1"] .brands-sep { margin-left: 0.25em; }
+    /* simbolo dietro i nomi (11.10.26): la forma di peace-about.svg usata come maschera, cosi' il
+       colore si decide qui. Occupa la stessa area del testo, centrato, alto quanto ci sta. */
+    html[data-variante="brands1"] .brands1-logo {
+      position: absolute;
+      top: 16px; bottom: 16px;
+      left: 136px; right: max(16px, var(--indent));
+      background: #3F108A;      /* un tono sotto --sfondo #4F14AD, come il simbolo della home */
+      -webkit-mask: url(../assets/peace-about.svg) center / contain no-repeat;
+              mask: url(../assets/peace-about.svg) center / contain no-repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+    html[data-variante="brands1"] .brands-text { position: relative; z-index: 1; }
+    @media (max-width: 768px) {
+      html[data-variante="brands1"] #brands { padding-top: 72px; padding-bottom: 16px; }
+      html[data-variante="brands1"] .brands1-logo { top: 72px; left: 16px; right: 16px; }
+      /* su telefono i nomi scorrono liberi (ne stanno gia' al massimo 2-3 per riga) */
+      html[data-variante="brands1"] .brands-text { white-space: normal; }
+      html[data-variante="brands1"] .brands1-a-capo { display: none; }
+    }
+
+    /* ══ SPACE — NASTRO AUTOMATICO INFINITO (11.10.2026, Roberto) ═════════════════════
+       La strip non e' piu' mossa dallo scroll della pagina: e' una finestra (overflow hidden, larga
+       tutta la pagina: le immagini passano anche sotto il menu) e dentro `.space-nastro` scorre da solo verso sinistra, con le
+       immagini ripetute (space.js). Mouse sopra: si ferma e la rotella lo sposta. */
+    .space-strip.space-strip--auto {
+      left: 0 !important;   /* (11.10.26) le immagini arrivano fino al bordo sinistro della pagina */
+      right: 0;
+      overflow: hidden;
+      padding-right: 0;
+      will-change: auto;
+      transform: none !important;
+      cursor: grab;
+    }
+    .space-nastro {
+      display: flex;
+      gap: 8px;
+      will-change: transform;
+    }
+    .space-nastro .space-parallax-frame { flex-shrink: 0; }
+
     /* ══ SFONDO PER PAGINA (23.09.2026, Roberto) ═════════════════════════════════════
        Viola (`--sfondo`) ovunque tranne: Organic Noise e Campaigns NERE (come prima), Space
        BIANCA con menu e scritte nere. `data-pagina` sta anche su <html>, cosi' il colore copre
@@ -1801,3 +1926,79 @@
       .about-text-block { gap: 0; }
     }
 
+
+    /* ══ ABOUT2 — logo .sept nel paragrafo (11.10.2026, Roberto, da uno screenshot InDesign) ══════
+       `.about2-para` = <img> flottante + il paragrafo .about-text. Il logo e' FUORI dal <p> perche'
+       testo.js lo spezza in righe: SplitType lo metteva dentro la prima riga, che ha overflow hidden.
+       Da fratello va bene: le righe (.anim-line-wrap, overflow hidden = BFC) si restringono accanto al
+       float alla stessa larghezza misurata da SplitType. Il contenitore prende il posto del <p> nel
+       layout (order / margin-top auto / padding su telefono).
+       Misure dallo screenshot: riquadro del logo largo 57% della colonna e alto 6 righe (line-height
+       110%), logo largo 44% (il resto e' lo stacco), allineato in alto. In em: segue il testo. */
+    html[data-variante="about2"] .about2-para {
+      order: 2;
+      margin-top: auto;
+      font-family: 'SharpGrotesk', sans-serif;
+      font-size: 1.5rem;                /* come .about-text: le misure in em del logo partono da qui */
+      line-height: 110%;
+    }
+    html[data-variante="about2"] #about .about2-para .about-text { margin-top: 0; padding: 0; }
+    /* (11.10.26 Roberto) logo PIU' GRANDE: arriva fino al testo, con lo stesso stacco delle immagini
+       laterali (8 px) a destra e sotto. Larghezza = riquadro dell'InDesign (57% della colonna) meno lo
+       stacco; altezza = quella che viene dalla forma elastica del caricamento (viewBox), quindi le
+       righe accanto possono essere piu' o meno di 6. */
+    html[data-variante="about2"] .about2-logo {
+      float: left;
+      width: calc(57% - 8px);
+      height: auto;
+      /* sotto NIENTE margine (11.10.26): il logo e' alto 5 righe − 8 px, quindi il riquadro finisce gia'
+         8 px prima della 6a riga e quegli 8 px sono lo stacco visibile. Con margine 8 (poi 7) il riquadro
+         finiva esattamente dove inizia la 6a riga e Safari, che arrotonda le altezze delle righe in modo
+         diverso da Chrome, metteva la 6a riga accanto al logo. Ora c'e' una tolleranza di 8 px. */
+      margin: 0 8px 0 0;
+      display: block;
+      overflow: visible;
+    }
+    @media (max-width: 768px) {
+      html[data-variante="about2"] .about2-para {
+        order: 3; margin-top: 0; flex-shrink: 0;
+        padding: 16px 16px 24px;
+        font-size: 1.75rem;             /* come .about-text su telefono */
+      }
+    }
+
+    /* ══ OLTRE IL MACBOOK 14" (11.10.2026, Roberto) ════════════════════════════════════
+       "Su uno schermo piu' grande il testo resta piccolo: voglio che sia come nel 14", in modo che
+       gli spazi restino quelli". Il testo in rem cresce gia' (html, in cima). Qui il resto che era
+       in px fissi: sidebar (larghezza, padding, voci, logo che e' largo 100%), sotto-azioni del
+       footer, e il rientro di Brands che dipende dalla sidebar. Valori = px del 14" / 1512 * 100vw,
+       quindi a 1512 px identici a prima e oltre in proporzione. */
+    @media (min-width: 1513px) {
+      #sidebar { width: 7.937vw; padding: 0.529vw; }                  /* 120 / 8 px */
+      .nav-item, #sidebar .active-label { font-size: 0.926vw; }      /* 14 px */
+      #sidebar .nav-group { gap: 0.265vw; margin-top: 1.058vw; }     /* 4 / 16 px */
+      .footer-sub-actions a { font-size: 1.058vw; }                  /* 16 px */
+      #brands { padding-left: 8.995vw; }                             /* 136 px */
+      html[data-variante="brands1"] .brands1-logo { left: 8.995vw; }
+      /* About: il tetto di 780 px della colonna del testo a 1920 bloccava le righe mentre il testo
+         cresceva → a capo in punti diversi dal 14". A 1512 la colonna e' larga 728 px: qui in proporzione. */
+      .about-text-block { max-width: 48.148vw; }                      /* 728 px */
+      /* Space: colonne del testo (le formule con -104px e i 40px fissi spostavano gli a capo) */
+      .space-text { left: 17.108vw; right: 0.529vw; gap: 2.646vw; }  /* 258.7 / 8 / 40 px */
+      .space-text-main { width: 49.206vw; }                           /* 744 px */
+      /* Campaigns: foto, didascalia e Prev/Next erano in px fissi (foto larga 504 px) */
+      .camp-scrollable { left: calc(50% - 20.635vw + 7.760vw); width: 33.333vw; }   /* 312 · 117.3 · 504 px */
+      .camp-caption { left: calc(50% + 13.757vw + 7.760vw); top: calc(50% + 10.218vw); }   /* 208 · 117.3 · 154.5 px */
+      .camp-btn { font-size: 0.926vw; }                               /* 14 px, come il menu */
+      .camp-prev { left: 17.108vw; }
+      .camp-next { right: 9.524vw; }                                  /* 144 px */
+      /* Organic Noise: titolo della playlist e frecce */
+      .radio-caption .r-title { font-size: 0.926vw; }                 /* 14 px */
+      .radio-controls { gap: 3.175vw; }                               /* 48 px */
+      .radio-prev-btn, .radio-next-btn { width: 3.704vw; height: 3.704vw; }   /* 56 px */
+      .radio-prev-btn svg, .radio-next-btn svg { width: 1.984vw; height: 1.984vw; }   /* 30 px */
+      /* Home in zoom: istruzioni ("Drag to move" / "Tap to esc") e nome del brand erano 10 px fissi;
+         le istruzioni stanno sotto il logo della sidebar, che qui cresce → anche il loro top */
+      #home #home-zoom-hint { top: 3.439vw; font-size: 0.661vw; }     /* 52 · 10 px */
+      #home #home-brand-label { font-size: 0.661vw; }                 /* 10 px */
+    }

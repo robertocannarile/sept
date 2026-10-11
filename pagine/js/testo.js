@@ -80,16 +80,8 @@
     if (--entrateAperte <= 0) { entrateAperte = 0; window.dispatchEvent(new Event('sept:entratefinite')); }
   }
   let prossimaEntrata = 0;   // (secondi, orologio di performance.now) prima partenza libera della coda
-  const ADESIVO_ROT = -8;   // deve combaciare col rotate() del CSS di .space-text-side
-  // "Schiaffo": arriva dall'alto grande e storto, sbatte rimpicciolendosi, supera un po' la misura e
-  // si assesta. Le righe dello split si accendono subito: si muove l'adesivo intero.
-  function schiaffoAdesivo(el, stati) {
-    stati.forEach(st => st.tl.progress(1));
-    gsap.timeline({ onComplete: () => gsap.set(el, { clearProps: 'transform,opacity' }) })
-      .fromTo(el, { y: -120, scale: 1.8, rotation: ADESIVO_ROT - 14, opacity: 0 },
-                  { y: 0, scale: 0.94, rotation: ADESIVO_ROT + 2, opacity: 1, duration: 0.32, ease: 'power3.in' })
-      .to(el,     { scale: 1, rotation: ADESIVO_ROT, duration: 0.45, ease: 'elastic.out(1.1, 0.45)' });
-  }
+  // (11.10.26 Roberto) TOLTO lo "schiaffo" del blocco "We are open… For collaboration…" di Space
+  // (schiaffoAdesivo, dal 17.09.26): ora entra a righe come tutti gli altri testi.
 
   const entrataIO = new IntersectionObserver(entries => {
     // parte se il blocco ha superato l'85% dello schermo OPPURE se ne vede gia' almeno il 20%: nelle
@@ -105,16 +97,7 @@
       const st = textAnim[i];
       st.fatto = true;
       const el = splitEls[i];
-      let parti = () => { st.tl.eventCallback('onComplete', entrataChiusa); st.tl.play(); };
-      if (el.closest('.space-text-side')) {
-        // lo schiaffo e' del blocco intero, una volta sola per tutti i suoi paragrafi
-        const blocco = el.closest('.space-text-side');
-        const dentro = splitEls.map((e, j) => [e, j]).filter(([e]) => blocco.contains(e));
-        dentro.forEach(([e, j]) => { textAnim[j].fatto = true; entrataIO.unobserve(e); });
-        if (blocco.dataset.schiaffo) return;
-        blocco.dataset.schiaffo = '1';
-        parti = () => { schiaffoAdesivo(blocco, dentro.map(([, j]) => textAnim[j])); entrataChiusa(); };
-      }
+      const parti = () => { st.tl.eventCallback('onComplete', entrataChiusa); st.tl.play(); };
       // conta le entrate in coda o in corso: quando tornano a zero la pagina riceve
       // `sept:entratefinite` (la usa Brands per sbloccare lo scroll, 23.09.26)
       entrateAperte++;

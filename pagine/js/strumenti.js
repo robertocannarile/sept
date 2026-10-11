@@ -47,7 +47,7 @@ if (/[?&]prova=[^&]*radio/.test(location.search)) {
     }
     rigaObj('aboutpartenza', window.__septAbout, 'partenza', 0.2, 1.5, 0.05, '— About: piu\' alto = parte prima = piu\' lenta');
     rigaObj('aboutuscita',   window.__septAbout, 'uscita',   -0.5, 0.6, 0.05, '— About: piu\' basso = finisce dopo = piu\' lenta');
-    rigaObj('spacesosta',    window.__septSpace, 'sosta',    0.5, 3,   0.1,  '— Space: scroll per px di immagini (meno = piu\' veloce)');
+    // spacesosta tolto (11.10.26): Space ora e' un nastro automatico, niente sosta da regolare
     // "nascondi" riduce il pannello a un bottoncino "regola" che lo riapre (prima lo toglieva e non
     // c'era modo di riaverlo senza ricaricare)
     const chiudi = document.createElement('button');

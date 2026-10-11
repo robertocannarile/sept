@@ -6,15 +6,9 @@
   const spaceWrapper = document.getElementById('space-scroll-wrapper');
   const spaceSection = document.getElementById('space');
   const spaceStrip   = document.getElementById('space-strip');
-  let spaceTravelX   = 0;
-  let spaceStripX    = 0;   // translateX gia' applicato allo strip (per correggere i rect letti)
 
-  // px di scroll verticale per px di viaggio orizzontale della strip di Space. Era 2.2 su tutti i
-  // device; (17.09.26) "su mobile le immagini di Space sono troppo lente e richiedono tanto scroll"
-  // → 1.4 su mobile, desktop/tablet invariati. Regolabile da `?regola=1` o `?spacesosta=`.
-  let SPACE_SOSTA = +((location.search.match(/[?&]spacesosta=([\d.]+)/) || [])[1]
-                      || (window.matchMedia('(max-width: 768px)').matches ? 0.6 : 2.2));   // mobile 0.6 scelto da Roberto (17.09.26)
-  window.__septSpace = { get sosta() { return SPACE_SOSTA; }, set sosta(v) { SPACE_SOSTA = v; initSpaceScroll(); } };
+  // (11.10.26) Via la strip mossa dallo scroll (sosta, SPACE_SOSTA, wrapper allungato): ora e' un
+  // NASTRO che scorre da solo, all'infinito. La versione a scroll e' in ../Base e nei backup.
   // ── tutto in uno schermo (23.09.2026, Roberto) ──
   // Immagini piu' basse quanto serve perche' etichetta + immagini + testo stiano nello schermo
   // senza scorrere. Si fa in JS perche' l'altezza del testo cambia con la larghezza (a capo),
@@ -25,7 +19,7 @@
   const spaceText   = spaceSection.querySelector('.space-text');
   const SPACE_IMG_MIN = 140;   // px: sotto, meglio che il testo esca un po' di sotto
   const SPACE_FONDO   = 24;    // px liberi sotto l'ultima riga di testo
-  function adattaSpace() {
+  let adattaSpace = function () {
     spaceFrames.forEach(f => { f.style.height = ''; });
     spaceText.style.top = '';
     const top0    = spaceStrip.offsetTop;                 // 64 + etichetta, dal CSS
@@ -40,90 +34,119 @@
     if (alt === altCss) return;
     spaceFrames.forEach(f => { f.style.height = alt + 'px'; });
     spaceText.style.top = (top0 + alt + stacco) + 'px';
+  };
+
+  // ── NASTRO AUTOMATICO INFINITO (11.10.2026, Roberto) ──
+  // "rendiamo lo scroll delle immagini automatico e infinito; se l'utente va su con il mouse puo'
+  // scrollare lui". Stessa meccanica del nastro di About (about.js): le cornici dentro
+  // `.space-nastro` + copie, `pos` cresce di VELOCITA px/s, transform = -(pos mod giro), giro =
+  // distanza fra la 1a cornice e la sua prima copia → nessuno stacco. La strip fa da finestra
+  // (CSS "SPACE — NASTRO AUTOMATICO").
+  // Mouse sopra la strip: il nastro continua, la rotella/trackpad lo sposta (avanti e indietro). Col dito: si trascina in orizzontale, al rilascio riparte.
+  const VELOCITA = window.matchMedia('(max-width: 768px)').matches ? 30 : 40;   // px al secondo
+  const COPIE = 3;
+  const originali = [...spaceFrames];
+  const nastro = document.createElement('div');
+  nastro.className = 'space-nastro';
+  originali.forEach(f => nastro.appendChild(f));
+  for (let c = 1; c < COPIE; c++) originali.forEach(f => {
+    const k = f.cloneNode(true);
+    k.setAttribute('aria-hidden', 'true');
+    nastro.appendChild(k);
+  });
+  spaceStrip.appendChild(nastro);
+  spaceStrip.setAttribute('data-lenis-prevent', '');   // la rotella sopra la strip e' sua, non della pagina
+  const cornici = [...nastro.querySelectorAll('.space-parallax-frame')];
+  const immagini = cornici.map(f => f.querySelector('img'));
+  // adattaSpace scrive l'altezza sulle cornici originali: le copie la devono seguire
+  const adattaPrima = adattaSpace;
+  adattaSpace = function () {
+    cornici.forEach(f => { f.style.height = ''; });
+    adattaPrima();
+    const h = spaceFrames[0].style.height;
+    cornici.forEach(f => { f.style.height = h; });
+  };
+
+  // la finestra ora e' larga tutta la pagina (left 0): all'apertura il nastro parte spostato a
+  // destra di quanto era il `left` della strip, cosi' la prima immagine e' dove stava prima
+  // (colonna del testo); a sinistra c'e' gia' la coda del giro precedente, quindi niente vuoto.
+  const partenza = parseFloat(getComputedStyle(spaceStrip).left) || 0;   // letto PRIMA della classe --auto
+  let pos = 0, giro = 0, tPrima = 0, fermo = false, inVista = true, stripLeft = 0;
+  pos = -partenza;
+  spaceStrip.classList.add('space-strip--auto');
+  const centri = new Float32Array(cornici.length), larghe = new Float32Array(cornici.length);
+
+  function misura() {
+    adattaSpace();
+    giro = cornici[originali.length].offsetLeft - cornici[0].offsetLeft;
+    cornici.forEach((f, i) => { centri[i] = f.offsetLeft + f.offsetWidth / 2; larghe[i] = f.offsetWidth; });
+    stripLeft = spaceStrip.getBoundingClientRect().left;
+    spaceWrapper.style.height = '';   // niente piu' sosta: il wrapper e' alto quanto la sezione
+    measureSections();
+    disegna();
   }
+  window.__septSpace = { misura };
 
-  function initSpaceScroll() {
-    spaceStrip.style.transform = '';
-    spaceStripX = 0;
-    adattaSpace();   // prima di misurare il viaggio: immagini piu' basse = strip piu' corta
-    const totalW   = spaceStrip.scrollWidth;
-    const viewW    = spaceSection.clientWidth;
-    // partenza della strip = il suo `left` del CSS (16 mobile · 136 tablet con sidebar ·
-    // colonna 4 su desktop): prima era ricalcolata qui a mano e su tablet valeva 16
-    const col4Left = parseFloat(getComputedStyle(spaceStrip).left) || 16;
-    spaceTravelX   = Math.max(0, col4Left + totalW - viewW);
-    spaceWrapper.style.height = (window.innerHeight + spaceTravelX * SPACE_SOSTA) + 'px';
-    measureSections();   // cambia l'altezza del wrapper → i range delle sezioni vanno rifatti
-    updateSpace();
-  }
-
-  const spaceParallaxImgs = spaceStrip.querySelectorAll('.space-parallax-frame img');
-
-  // gate viewport: senza questo updateSpace girava a ogni scroll frame di TUTTA
-  // la pagina, con reflow forzati anche quando Space e' lontanissima.
-  let spaceInView = false;
-  new IntersectionObserver(es => {
-    es.forEach(e => { spaceInView = e.isIntersecting; });
-    if (spaceInView) requestScrollFrame();
-  }, { rootMargin: '50% 0px' }).observe(spaceWrapper);
-
-  const spaceParallaxOff = new Float32Array(spaceParallaxImgs.length);
-
-  const SPACE_FRENO = 0.6;   // da che punto della corsa la strip inizia a frenare
-  function updateSpace() {
-    const rect       = spaceWrapper.getBoundingClientRect();
-    const vh         = appEl.clientHeight;
-    // (23.09.26) era vh * 0.4: la strip partiva quando Space arrivava al 40% dello schermo
-    // scendendo da Brands. Ora Space e' in cima alla sua pagina, quindi si parte da 0,
-    // altrimenti la strip comparirebbe gia' spostata all'apertura.
-    const earlyStart = 0;
-    // (23.09.26) era `innerWidth < 1024 ? 0 : vh * 0.4`: margine per la strip mentre Space usciva
-    // verso Campaigns. In una pagina a se' Space non esce mai, e con quel margine la corsa non
-    // arrivava a 1 in fondo alla pagina: su desktop l'ultima immagine restava tagliata di ~30 px.
-    const earlyEnd   = 0;
-    const scrolled   = -(rect.top - earlyStart);
-    const scrollable = spaceWrapper.offsetHeight - vh + earlyStart + earlyEnd;
-    // strip moves continuously across the whole pin — longer & fluid, no dead stop
-    const lineare    = Math.max(0, Math.min(1, scrolled / scrollable));
-    // USCITA FLUIDA (Roberto 16.09.26): prima la strip andava a velocita' costante e si
-    // piantava di colpo a fine corsa. Ora e' lineare fino a SPACE_FRENO, poi rallenta fino a
-    // fermarsi con velocita' zero (tratto quadratico). Pendenza e raccordo calcolati perche'
-    // valore e velocita' combacino nel punto di passaggio: nessuno scatto.
-    const c = SPACE_FRENO, a = 2 / (1 + c);
-    const progress   = lineare <= c ? lineare * a
-                                    : 1 - (a / (2 * (1 - c))) * (1 - lineare) * (1 - lineare);
-
-    // Due fasi: prima TUTTE le letture (rect delle frame), poi TUTTE le scritture
-    // (strip + img). Prima la write del transform dello strip e quelle delle img
-    // erano interlacciate con le getBoundingClientRect → un reflow sincrono per
-    // immagine, a ogni frame di scroll.
+  function disegna() {
+    if (!giro) return;
+    const x = ((pos % giro) + giro) % giro;   // anche con pos negativo (rotella all'indietro)
+    nastro.style.transform = `translate3d(${-x}px, 0, 0)`;
+    // parallasse dentro le cornici, come prima: l'immagine si sposta di +-8% secondo la posizione
+    // della cornice sullo schermo. Posizioni calcolate (offsetLeft in cache), nessuna lettura di layout.
     const vw = window.innerWidth;
-    const stripX = -spaceTravelX * progress;
-    // i rect vengono letti PRIMA di scrivere il nuovo transform dello strip,
-    // quindi riflettono ancora spaceStripX: correggo con il delta → risultato
-    // identico a prima, ma senza interlacciare read e write.
-    const dx = stripX - spaceStripX;
-    for (let i = 0; i < spaceParallaxImgs.length; i++) {
-      const r = spaceParallaxImgs[i].parentElement.getBoundingClientRect();
-      const relPos = (r.left + dx + r.width / 2 - vw / 2) / vw;
-      spaceParallaxOff[i] = Math.max(-8, Math.min(8, relPos * 12));
-    }
-    spaceStrip.style.transform = `translateX(${stripX}px)`;
-    spaceStripX = stripX;
-    for (let i = 0; i < spaceParallaxImgs.length; i++) {
-      spaceParallaxImgs[i].style.transform = `scale(1.2) translateX(${spaceParallaxOff[i]}%)`;
+    for (let i = 0; i < cornici.length; i++) {
+      const c = stripLeft + centri[i] - x;
+      if (c < -larghe[i] || c > vw + larghe[i]) continue;   // fuori schermo: non serve
+      const off = Math.max(-8, Math.min(8, (c - vw / 2) / vw * 12));
+      immagini[i].style.transform = `scale(1.2) translateX(${off}%)`;
     }
   }
 
-  onScroll(() => { if (spaceInView) updateSpace(); });
-  window.addEventListener('resize', initSpaceScroll);
-  // il font arriva dopo il primo layout e cambia l'altezza del testo
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(initSpaceScroll);
+  function passo(t) {
+    if (tPrima && !fermo && inVista) pos += VELOCITA * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
+    tPrima = t;
+    if (inVista) disegna();
+    requestAnimationFrame(passo);
+  }
+  requestAnimationFrame(passo);
 
-  const spaceImgs = Array.from(spaceStrip.querySelectorAll('img'));
+  new IntersectionObserver(es => { inVista = es[0].isIntersecting; }).observe(spaceStrip);
+
+  // mouse sopra: il nastro NON si ferma (Roberto 11.10.26, prima si fermava), la rotella lo sposta
+  // avanti/indietro mentre continua a scorrere da solo
+  spaceStrip.addEventListener('wheel', e => {
+    e.preventDefault();
+    const k = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerWidth : 1;   // righe/pagine → px
+    pos += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * k;
+    disegna();
+  }, { passive: false });
+
+  // dito: trascinamento orizzontale (lo scroll verticale della pagina resta al browser)
+  spaceStrip.style.touchAction = 'pan-y';
+  let tocco = null;
+  spaceStrip.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return;
+    tocco = { x: e.clientX, y: e.clientY, pos, oriz: null };
+    fermo = true;
+  });
+  window.addEventListener('pointermove', e => {
+    if (!tocco) return;
+    const dx = e.clientX - tocco.x, dy = e.clientY - tocco.y;
+    if (tocco.oriz === null && Math.abs(dx) + Math.abs(dy) > 6) tocco.oriz = Math.abs(dx) > Math.abs(dy);
+    if (tocco.oriz) { pos = tocco.pos - dx; disegna(); }
+  });
+  const lascia = () => { if (tocco) { tocco = null; fermo = false; } };
+  window.addEventListener('pointerup', lascia);
+  window.addEventListener('pointercancel', lascia);
+
+  window.addEventListener('resize', misura);
+  // il font arriva dopo il primo layout e cambia l'altezza del testo
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(misura);
+
   let spaceLoaded = 0;
-  function onSpaceImg() { if (++spaceLoaded >= spaceImgs.length) initSpaceScroll(); }
-  spaceImgs.forEach(img => {
+  function onSpaceImg() { if (++spaceLoaded >= immagini.length) misura(); }
+  immagini.forEach(img => {
     if (img.complete && img.naturalWidth) onSpaceImg();
     else { img.addEventListener('load', onSpaceImg); img.addEventListener('error', onSpaceImg); }
   });
+  misura();
