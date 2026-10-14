@@ -92,8 +92,8 @@
       R_SCRUB.invalidate().restart();
     };
 
-    const R_NEXT = () => goTo(R_PH.position - 1 / R_BOXES.length);
-    const R_PREV = () => goTo(R_PH.position + 1 / R_BOXES.length);
+    const R_NEXT = () => goTo(R_PH.position + 1 / R_BOXES.length);   // (14.10.26 Roberto) freccia dx = album verso dx; prima era invertito
+    const R_PREV = () => goTo(R_PH.position - 1 / R_BOXES.length);
 
     document.querySelector('.radio-next-btn').addEventListener('click', R_NEXT);
     document.querySelector('.radio-prev-btn').addEventListener('click', R_PREV);

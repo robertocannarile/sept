@@ -600,6 +600,9 @@
       margin: 0;
     }
 
+    /* (14.10.26 Roberto) indirizzo = link a Google Maps, sottolineato all'hover */
+    .contact-top a.contact-address-block:hover { text-decoration: underline; }
+
     .contact-sept {
       position: absolute;
       bottom: -0.13em;
@@ -732,9 +735,8 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .footer-row .nav-item {
-      pointer-events: none;
-    }
+    /* (14.10.26 Roberto) Mail e Instagram sono link veri (mailto / profilo IG): prima erano
+       <span> con pointer-events: none e le sotto-azioni non si aprivano mai (nessun JS mette .active) */
     .footer-row.active .nav-item { color: white; }
 
     .footer-sub-actions {
@@ -820,7 +822,7 @@
       right: 8px;
       width: auto;
       height: 1rem;
-      transform: scaleX(-1) translateY(-50%);
+      transform: translateY(-50%);        /* (14.10.26 Roberto) girato: speculare a com'era (prima scaleX(-1)) */
       filter: brightness(0) invert(1);
       mix-blend-mode: difference;
       pointer-events: none;
@@ -1255,7 +1257,9 @@
         height: 100svh;
         min-height: 100svh;
         max-height: 100svh;
-        padding-top: 48px;
+        /* (14.10.26 Roberto) era 48px: il simbolo stava 24 px sotto il centro e ".sept" dell'intro
+           (centrato sullo schermo) sembrava in alto. Ora simbolo e collage al centro esatto. */
+        padding-top: 0;
         padding-bottom: 0;
         display: flex;
         flex-direction: column;
@@ -1794,6 +1798,10 @@
       /* su telefono i nomi scorrono liberi (ne stanno gia' al massimo 2-3 per riga) */
       html[data-variante="brands1"] .brands-text { white-space: normal; }
       html[data-variante="brands1"] .brands1-a-capo { display: none; }
+      /* (14.10.26) un nome che va su due righe (NEW AMSTERDAM SURF / ASSOCIATION) occupa tutta la
+         riga: spezzato da testo.js, l'inline-block si stringeva alla riga piu' lunga e il nome dopo
+         (NORDA) gli si infilava accanto. Senza split era gia' cosi' (inline-block largo quanto la riga). */
+      html[data-variante="brands1"] .brands-text a:has(> .anim-line-wrap ~ .anim-line-wrap) { display: block; }
     }
 
     /* ══ SPACE — NASTRO AUTOMATICO INFINITO (11.10.2026, Roberto) ═════════════════════

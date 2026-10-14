@@ -132,6 +132,18 @@
   // testo torna subito normale (revert: va a capo da solo, in tempo reale mentre si trascina) e
   // lo si ri-spezza solo a resize finito. Le righe nuove cadono negli stessi punti del testo
   // normale, quindi a schermo non cambia nulla.
+  // (14.10.26) ri-spezza subito, senza resize: serve a chi cambia la misura di un testo gia'
+  // spezzato (Brands su telefono abbassa la misura dei nomi per stare nello schermo). Senza, le
+  // righe restavano quelle della misura vecchia ("NEW AMSTERDAM SURF" + NORDA + "ASSOCIATION").
+  window.septRispezza = function () {
+    splitEls.forEach((el, i) => { if (el.querySelector('.anim-line-wrap')) splits[i].revert(); });
+    window.dispatchEvent(new Event('sept:textreverted'));
+    SplitType.clearData();
+    splitText();
+    measureSections();
+    window.dispatchEvent(new Event('sept:textsplit'));
+  };
+
   let splitW = window.innerWidth, splitTimer, splitAperto = false;
   window.addEventListener('resize', () => {
     if (window.innerWidth === splitW && !splitAperto) return;

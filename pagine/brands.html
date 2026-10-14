@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" data-pagina="brands">
+<html lang="it" data-pagina="brands" data-variante="brands1">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,7 +74,7 @@
     <div class="sidebar-footer">
 
       <div class="footer-row" data-overlay="mail">
-        <span class="nav-item">Mail</span>
+        <a class="nav-item" href="mailto:hello@sept-showroom.com">Mail</a>
         <div class="footer-sub-actions">
           <a href="#" id="copy-email-btn">Copy email</a>
           <a href="mailto:hello@sept-showroom.com">Write an email</a>
@@ -82,7 +82,7 @@
       </div>
 
       <div class="footer-row" data-overlay="instagram">
-        <span class="nav-item">Instagram</span>
+        <a class="nav-item" href="https://instagram.com/septshowroom" target="_blank" rel="noopener">Instagram</a>
         <div class="footer-sub-actions">
           <a href="#" id="copy-ig-btn">Copy link</a>
           <a href="https://instagram.com/septshowroom" target="_blank">Go to IG profile</a>
@@ -98,40 +98,55 @@
 
     <div id="brands-scroll-wrapper">
       <section class="section" id="brands" data-label="Brands">
-        <!-- "Our Brands" tolta di nuovo (Roberto 11.10.26) -->
+        <!-- VARIANTE brands1 (11.10.26 Roberto): copia di brands.html, nomi a bandiera a sinistra
+             (misura come brands.html), simbolo della pace scuro dietro, massimo 3 nomi per riga
+             (<br> dopo ogni terzo nome, righe nowrap; se 3 non ci stanno la misura scende, script in fondo).
+             Su mobile i <br> sono spenti. Pagina SCOLLEGATA (non nel menu).
+             ⚠️ La lista dei nomi e' COPIATA: una modifica a brands.html non arriva qui. -->
         <!-- (11.10.26 Roberto) ogni nome porta all'Instagram del brand (handle presi dai siti
              ufficiali), sottolineato all'hover, separati da "/". href="#" = handle da confermare. -->
 
         <!-- (09.10.26 Roberto) solo i nomi, fermi, tutti in uno schermo: via le immagini dietro
              (card) e il nastro che scorreva. Lista aggiornata da uno screenshot di Roberto. -->
+        <!-- (11.10.26 Roberto) simbolo dietro i nomi, viola un tono sotto lo sfondo (#3F108A come in home) -->
+        <div class="brands1-logo" aria-hidden="true"></div>
         <p class="brands-text">
           <a href="https://www.instagram.com/bape_japan/" target="_blank" rel="noopener">A BATHING APE<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/acupuncture1993/" target="_blank" rel="noopener">ACUPUNCTURE 1993<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/alphaindustries/" target="_blank" rel="noopener">ALPHA INDUSTRIES<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/amish.supplies/" target="_blank" rel="noopener">AMISH SUPPLIES<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/arteantwerp/" target="_blank" rel="noopener">ARTE ANTWERP<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="#">CHAMPION PINNACLE<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/cieleathletics/" target="_blank" rel="noopener">CIELE ATHLETICS<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/cookman.eu/" target="_blank" rel="noopener">COOKMAN<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/cotopaxi/" target="_blank" rel="noopener">COTOPAXI<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/crocs/" target="_blank" rel="noopener">CROCS EXP<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/dailypaper/" target="_blank" rel="noopener">DAILY PAPER<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/damsonmadder/" target="_blank" rel="noopener">DAMSON MADDER<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/hikingpatrol/" target="_blank" rel="noopener">HIKING PATROL<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/kappydesign/" target="_blank" rel="noopener">KAPPY<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/keen/" target="_blank" rel="noopener">KEEN<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/levis/" target="_blank" rel="noopener">LEVI'S<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="#">MONO<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/newamsterdamsurfassociation/" target="_blank" rel="noopener">NEW AMSTERDAM SURF ASSOCIATION<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/nordarun/" target="_blank" rel="noopener">NORDA<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/northwave_espresso/" target="_blank" rel="noopener">NORTHWAVE ESPRESSO<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/olafhussein/" target="_blank" rel="noopener">OLAF<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/pspresidents/" target="_blank" rel="noopener">PRESIDENT'S<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/puraai_official/" target="_blank" rel="noopener">PURAAI<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="#">RHIZOME<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/samsoesamsoe/" target="_blank" rel="noopener">SAMSØE SAMSØE<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/santhanotforskate/" target="_blank" rel="noopener">SANTHA<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/satisfyrunning/" target="_blank" rel="noopener">SATISFY<span class="brands-sep" aria-hidden="true">/</span></a>
+          <br class="brands1-a-capo">
           <a href="https://www.instagram.com/sessun/" target="_blank" rel="noopener">SESSÙN<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/teva/" target="_blank" rel="noopener">TEVA<span class="brands-sep" aria-hidden="true">/</span></a>
           <a href="https://www.instagram.com/theskateroom/" target="_blank" rel="noopener">THE SKATEROOM</a>
@@ -156,6 +171,54 @@
 <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
 <script src="js/core.js"></script>
 <!-- brands.js tolto (09.10.26): niente nastro ne' card, la pagina e' solo CSS -->
+<!-- (11.10.26) tolta la misura che riempiva la pagina: nomi grandi come in brands.html -->
+<script>
+// brands1, massimo 3 nomi per riga (11.10.26): sopra 768 le righe non vanno a capo (nowrap nel CSS),
+// quindi se la riga piu' lunga non ci sta la misura scende in proporzione. Mai sopra quella di
+// brands.html (il valore del CSS). Sotto 768 niente: li' i <br> sono spenti e i nomi scorrono liberi.
+(function () {
+  const lista = document.querySelector('#brands .brands-text');
+  const mq = matchMedia('(max-width: 768px)');
+  // (14.10.26 Roberto) telefono: tutti i nomi fra la barra (.sept / MENU) e il fondo, mai sotto la
+  // barra. La misura del CSS e' in vh, che su iPhone conta anche lo spazio sotto le barre di Safari:
+  // la lista usciva piu' alta dello schermo visibile e, centrata, saliva sotto .sept. Qui si misura
+  // lo spazio vero (#brands meno i padding) e si abbassa la misura finche' la lista ci sta.
+  const sezione = document.getElementById('brands');
+  function adattaTelefono() {
+    const cs = getComputedStyle(sezione);
+    const alto = Math.min(sezione.clientHeight, window.visualViewport ? visualViewport.height : innerHeight)
+      - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    let fs = parseFloat(getComputedStyle(lista).fontSize);
+    for (let i = 0; i < 30 && lista.offsetHeight > alto && fs > 10; i++) {
+      fs = Math.max(10, Math.floor(fs * Math.max(0.9, Math.sqrt(alto / lista.offsetHeight)) * 10) / 10);
+      lista.style.fontSize = fs + 'px';
+    }
+  }
+  function adatta() {
+    lista.style.fontSize = '';
+    if (mq.matches) { adattaTelefono(); return; }
+    const base = parseFloat(getComputedStyle(lista).fontSize);
+    if (lista.scrollWidth > lista.clientWidth)
+      lista.style.fontSize = Math.floor(base * lista.clientWidth / lista.scrollWidth * 10) / 10 + 'px';
+  }
+  // se la misura cambia quando testo.js ha gia' spezzato i nomi in righe, le righe vanno rifatte
+  // (sept:textreverted arriva col testo pulito: li' si misura e basta, niente nuovo split)
+  function aggiorna() {
+    const prima = lista.style.fontSize;
+    adatta();
+    if (lista.style.fontSize !== prima && lista.querySelector('.anim-line-wrap') && window.septRispezza)
+      window.septRispezza();
+  }
+  adatta();
+  window.addEventListener('sept:textreverted', adatta);
+  if (document.fonts) document.fonts.ready.then(aggiorna);
+  window.addEventListener('load', aggiorna);
+  let raf = 0;
+  const poi = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(aggiorna); };
+  window.addEventListener('resize', poi);
+  if (window.visualViewport) visualViewport.addEventListener('resize', poi);
+})();
+</script>
 <script src="js/testo.js"></script>
 <script src="js/strumenti.js"></script>
 </body>

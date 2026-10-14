@@ -974,17 +974,19 @@
           startVibration();
           gsap.timeline()
             .fromTo(logoPace, { s: 0.15 }, { s: SIMBOLO_INTRO, duration: 0.9 * LENTO, ease: 'expo.out' })
-            .fromTo(logoPace, { a: 0 }, { a: 1, duration: 0.4 * LENTO, ease: 'power1.out' }, '<')
-            .fromTo(logoPace, { i: 0 }, { i: 1, duration: 0.4 * LENTO, ease: 'power1.out' }, 0.35 * LENTO);
+            .fromTo(logoPace, { a: 0 }, { a: 1, duration: 0.4 * LENTO, ease: 'power1.out' }, '<');
+          // (14.10.26 Roberto) tolti i 4 simbolini sul bordo: logoPace.i resta 0, drawScene non li disegna
           // uscita: come l'entrata ma verso l'ALTO (Roberto 23.09.26): .sept e poi le righe salgono
           // di 10 px sparendo, in sequenza. La chiama avviaHome.
-          introEsci = () => gsap.timeline()
-            .to(logo,  { opacity: 0, y: -10, duration: 0.3 * LENTO, ease: 'power2.in' })
-            .to(righe, { opacity: 0, y: -10, duration: 0.3 * LENTO, ease: 'power2.in', stagger: 0.04 * LENTO }, '-=' + 0.22 * LENTO);
-          gsap.timeline({ onComplete: resolve, delay: 0.15 * LENTO })
-            .to(logo, su)
-            .to(righe, { ...su, stagger: 0.04 * LENTO }, '-=' + 0.2 * LENTO)
-            .to({}, { duration: INTRO_SOSTA * LENTO });
+          // (14.10.26) senza sottotitolo `righe` e' vuoto: niente tween (GSAP avvisava "target not found")
+          introEsci = () => {
+            const t = gsap.timeline().to(logo, { opacity: 0, y: -10, duration: 0.3 * LENTO, ease: 'power2.in' });
+            if (righe.length) t.to(righe, { opacity: 0, y: -10, duration: 0.3 * LENTO, ease: 'power2.in', stagger: 0.04 * LENTO }, '-=' + 0.22 * LENTO);
+            return t;
+          };
+          const entra = gsap.timeline({ onComplete: resolve, delay: 0.15 * LENTO }).to(logo, su);
+          if (righe.length) entra.to(righe, { ...su, stagger: 0.04 * LENTO }, '-=' + 0.2 * LENTO);
+          entra.to({}, { duration: INTRO_SOSTA * LENTO });
         }
         // il font arriva dopo il primo layout: si aspetta (al massimo 1 s) per spezzare le righe giuste
         const font = document.fonts && document.fonts.ready
