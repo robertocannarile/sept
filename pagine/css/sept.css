@@ -621,8 +621,9 @@
 
     .contact-corner {
       position: absolute;
-      width: auto;
+      width: 1rem;          /* (14.10.26) era auto: su iPhone l'SVG (solo viewBox) usciva stirato. Il simbolo e' quadrato */
       height: 1rem;
+      object-fit: contain;
       filter: brightness(0) invert(1);
       z-index: 3;
       pointer-events: none;
@@ -1433,7 +1434,7 @@
         flex-direction: column;
         gap: 1.5rem;
         top: auto;
-        bottom: 50%;
+        bottom: calc(50% + 1.75rem * 1.1);   /* (14.10.26 Roberto) su di una riga dopo aver tolto 2020-26 */
         transform: none;
       }
       .contact-left, .contact-right { flex: none; width: 100%; gap: 0.4rem; }
@@ -1444,7 +1445,10 @@
       /* Come su desktop e tablet: appoggiata al fondo e un filo sotto (-0.13em), entra dal
          basso con l'animazione. Ora il fondo e' quello vero (#contact 100svh), quindi si vede. */
       .contact-sept {
-        bottom: -0.13em;
+        /* (14.10.26 Roberto) l'asta della p si deve vedere: con -0.13em la linea di base cadeva sul
+           bordo e la discendente (0.198em) restava fuori. Ora il fondo della p e' a 8 px dal bordo,
+           come il simbolo in basso a destra. Misura e posizione orizzontale invariate. */
+        bottom: calc(0.068em + 8px);
         left: -0.02em;
         font-size: min(34vw, 20svh);
       }
