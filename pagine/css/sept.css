@@ -2056,6 +2056,10 @@
       /* Space: adattaSpace (space.js) scrive le cornici a 140 px per far stare il testo, ma il
          min-height 160 del telefono le teneva piu' alte e il testo ci finiva sopra di 20 px */
       .space-parallax-frame { min-height: 0; }
+      /* (19.10.26 Roberto) spazio sotto l'ultima riga di testo, come in About (padding-bottom 32 del
+         blocco testo): il testo e' absolute e sborda sotto la sezione, la pagina scorre fino al suo
+         fondo e l'ultima riga restava attaccata al bordo. Il padding allunga lo scroll. */
+      .space-text { bottom: auto; padding-bottom: 32px; }   /* bottom: auto: con top + bottom l altezza era fissa e il padding non contava */
 
       /* Campaigns: colonna immagini larga meta' schermo (era 75vw), centrata */
       .camp-scrollable,

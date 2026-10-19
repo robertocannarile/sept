@@ -150,3 +150,6 @@
     else { img.addEventListener('load', onSpaceImg); img.addEventListener('error', onSpaceImg); }
   });
   misura();
+
+  // (19.10.26) immagini che entrano dal basso all'apertura (core.js), come in Campaigns
+  window.septEntrataCornici(cornici);

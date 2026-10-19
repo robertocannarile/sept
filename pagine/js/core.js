@@ -290,6 +290,37 @@
   // sottolineatura al tocco dei link esterni (.link-esterno, nomi di Brands)
   document.addEventListener('touchstart', () => {}, { passive: true });
 
+  // ── entrata delle immagini dal basso (19.10.26, Roberto) ──
+  // About e Space, come le immagini di Campaigns (entrataCampaigns): all'apertura le cornici
+  // VISIBILI salgono di 80 px comparendo, una dopo l'altra, una volta sola, a immagini caricate
+  // (max 1.5 s di attesa). Si anima la CORNICE: dentro, la img ha il transform della parallasse e
+  // fuori il nastro ha il suo. Quelle fuori schermo (copie del nastro) restano come sono.
+  // ⚠️ Le visibili si misurano DOPO due fotogrammi: il nastro di About da telefono parte a
+  // pos = -16 e al primo passo il modulo lo porta quasi a un giro intero, quindi a schermo ci sono
+  // le COPIE, non le prime cornici. Intanto sono tutte nascoste (niente lampo).
+  window.septEntrataCornici = function (cornici) {
+    if (!window.gsap || !cornici.length) return;
+    gsap.set(cornici, { opacity: 0 });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const vis = cornici.filter(f => {
+      const r = f.getBoundingClientRect();
+      return r.width && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
+    });
+    gsap.set(cornici.filter(f => !vis.includes(f)), { clearProps: 'opacity' });
+    if (!vis.length) return;
+    gsap.set(vis, { opacity: 0, y: 80 });
+    const imgs = vis.map(f => f.querySelector('img')).filter(Boolean);
+    const pronte = imgs.map(im => im.complete ? Promise.resolve() : new Promise(ok => {
+      im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
+    }));
+    const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
+    Promise.race([Promise.all(pronte), attesa]).then(() => {
+      gsap.to(vis, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.12, clearProps: 'transform,opacity' });
+    });
+    }));
+  };
+
   // ── footer overlay ──────────────────────────────
 
   document.getElementById('copy-email-btn').addEventListener('click', e => {

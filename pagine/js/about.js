@@ -271,3 +271,6 @@
     window.addEventListener('load', misura);
     colonna.querySelectorAll('img').forEach(im => { if (!im.complete) im.addEventListener('load', misura, { once: true }); });
   })();
+
+  // (19.10.26) immagini che entrano dal basso all'apertura (core.js), desktop e telefono, anche about2
+  window.septEntrataCornici([...document.querySelectorAll('#about .about-parallax-frame')]);
