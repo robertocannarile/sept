@@ -223,7 +223,7 @@
     }
     function passo(t) {
       if (!attivo) return;
-      if (tPrima && !tocco) pos += VELOCITA * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
+      if (tPrima && !tocco) pos += VELOCITA * window.septAvvioNastro.v * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
       tPrima = t;
       if (giro) {
         const x = ((pos % giro) + giro) % giro;   // anche con pos negativo (rotella in su, dito a destra)

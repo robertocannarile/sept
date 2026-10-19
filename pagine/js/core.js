@@ -298,8 +298,15 @@
   // ⚠️ Le visibili si misurano DOPO due fotogrammi: il nastro di About da telefono parte a
   // pos = -16 e al primo passo il modulo lo porta quasi a un giro intero, quindi a schermo ci sono
   // le COPIE, non le prime cornici. Intanto sono tutte nascoste (niente lampo).
+  // (19.10.26 Roberto "non mi piace che si muova prima che entrino le immagini") i nastri di About
+  // e Space moltiplicano la loro velocita' per `v`: fermi durante l'entrata, poi ripartono
+  // accelerando piano (power2.in), cosi' lo stacco non si nota. Senza entrata resta 1.
+  window.septAvvioNastro = { v: 1 };
   window.septEntrataCornici = function (cornici) {
     if (!window.gsap || !cornici.length) return;
+    const avvio = window.septAvvioNastro;
+    avvio.v = 0;
+    const riparti = ritardo => gsap.to(avvio, { v: 1, duration: 1.4, ease: 'power2.in', delay: ritardo || 0 });
     gsap.set(cornici, { opacity: 0 });
     requestAnimationFrame(() => requestAnimationFrame(() => {
     const vw = window.innerWidth, vh = window.innerHeight;
@@ -308,7 +315,7 @@
       return r.width && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
     });
     gsap.set(cornici.filter(f => !vis.includes(f)), { clearProps: 'opacity' });
-    if (!vis.length) return;
+    if (!vis.length) { riparti(); return; }
     gsap.set(vis, { opacity: 0, y: 80 });
     const imgs = vis.map(f => f.querySelector('img')).filter(Boolean);
     // (19.10.26 "scattano") 1) si aspetta anche la DECODIFICA: a opacita' 0 Safari non decodifica
@@ -321,12 +328,14 @@
     Promise.race([Promise.all(pronte), attesa]).then(() => {
       // 2) livello proprio SOLO durante l'entrata: il browser sposta la cornice gia' disegnata invece
       // di ridisegnarla (foto ingrandita + ritaglio) a ogni fotogramma. Tolto a fine corsa.
+      // (19.10.26 "la parte finale scatta") a fine corsa NON si toglie piu' niente: togliere il
+      // livello e il transform nello stesso istante faceva ridisegnare la cornice e la riallineava
+      // al pixel (saltino). Restano will-change e translate 0: poche cornici, costo trascurabile.
       vis.forEach(f => { f.style.willChange = 'transform, opacity'; });
-      gsap.to(vis, {
-        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', force3D: true,
-        stagger: { each: 0.12, onComplete() { this.targets()[0].style.willChange = ''; } },
-        clearProps: 'transform,opacity'
-      });
+      const DUR = 0.9, PASSO = 0.12;
+      gsap.to(vis, { opacity: 1, y: 0, duration: DUR, ease: 'power3.out', force3D: true, stagger: PASSO });
+      // il nastro riparte quando l'ultima foto sta finendo di salire (0.3 s prima della fine)
+      riparti(Math.max(0, DUR + PASSO * (vis.length - 1) - 0.3));
     });
     }));
   };

@@ -103,7 +103,7 @@
   }
 
   function passo(t) {
-    if (tPrima && !fermo && inVista) pos += VELOCITA * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
+    if (tPrima && !fermo && inVista) pos += VELOCITA * window.septAvvioNastro.v * Math.min(0.1, (t - tPrima) / 1000);   // max 0.1 s: niente salti dopo una scheda in background
     tPrima = t;
     if (inVista) disegna();
     requestAnimationFrame(passo);
