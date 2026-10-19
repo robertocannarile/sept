@@ -58,7 +58,7 @@
       const imgs     = Array.from(document.querySelectorAll('#about .about-parallax-img'));
       if (!wrapper || !images) return;
       const off = new Float32Array(imgs.length);
-      const mq  = window.matchMedia('(max-width: 768px)');   // stessa soglia del CSS
+      const mq  = window.matchMedia(window.SEPT_TELEFONO);   // stessa soglia del CSS
       // NIENTE SOSTA e niente trucchi sulla pagina (versione 8, Roberto 16.09.26: "naturale,
       // che faccia vedere tutte le immagini lentamente"). La 7 spingeva la sezione con
       // translateY per rallentare la pagina: laggava e sembrava innaturale.
@@ -188,7 +188,7 @@
   (function nastroAbout() {
     const colonna = document.querySelector('#about .about-images');
     if (!colonna) return;
-    const telefono = window.matchMedia('(max-width: 768px)');
+    const telefono = window.matchMedia(window.SEPT_TELEFONO);
     const VELOCITA = 30;   // px al secondo
     const COPIE = 3;
     const PARTENZA_TELEFONO = 16;   // all'apertura la prima immagine sta a 16 px dal bordo, come il testo

@@ -15,7 +15,7 @@
   const campSection = document.getElementById('campaigns');   // serve gia' a setCampWrapperHeight
 
   function campImgOverflow() {
-    const topOffset = window.innerWidth <= 768 ? campScrollable.offsetTop : 0;
+    const topOffset = matchMedia(window.SEPT_TELEFONO).matches ? campScrollable.offsetTop : 0;
     return Math.max(0, topOffset + campScrollable.offsetHeight - window.innerHeight);
   }
 
@@ -47,7 +47,7 @@
     }
     // compose horizontal slide (X) + vertical scroll (Y) in one transform
     campScrollable.style.transform = `translate(${campSlideX}px, ${ty}px)`;
-    campCaption.style.transform = window.innerWidth <= 768
+    campCaption.style.transform = matchMedia(window.SEPT_TELEFONO).matches
       ? `translate(${campSlideX}px, ${ty}px)`
       : `translateX(${campSlideX}px)`;
   }

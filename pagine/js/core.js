@@ -3,6 +3,10 @@
 // Definisce le costanti globali usate dagli altri file: appEl, mainEl, lenis, onScroll,
 // requestScrollFrame, measureSections, SEPT_BRANDS.
 
+  // (19.10.26) "telefono" = stretto (<= 768) OPPURE telefono girato. STESSA condizione delle media
+  // query del CSS: se si tocca una, si tocca anche l'altra.
+  window.SEPT_TELEFONO = '(max-width: 768px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse)';
+
   const appEl       = document.getElementById('app');
   const mainEl      = document.getElementById('main');
 
@@ -281,6 +285,10 @@
     const camp = document.getElementById('camp-scrollable');
     if (camp) new MutationObserver(() => warm(camp)).observe(camp, { childList: true });
   })();
+
+  // (19.10.26) iOS Safari non applica :active ai link senza un listener touchstart: serve alla
+  // sottolineatura al tocco dei link esterni (.link-esterno, nomi di Brands)
+  document.addEventListener('touchstart', () => {}, { passive: true });
 
   // ── footer overlay ──────────────────────────────
 

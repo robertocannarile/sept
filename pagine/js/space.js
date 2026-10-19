@@ -43,7 +43,7 @@
   // distanza fra la 1a cornice e la sua prima copia → nessuno stacco. La strip fa da finestra
   // (CSS "SPACE — NASTRO AUTOMATICO").
   // Mouse sopra la strip: il nastro continua, la rotella/trackpad lo sposta (avanti e indietro). Col dito: si trascina in orizzontale, al rilascio riparte.
-  const VELOCITA = window.matchMedia('(max-width: 768px)').matches ? 30 : 40;   // px al secondo
+  const VELOCITA = window.matchMedia(window.SEPT_TELEFONO).matches ? 30 : 40;   // px al secondo
   const COPIE = 3;
   const originali = [...spaceFrames];
   const nastro = document.createElement('div');
