@@ -6,6 +6,9 @@
   <title>Sept — About</title>
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="css/sept.css">
+  <!-- (19.10.26) cornici nascoste fino all'entrata (septEntrataCornici in core.js la toglie);
+       rete di sicurezza: se il JS non parte, ricompaiono dopo 4 s -->
+  <script>document.documentElement.classList.add('cornici-attesa');setTimeout(function(){document.documentElement.classList.remove('cornici-attesa')},4000);</script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script>if (/[?&]prova=[^&]*space/.test(location.search)) document.documentElement.classList.add('prova-space');
   // PROVA `?prova=vh` (17.09.26): #app torna alto 100vh (prima di ieri), per vedere se il tremolio

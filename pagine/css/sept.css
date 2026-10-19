@@ -2091,3 +2091,9 @@
       }
       .contact-left, .contact-right { flex: 1 1 0; min-width: 0; width: auto; gap: 0.4rem; }
     }
+
+    /* (19.10.26) About e Space: cornici nascoste dal primo disegno finche' parte l'entrata dal basso
+       (classe messa nell'<head>, tolta da septEntrataCornici). Senza, Safari mostrava un fotogramma
+       con le cornici alla misura del CSS prima del JS. */
+    html.cornici-attesa .about-parallax-frame,
+    html.cornici-attesa .space-parallax-frame { opacity: 0; }

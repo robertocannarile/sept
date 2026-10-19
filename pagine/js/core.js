@@ -302,41 +302,49 @@
   // e Space moltiplicano la loro velocita' per `v`: fermi durante l'entrata, poi ripartono
   // accelerando piano (power2.in), cosi' lo stacco non si nota. Senza entrata resta 1.
   window.septAvvioNastro = { v: 1 };
+  // (19.10.26, terza versione) Roberto da iPhone: "scatta poco prima della fine", "il movimento
+  // parte troppo dopo", "in Space un fotogramma con un'immagine in grande".
+  // - Animazione NATIVA (Web Animations, element.animate) invece di GSAP: transform e opacita' le
+  //   esegue il compositore (GPU) e non risente del main thread, che proprio verso la fine e'
+  //   occupato (fine dell'entrata dei testi, misure, nastro). fill 'both': la cornice resta sul suo
+  //   livello a translate 0, niente ridisegno a fine corsa.
+  // - Le cornici sono nascoste GIA' dal CSS prima del primo disegno (classe `cornici-attesa` messa
+  //   nell'<head> di about/about2/space): Safari disegnava la pagina prima del JS, con le cornici
+  //   alla misura del CSS (Space mobile 100vw) → il fotogramma "in grande". Qui si toglie la classe.
+  // - Il nastro riparte quando la PRIMA foto e' quasi arrivata (prima: l'ultima, troppo tardi).
   window.septEntrataCornici = function (cornici) {
-    if (!window.gsap || !cornici.length) return;
+    const html = document.documentElement;
+    const scopri = () => html.classList.remove('cornici-attesa');
+    if (!cornici.length || !cornici[0].animate) { scopri(); return; }
     const avvio = window.septAvvioNastro;
     avvio.v = 0;
-    const riparti = ritardo => gsap.to(avvio, { v: 1, duration: 1.4, ease: 'power2.in', delay: ritardo || 0 });
-    gsap.set(cornici, { opacity: 0 });
+    const riparti = ritardo => window.gsap
+      ? gsap.to(avvio, { v: 1, duration: 1.2, ease: 'power1.in', delay: ritardo || 0 })
+      : (avvio.v = 1);
     requestAnimationFrame(() => requestAnimationFrame(() => {
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const vis = cornici.filter(f => {
-      const r = f.getBoundingClientRect();
-      return r.width && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
-    });
-    gsap.set(cornici.filter(f => !vis.includes(f)), { clearProps: 'opacity' });
-    if (!vis.length) { riparti(); return; }
-    gsap.set(vis, { opacity: 0, y: 80 });
-    const imgs = vis.map(f => f.querySelector('img')).filter(Boolean);
-    // (19.10.26 "scattano") 1) si aspetta anche la DECODIFICA: a opacita' 0 Safari non decodifica
-    // l'immagine e lo faceva a meta' salita, quando cominciava a vederla → uno scatto per foto.
-    // decode() la prepara fuori dal main thread prima di partire.
-    const pronte = imgs.map(im => (im.complete ? Promise.resolve() : new Promise(ok => {
-      im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
-    })).then(() => im.decode ? im.decode().catch(() => {}) : null));
-    const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
-    Promise.race([Promise.all(pronte), attesa]).then(() => {
-      // 2) livello proprio SOLO durante l'entrata: il browser sposta la cornice gia' disegnata invece
-      // di ridisegnarla (foto ingrandita + ritaglio) a ogni fotogramma. Tolto a fine corsa.
-      // (19.10.26 "la parte finale scatta") a fine corsa NON si toglie piu' niente: togliere il
-      // livello e il transform nello stesso istante faceva ridisegnare la cornice e la riallineava
-      // al pixel (saltino). Restano will-change e translate 0: poche cornici, costo trascurabile.
-      vis.forEach(f => { f.style.willChange = 'transform, opacity'; });
-      const DUR = 0.9, PASSO = 0.12;
-      gsap.to(vis, { opacity: 1, y: 0, duration: DUR, ease: 'power3.out', force3D: true, stagger: PASSO });
-      // il nastro riparte quando l'ultima foto sta finendo di salire (0.3 s prima della fine)
-      riparti(Math.max(0, DUR + PASSO * (vis.length - 1) - 0.3));
-    });
+      // misurate DOPO due fotogrammi: il nastro di About da telefono parte a pos -16 e al primo
+      // passo il modulo lo porta quasi a un giro → a schermo ci sono le copie, non le prime cornici
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const vis = cornici.filter(f => {
+        const r = f.getBoundingClientRect();
+        return r.width && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
+      });
+      if (!vis.length) { scopri(); riparti(); return; }
+      // si aspetta anche la DECODIFICA: a opacita' 0 Safari non decodifica e lo faceva a meta' salita
+      const pronte = vis.map(f => f.querySelector('img')).filter(Boolean).map(im =>
+        (im.complete ? Promise.resolve() : new Promise(ok => {
+          im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
+        })).then(() => im.decode ? im.decode().catch(() => {}) : null));
+      const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
+      Promise.race([Promise.all(pronte), attesa]).then(() => {
+        const DUR = 900, PASSO = 120;
+        vis.forEach((f, i) => f.animate(
+          [{ transform: 'translate3d(0, 80px, 0)', opacity: 0 }, { transform: 'translate3d(0, 0, 0)', opacity: 1 }],
+          { duration: DUR, delay: i * PASSO, easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)', fill: 'both' }   // = power3.out
+        ));
+        scopri();   // nello stesso fotogramma: le visibili sono gia' tenute a 0 dal fill 'both'
+        riparti(DUR * 0.6 / 1000);   // quando la prima foto e' quasi arrivata
+      });
     }));
   };
 
