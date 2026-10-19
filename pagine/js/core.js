@@ -311,12 +311,22 @@
     if (!vis.length) return;
     gsap.set(vis, { opacity: 0, y: 80 });
     const imgs = vis.map(f => f.querySelector('img')).filter(Boolean);
-    const pronte = imgs.map(im => im.complete ? Promise.resolve() : new Promise(ok => {
+    // (19.10.26 "scattano") 1) si aspetta anche la DECODIFICA: a opacita' 0 Safari non decodifica
+    // l'immagine e lo faceva a meta' salita, quando cominciava a vederla → uno scatto per foto.
+    // decode() la prepara fuori dal main thread prima di partire.
+    const pronte = imgs.map(im => (im.complete ? Promise.resolve() : new Promise(ok => {
       im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
-    }));
+    })).then(() => im.decode ? im.decode().catch(() => {}) : null));
     const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
     Promise.race([Promise.all(pronte), attesa]).then(() => {
-      gsap.to(vis, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.12, clearProps: 'transform,opacity' });
+      // 2) livello proprio SOLO durante l'entrata: il browser sposta la cornice gia' disegnata invece
+      // di ridisegnarla (foto ingrandita + ritaglio) a ogni fotogramma. Tolto a fine corsa.
+      vis.forEach(f => { f.style.willChange = 'transform, opacity'; });
+      gsap.to(vis, {
+        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', force3D: true,
+        stagger: { each: 0.12, onComplete() { this.targets()[0].style.willChange = ''; } },
+        clearProps: 'transform,opacity'
+      });
     });
     }));
   };
