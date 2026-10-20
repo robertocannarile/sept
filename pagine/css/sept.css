@@ -2097,3 +2097,11 @@
        con le cornici alla misura del CSS prima del JS. */
     html.cornici-attesa .about-parallax-frame,
     html.cornici-attesa .space-parallax-frame { opacity: 0; }
+
+    /* (20.10.26, Roberto: "cambiando pagina c'e' un fotogramma con i contenuti prima dell'animazione")
+       I testi che entrano a righe (animSelectors di testo.js) restano invisibili dal primo disegno
+       finche' testo.js non li ha spezzati e messi a opacita' 0 riga per riga: il browser disegnava
+       la pagina prima che gli script in fondo arrivassero (misurato: 1-16 fotogrammi). Classe messa
+       da uno script nell'<head> di ogni pagina, tolta da testo.js; rete di sicurezza 4 s. */
+    html.testo-attesa .section :is(.section-title, .about-label, .about-text, .brands-text a,
+      .space-text p, .contact-top p, .contact-top a) { opacity: 0; }

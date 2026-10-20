@@ -58,6 +58,7 @@
   // ── campaigns ───────────────────────────────────
   // To add a campaign: copy one object and update season, name, subtitle, images[].
   // Images can be local paths ('assets/campaigns/myimage.jpg') or remote URLs.
+  // contenuti:campagne
   const campaigns = [
     {
       season:   'SS26',
@@ -77,8 +78,8 @@
         'assets/campaigns/fw26/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright-2.jpg',
       ]
     },
-    // ss27 — cartella vuota: aggiungi le immagini e poi un blocco qui sotto.
   ];
+  // /contenuti:campagne
 
   function renderCampaign(idx) {
     const c = campaigns[idx];

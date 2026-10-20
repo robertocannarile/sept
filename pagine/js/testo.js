@@ -65,6 +65,8 @@
     });
   }
   splitText();
+  // righe pronte (a opacita' 0): via il velo messo dall'<head> (classe testo-attesa, vedi sept.css)
+  document.documentElement.classList.remove('testo-attesa');
 
   // ⚠️ IntersectionObserver e NON ScrollTrigger (17.09.26, "l'animazione in alcune parti non si
   // vede"). ScrollTrigger calcola in anticipo a che scroll il testo arrivera' sullo schermo, ma

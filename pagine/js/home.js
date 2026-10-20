@@ -7,6 +7,7 @@
     if (window.Observer) gsap.registerPlugin(Observer);
     const EASE = 'expo.inOut';
 
+    // contenuti:home-foto
     const images = [
       "assets/img_pool/A BATHING APE/img_1.webp",
       "assets/img_pool/A BATHING APE/img_2.webp",
@@ -201,9 +202,11 @@
       "assets/img_pool/THE SKATEROOM/img_5.webp",
       "assets/img_pool/THE SKATEROOM/img_6.webp"
     ];
+    // /contenuti:home-foto
 
     // Immagini senza sfondo (webp con canale alpha). Rigenerato da build_pool.py.
     // In fitItems vengono renderizzate leggermente piu' grandi (NOBG_MUL).
+    // contenuti:home-senzasfondo
     const noBgImages = new Set([
       "assets/img_pool/A BATHING APE/img_1.webp",
       "assets/img_pool/ALPHA INDUSTRIES/images-30.webp",
@@ -236,6 +239,7 @@
       "assets/img_pool/Sept/sept_728861378.webp",
       "assets/img_pool/Sept/sept_753741889.webp"
     ]);
+    // /contenuti:home-senzasfondo
     const NOBG_MUL = 1.35;   // quanto piu' grandi le immagini senza sfondo (1 = uguali)
 
     for (let i = images.length - 1; i > 0; i--) {

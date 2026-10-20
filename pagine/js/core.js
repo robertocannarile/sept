@@ -244,6 +244,7 @@
   // brands.js perche' lo usa anche la home, per precaricare le card mentre sei su un'altra pagina.
   // (11.10.26) = i 30 nomi di brands.html: tolti ARIES, EVISU, GR10K, LEE 101, NO PROBLEMO, PEACEMAKER OAMC,
   // PYRENEX, REEBOK, REPLICATED GR10K, WRANGLER, XLARGE; aggiunti DAMSON MADDER e OLAF
+  // contenuti:sept-brands
   const SEPT_BRANDS = [
     'A BATHING APE','ACUPUNCTURE 1993','ALPHA INDUSTRIES','AMISH SUPPLIES','ARTE ANTWERP',
     'CHAMPION PINNACLE','CIELE ATHLETICS','COOKMAN','COTOPAXI','CROCS EXP','DAILY PAPER',
@@ -251,6 +252,7 @@
     'NEW AMSTERDAM SURF ASSOCIATION','NORDA','NORTHWAVE ESPRESSO','OLAF',"PRESIDENT'S",'PURAAI',
     'RHIZOME','SAMSØE SAMSØE','SANTHA','SATISFY','SESSÙN','TEVA','THE SKATEROOM'
   ];
+  // /contenuti:sept-brands
   window.__septBrandFolders = SEPT_BRANDS;
 
   // ── snap fra le sezioni: TOLTO (23.09.2026) ──

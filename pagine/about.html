@@ -6,6 +6,7 @@
   <title>Sept — About</title>
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="css/sept.css">
+  <script>document.documentElement.classList.add('testo-attesa');setTimeout(function(){document.documentElement.classList.remove('testo-attesa')},4000);</script>
   <!-- (19.10.26) cornici nascoste fino all'entrata (septEntrataCornici in core.js la toglie);
        rete di sicurezza: se il JS non parte, ricompaiono dopo 4 s -->
   <script>document.documentElement.classList.add('cornici-attesa');setTimeout(function(){document.documentElement.classList.remove('cornici-attesa')},4000);</script>
@@ -107,13 +108,18 @@
         <div class="about-text-block" style="grid-column:1">
           <!-- "Our Family" tolta (Roberto 23.09.26) -->
           <div class="about-inner">
+            <!-- contenuti:about-intro -->
             <span class="about-label">Our Story</span>
             <p class="about-intro">Sept is an independent multibrand showroom founded in 2020 in Milan.</p>
+            <!-- /contenuti:about-intro -->
           </div>
+          <!-- contenuti:about-testo -->
           <p class="about-text">It comes from a strong knowledge and passion for street culture expressed in all known forms as music, art, of course fashion, sport and its newest expressions.<br>It translates into a natural propensity towards the world of fashion by taking inspiration from all the stimulating things that surround us.<br>Our showroom follows his direction while remaining faithful to his identity, in an increasingly complex and difficult market, making the quality of service to customers and brands his first mission.</p>
+          <!-- /contenuti:about-testo -->
         </div>
 
         <div class="about-images" style="grid-column:3">
+          <!-- contenuti:about-foto -->
           <div class="about-parallax-frame" style="aspect-ratio:1/1">
             <img class="about-parallax-img" src="assets/about/img_1.webp" alt="">
           </div>
@@ -129,6 +135,7 @@
           <div class="about-parallax-frame" style="aspect-ratio:1/1">
             <img class="about-parallax-img" src="assets/sept_family.gif" alt="" loading="lazy" decoding="async">
           </div>
+          <!-- /contenuti:about-foto -->
         </div>
 
         <!-- SOLO MOBILE (<=768): "Our Family" + gif sotto il testo. Sul telefono la gif esce
