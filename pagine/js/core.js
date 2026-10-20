@@ -295,7 +295,7 @@
   // ── entrata delle immagini dal basso (19.10.26, Roberto) ──
   // About e Space, come le immagini di Campaigns (entrataCampaigns): all'apertura le cornici
   // VISIBILI salgono di 80 px comparendo, una dopo l'altra, una volta sola, a immagini caricate
-  // (max 1.5 s di attesa). Si anima la CORNICE: dentro, la img ha il transform della parallasse e
+  // (max 3.5 s di attesa). Si anima la CORNICE: dentro, la img ha il transform della parallasse e
   // fuori il nastro ha il suo. Quelle fuori schermo (copie del nastro) restano come sono.
   // ⚠️ Le visibili si misurano DOPO due fotogrammi: il nastro di About da telefono parte a
   // pos = -16 e al primo passo il modulo lo porta quasi a un giro intero, quindi a schermo ci sono
@@ -337,7 +337,9 @@
         (im.complete ? Promise.resolve() : new Promise(ok => {
           im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
         })).then(() => im.decode ? im.decode().catch(() => {}) : null));
-      const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
+      // rete lenta: non si aspetta oltre. 3.5 s (era 1.5, 20.10.26): con 1.5 su telefono le foto di Space
+      // (2-2.7 s a cache vuota) salivano mezze disegnate. La rete di sicurezza nell'<head> e' 5 s.
+      const attesa = new Promise(ok => setTimeout(ok, 3500));
       Promise.race([Promise.all(pronte), attesa]).then(() => {
         const DUR = 900, PASSO = 120;
         vis.forEach((f, i) => f.animate(

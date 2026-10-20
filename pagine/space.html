@@ -9,7 +9,7 @@
   <script>document.documentElement.classList.add('testo-attesa');setTimeout(function(){document.documentElement.classList.remove('testo-attesa')},4000);</script>
   <!-- (19.10.26) cornici nascoste fino all'entrata (septEntrataCornici in core.js la toglie);
        rete di sicurezza: se il JS non parte, ricompaiono dopo 4 s -->
-  <script>document.documentElement.classList.add('cornici-attesa');setTimeout(function(){document.documentElement.classList.remove('cornici-attesa')},4000);</script>
+  <script>document.documentElement.classList.add('cornici-attesa');setTimeout(function(){document.documentElement.classList.remove('cornici-attesa')},5000);</script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script>if (/[?&]prova=[^&]*space/.test(location.search)) document.documentElement.classList.add('prova-space');
   // PROVA `?prova=vh` (17.09.26): #app torna alto 100vh (prima di ieri), per vedere se il tremolio
@@ -108,10 +108,10 @@
       <!-- /contenuti:space-etichetta -->
       <div class="space-strip" id="space-strip">
         <!-- contenuti:space-foto -->
-        <div class="space-parallax-frame"><img fetchpriority="low" decoding="async" src="assets/space/1754688326414.jpeg" alt=""></div>
-        <div class="space-parallax-frame"><img fetchpriority="low" decoding="async" src="assets/space/1754688326463.jpeg" alt=""></div>
-        <div class="space-parallax-frame"><img fetchpriority="low" decoding="async" src="assets/space/DSC_3753.jpg.webp" alt=""></div>
-        <div class="space-parallax-frame"><img fetchpriority="low" decoding="async" src="assets/space/wwd-22.jpg" alt=""></div>
+        <div class="space-parallax-frame"><img decoding="async" src="assets/space/1754688326414.webp" alt=""></div>
+        <div class="space-parallax-frame"><img decoding="async" src="assets/space/1754688326463.webp" alt=""></div>
+        <div class="space-parallax-frame"><img decoding="async" src="assets/space/DSC_3753.webp" alt=""></div>
+        <div class="space-parallax-frame"><img decoding="async" src="assets/space/wwd-22.webp" alt=""></div>
         <!-- /contenuti:space-foto -->
       </div>
       <div class="space-text">

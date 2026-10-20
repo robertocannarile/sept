@@ -1106,12 +1106,13 @@
       // 2. immagini delle altre pagine (strip Space, About, cover di Organic Noise). (23.09.26) Prima
       //    si leggevano dal DOM, quando tutte le sezioni stavano qui; ora sono in altre pagine,
       //    quindi si scarica il loro HTML e se ne leggono le <img>: nessuna lista da tenere a mano.
-      //    Le campagne restano fuori: le loro immagini sono nell'array di campaigns.js.
-      const PAGINE = ['about.html', 'space.html', 'organic-noise.html', 'contact.html'];
+      //    (20.10.26) anche Campaigns: le sue foto sono nell'array di campaigns.js, ma quelle della prima
+      //    campagna ora sono nei <link rel="preload"> dell'<head> di campaigns.html (li scrive costruisci.py).
+      const PAGINE = ['about.html', 'space.html', 'campaigns.html', 'organic-noise.html', 'contact.html'];
       const daPagine = Promise.all(PAGINE.map(p => fetch(p)
         .then(r => r.text())
-        .then(t => [...new DOMParser().parseFromString(t, 'text/html').querySelectorAll('img')]
-          .map(im => im.getAttribute('src')).filter(Boolean))
+        .then(t => [...new DOMParser().parseFromString(t, 'text/html').querySelectorAll('img[src], link[rel="preload"][as="image"]')]
+          .map(el => el.getAttribute('src') || el.getAttribute('href')).filter(Boolean))
         .catch(() => [])));
 
       let i = 0;

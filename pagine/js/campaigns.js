@@ -65,8 +65,8 @@
       name:     'Campaign',
       subtitle: 'The Sept Summer',
       images: [
-        'assets/campaigns/ss26/1.jpg',
-        'assets/campaigns/ss26/2.jpg',
+        'assets/campaigns/ss26/1.webp',
+        'assets/campaigns/ss26/2.webp',
       ]
     },
     {
@@ -74,8 +74,8 @@
       name:     'Campaign',
       subtitle: 'Our new stars shine bright',
       images: [
-        'assets/campaigns/fw26/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright.jpg',
-        'assets/campaigns/fw26/Sept Fall Winter 2026.From December 1st to February 28th.This season, our new stars shine bright-2.jpg',
+        'assets/campaigns/fw26/1.webp',
+        'assets/campaigns/fw26/2.webp',
       ]
     },
   ];
@@ -173,10 +173,11 @@
     const righe = [...campCaption.querySelectorAll('span:not(.camp-gap)')];
     gsap.set(imgs,  { opacity: 0, y: 80 });
     gsap.set(righe, { opacity: 0, y: 10 });
-    const pronte = imgs.map(im => im.complete ? Promise.resolve() : new Promise(ok => {
+    // (20.10.26) anche decode(): l'immagine arrivata ma non ancora decodificata saliva vuota e poi compariva
+    const pronte = imgs.map(im => (im.complete ? Promise.resolve() : new Promise(ok => {
       im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
-    }));
-    const attesa = new Promise(ok => setTimeout(ok, 1500));   // rete lenta: non si aspetta oltre
+    })).then(() => im.decode ? im.decode().catch(() => {}) : null));
+    const attesa = new Promise(ok => setTimeout(ok, 3500));   // rete lenta: non si aspetta oltre (era 1.5 s)
     Promise.race([Promise.all(pronte), attesa]).then(() => {
       gsap.timeline()
         .to(imgs,  { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.15, clearProps: 'transform,opacity' })
