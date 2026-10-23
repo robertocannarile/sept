@@ -25,6 +25,27 @@
   // delle immagini sulla sezione era di SETTE pixel — un pin da 7 px, inutile e fastidioso.
   const CAMP_PIN_MIN = 80;
 
+  // (23.10.26, Roberto) campagna con UNA foto: sempre al centro in altezza e pagina che NON scorre.
+  // Si misura su #app (100dvh = schermo visibile, come i tasti) e non sulla sezione: su iPhone la sezione
+  // e' 100vh, piu' alta dello schermo con le barre di Safari, e la foto finiva 20-40 px sotto i tasti.
+  // Sezione alta quanto #app; se la foto non ci sta (telefono girato) si rimpicciolisce. Sul telefono mai
+  // sopra la didascalia (il `top` del CSS e' gia' sotto la didascalia e fa da minimo).
+  let campSingola = false;
+  function centraFotoSingola() {
+    campScrollable.style.top = '';
+    campSection.style.removeProperty('height');
+    const sola = campScrollable.children.length === 1 && campScrollable.firstElementChild;
+    campSingola = !!sola;
+    if (!sola) return;
+    const alto = appEl.clientHeight;
+    campSection.style.setProperty('height', alto + 'px', 'important');   // il CSS telefono ha 100vh !important
+    const minimo = campScrollable.offsetTop;
+    sola.style.maxHeight = Math.max(0, alto - minimo - 16) + 'px';      // object-fit: contain tiene le proporzioni
+    if (!sola.naturalWidth) return;                                        // ricentrata a foto caricata
+    const centro = (alto - campScrollable.offsetHeight) / 2;
+    if (centro > minimo) campScrollable.style.top = centro + 'px';
+  }
+
   function setCampWrapperHeight() {
     const overflow = campImgOverflow();
     const pin = overflow >= CAMP_PIN_MIN;
@@ -32,7 +53,7 @@
     // alta `100vh` (che li' vuol dire "senza barra del browser") mentre innerHeight e'
     // l'altezza corrente, con la barra. Mescolarli rendeva il wrapper piu' corto della
     // sezione — cioe' esattamente il caso che il commento nel CSS avverte di evitare.
-    const base = Math.max(campSection.offsetHeight, window.innerHeight);
+    const base = campSingola ? appEl.clientHeight : Math.max(campSection.offsetHeight, window.innerHeight);
     campWrapper.style.height = (base + (pin ? overflow : 0)) + 'px';
     campSection.style.position = pin ? '' : 'relative';
   }
@@ -53,7 +74,7 @@
   }
 
   onScroll(updateCampaign);
-  window.addEventListener('resize', () => { setCampWrapperHeight(); updateCampaign(); });
+  window.addEventListener('resize', () => { centraFotoSingola(); setCampWrapperHeight(); updateCampaign(); });
 
   // ── campaigns ───────────────────────────────────
   // To add a campaign: copy one object and update season, name, subtitle, images[].
@@ -97,6 +118,7 @@
     campNextBtn.hidden = !nuova;
     campPrevBtn.textContent = vecchia ? vecchia.season : '';
     campNextBtn.textContent = nuova ? nuova.season : '';
+    centraFotoSingola();   // foto gia' scaricata: centrata subito (altrimenti al caricamento, sotto)
     updateCampaign(); // apply current slide/scroll transform to fresh content
 
     // Recalc wrapper height once images have loaded (aspect ratio known)
@@ -104,6 +126,7 @@
     let loaded = 0;
     function onImgSettled() {
       if (++loaded >= imgs.length) {
+        centraFotoSingola();
         setCampWrapperHeight();
         updateCampaign();
       }
@@ -167,6 +190,9 @@
   // Initial height placeholder so page doesn't collapse before images load
   campWrapper.style.height = (window.innerHeight * 2) + 'px';
   renderCampaign(0);
+  // (23.10.26) le foto delle altre campagne si scaricano subito dopo: al cambio arrivano gia' pronte e la
+  // foto singola si centra prima di entrare (altrimenti si spostava a meta' dello slide, a foto arrivata)
+  addEventListener('load', () => campaigns.slice(1).forEach(c => c.images.forEach(src => { new Image().src = src; })));
 
   // ── ENTRATA all'apertura (11.10.2026, Roberto: "animazioni come le altre, anche le immagini che
   // compaiono dal basso") ── una volta sola, non ai cambi campagna (li' c'e' gia' lo slide).
