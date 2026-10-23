@@ -61,21 +61,21 @@
   // contenuti:campagne
   const campaigns = [
     {
-      season:   'SS26',
-      name:     'Campaign',
-      subtitle: 'The Sept Summer',
-      images: [
-        'assets/campaigns/ss26/1.webp',
-        'assets/campaigns/ss26/2.webp',
-      ]
-    },
-    {
       season:   'FW26',
       name:     'Campaign',
       subtitle: 'Our new stars shine bright',
       images: [
         'assets/campaigns/fw26/1.webp',
         'assets/campaigns/fw26/2.webp',
+      ]
+    },
+    {
+      season:   'SS26',
+      name:     'Campaign',
+      subtitle: 'The Sept Summer',
+      images: [
+        'assets/campaigns/ss26/1.webp',
+        'assets/campaigns/ss26/2.webp',
       ]
     },
   ];
@@ -89,8 +89,14 @@
     campCaption.innerHTML =
       `<span>${c.season}</span><span>${c.name}</span><span class="camp-gap"></span><span>${c.subtitle}</span>`;
     campCurrent = idx;
-    campPrevBtn.disabled = campaigns.length <= 1;
-    campNextBtn.disabled = campaigns.length <= 1;
+    // (23.10.26, Roberto) i tasti portano la sigla della campagna a cui vanno, niente giro circolare.
+    // campaigns[] arriva gia' dalla piu' nuova alla piu' vecchia (costruisci.py): a sinistra la piu'
+    // vecchia (idx + 1), a destra la piu' nuova (idx - 1); agli estremi il tasto sparisce.
+    const vecchia = campaigns[idx + 1], nuova = campaigns[idx - 1];
+    campPrevBtn.hidden = !vecchia;
+    campNextBtn.hidden = !nuova;
+    campPrevBtn.textContent = vecchia ? vecchia.season : '';
+    campNextBtn.textContent = nuova ? nuova.season : '';
     updateCampaign(); // apply current slide/scroll transform to fresh content
 
     // Recalc wrapper height once images have loaded (aspect ratio known)
@@ -109,13 +115,13 @@
   }
 
   // ── directional slide between campaigns ─────────
-  // NEXT (dir +1): current exits left, new enters from right. PREV: opposite.
+  // Tasto destro (piu' nuova, dir +1): current exits left, new enters from right. Sinistro: opposite.
   // Sequential (out → swap → in) with a crossfade covering the content swap.
   const CAMP_SLIDE = 180; // px travel of the slide
   function switchCampaign(dir) {
-    if (campSwitching || campaigns.length <= 1) return;
+    const newIdx = campCurrent - dir;      // campaigns[] va dalla piu' nuova (0) alla piu' vecchia
+    if (campSwitching || !campaigns[newIdx]) return;
     campSwitching = true;
-    const newIdx = (campCurrent + dir + campaigns.length) % campaigns.length;
 
     const outP = { x: campSlideX };
     gsap.to(outP, {

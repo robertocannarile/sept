@@ -706,6 +706,7 @@
     .camp-btn:hover { color: white; }
     .camp-btn:active { opacity: 0.4; }
     .camp-btn:disabled { color: rgba(255,255,255,0.15); cursor: default; }
+    .camp-btn[hidden] { display: none; }   /* agli estremi (23.10.26): niente campagna da quella parte */
     .camp-prev { left: max(8px, calc((100vw - 104px) / 12 * 2 + 24px)); }
     .camp-next { left: auto; right: 144px; }
 

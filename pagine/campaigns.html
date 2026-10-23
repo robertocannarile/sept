@@ -7,8 +7,8 @@
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="css/sept.css">
   <!-- contenuti:campagne-precarico -->
-  <link rel="preload" as="image" href="assets/campaigns/ss26/1.webp">
-  <link rel="preload" as="image" href="assets/campaigns/ss26/2.webp">
+  <link rel="preload" as="image" href="assets/campaigns/fw26/1.webp">
+  <link rel="preload" as="image" href="assets/campaigns/fw26/2.webp">
   <!-- /contenuti:campagne-precarico -->
   <script>document.documentElement.classList.add('testo-attesa');setTimeout(function(){document.documentElement.classList.remove('testo-attesa')},4000);</script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -118,8 +118,9 @@
 
 <!-- ══ CAMPAIGN NAV (fixed, viewport-anchored — immune to section jitter) ══ -->
 <div id="camp-nav">
-  <button class="camp-btn camp-prev" id="camp-prev">Prev</button>
-  <button class="camp-btn camp-next" id="camp-next">Next</button>
+  <!-- testo = sigla della campagna a cui portano, lo scrive campaigns.js -->
+  <button class="camp-btn camp-prev" id="camp-prev" hidden></button>
+  <button class="camp-btn camp-next" id="camp-next" hidden></button>
 </div>
 
 <!-- ══ FOOTER OVERLAY ══ -->
