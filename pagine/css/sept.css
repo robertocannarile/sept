@@ -1415,7 +1415,15 @@
         width: calc(75vw - 26px);
         top: 48px;
         bottom: auto;
+        /* (23.10.26, Roberto) sigla + titolo appoggiati sulla frase, senza la riga vuota; senza frase
+           scendono alla sua riga. Scatola alta come prima (4 righe = 4.4em, dove partono le foto),
+           testo in fondo: la frase resta dov'era */
+        height: 4.4em;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
       }
+      .camp-caption .camp-gap { display: none; }
       .camp-btn { font-size: 1.5rem; }  /* come "Menu" su mobile (#mobile-menu-btn: 1.5rem) */
       .camp-prev { left: 8px; top: 50%; bottom: auto; transform: translateY(-50%); }
       .camp-next { right: 8px; top: 50%; bottom: auto; transform: translateY(-50%); }
