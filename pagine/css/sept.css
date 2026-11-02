@@ -331,7 +331,9 @@
     }
     .about-intro {
       font-family: 'SharpGrotesk', sans-serif;
-      font-size: 1.5rem;
+      /* (02.11.26 Roberto) +12% rispetto a .about-text. Il minimo in px: sull'iPad dritto 1.68rem
+         restava piu' piccolo del telefono */
+      font-size: max(19.6px, 1.68rem);
       font-weight: 500;
       color: white;
       letter-spacing: -0.04em;
@@ -620,21 +622,27 @@
       text-underline-offset: 0.12em;
     }
 
+    /* (02.11.26 Roberto) il logo della navbar al posto della scritta, stessa larghezza. La linea di
+       base poggia a filo sul fondo dello schermo, l'asta della p esce di sotto, su ogni device
+       (0.075 = dal fondo del punto al fondo del disegno, in rapporto alla larghezza). */
     .contact-sept {
+      --larghezza: min(65.1vw, 120.7vh);
       position: absolute;
-      bottom: -0.13em;
-      left: -0.02em;
-      font-family: 'SharpGrotesk', sans-serif;
-      font-size: min(27vw, 50vh);
-      font-weight: 500;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      text-transform: lowercase;
-      color: white;
+      bottom: calc(var(--larghezza) * -0.075);
+      left: 8px;
+      width: var(--larghezza);
+      height: auto;
+      display: block;
       pointer-events: none;
       z-index: 1;
       margin: 0;
     }
+    /* MAIL / INSTAGRAM sopra il logo: sono bianchi come lui e sul punto sparivano. Il #sidebar e' un
+       contesto di impilamento a se', quindi un mix-blend-mode sulle voci non vede cio' che sta fuori:
+       serve una copia del logo DENTRO il #sidebar. Dove sotto non c'e' niente le voci restano del
+       loro colore; sul logo si invertono. */
+    #sidebar .contact-sept { position: fixed; z-index: 0; }
+    html[data-pagina="contact"] #sidebar .sidebar-footer { position: relative; z-index: 1; mix-blend-mode: difference; }
 
     .contact-corner {
       position: absolute;
@@ -1471,12 +1479,9 @@
       /* Come su desktop e tablet: appoggiata al fondo e un filo sotto (-0.13em), entra dal
          basso con l'animazione. Ora il fondo e' quello vero (#contact 100svh), quindi si vede. */
       .contact-sept {
-        /* (14.10.26 Roberto) l'asta della p si deve vedere: con -0.13em la linea di base cadeva sul
-           bordo e la discendente (0.198em) restava fuori. Ora il fondo della p e' a 8 px dal bordo,
-           come il simbolo in basso a destra. Misura e posizione orizzontale invariate. */
-        bottom: calc(0.068em + 8px);
-        left: -0.02em;
-        font-size: min(34vw, 20svh);
+        /* (02.11.26 Roberto) come desktop: linea di base a filo, asta della p fuori. Toglie la scelta
+           del 14.10.26 (p intera, a 8 px dal bordo). */
+        --larghezza: min(81.9vw, 48.3svh);
       }
 
       /* Radio */
@@ -1543,6 +1548,7 @@
         font-size: 1.75rem;       /* come .space-text-main / .space-text-side */
         line-height: 110%;
       }
+      .about-intro { font-size: 1.96rem; }   /* (02.11.26 Roberto) +12% rispetto a .about-text */
 
       /* Space e Contact alla stessa misura di About: su tablet restavano ai valori
          desktop e i tre blocchi si leggevano di tre grandezze diverse */

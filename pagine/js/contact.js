@@ -7,8 +7,9 @@
   // nuovo fuori a ogni ritorno in fondo (Roberto 16.09.26). Prima usciva una volta sola, con
   // Contact visibile al 25%.
   (function () {
-    const el = document.querySelector('.contact-sept');
-    if (!el) return;
+    // due: il logo nella sezione e la sua copia nel #sidebar (vedi .contact-sept in sept.css)
+    const el = document.querySelectorAll('.contact-sept');
+    if (!el.length) return;
     gsap.set(el, { y: '110%' });
     let fuori = false;
     // 2 px di tolleranza: con l'inerzia di Lenis scrollTop arriva al fondo per approssimazione
