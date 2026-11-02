@@ -63,6 +63,20 @@
     *, *::before, *::after { -webkit-user-select: none; user-select: none; }
     textarea, input { -webkit-user-select: text; user-select: text; }
     ::selection { background: transparent; }
+    /* Si selezionano solo indirizzo, telefono e mail (Contact e Space). Il `*` per le righe di SplitType;
+       user-drag: su un link trascinare porterebbe via il link invece di selezionare. */
+    .contact-address-block, .contact-address-block *,
+    .contact-right a[href^="mailto:"], .contact-right a[href^="mailto:"] *,
+    .contact-right a[href^="tel:"], .contact-right a[href^="tel:"] *,
+    .space-text a[href^="mailto:"], .space-text a[href^="mailto:"] * {
+      -webkit-user-select: text; user-select: text; -webkit-user-drag: none;
+    }
+    .contact-address-block::selection, .contact-address-block *::selection,
+    .contact-right a[href^="mailto:"]::selection, .contact-right a[href^="mailto:"] *::selection,
+    .contact-right a[href^="tel:"]::selection, .contact-right a[href^="tel:"] *::selection,
+    .space-text a[href^="mailto:"]::selection, .space-text a[href^="mailto:"] *::selection {
+      background: #7B6EEA; color: white;
+    }
 
     html, body {
       width: 100%; height: 100%;

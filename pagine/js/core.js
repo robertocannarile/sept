@@ -363,7 +363,14 @@
     navigator.clipboard.writeText('https://instagram.com/septshowroom');
   });
 
-  // Link "#": sono segnaposto (i 39 brand, il footer) e non devono saltare in cima.
+  // Indirizzo, telefono e mail si selezionano (sept.css): finita la selezione, il click che segue
+  // sullo stesso link non deve aprire Maps o la mail.
+  document.querySelectorAll('.contact-address-block, .contact-right a[href^="mailto:"], .contact-right a[href^="tel:"], .space-text a[href^="mailto:"]').forEach(a => {
+    a.addEventListener('click', e => {
+      if (String(window.getSelection())) e.preventDefault();
+    });
+  });
+
   // I link del menu ora sono pagine vere (about.html…) e il browser li apre da solo;
   // resta lo scroll morbido per un eventuale #ancora dentro la stessa pagina.
   document.querySelectorAll('a[href^="#"]').forEach(a => {
