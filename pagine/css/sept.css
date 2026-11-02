@@ -58,6 +58,12 @@
     }
     /* ─────────────────────────────────────────────── */
 
+    /* (02.11.26 Roberto) niente selezione azzurra, su tutto il sito: ne' trascinando ne' con Cmd+A.
+       Il riquadro di testo di strumenti.js resta selezionabile: copia i valori da li'. */
+    *, *::before, *::after { -webkit-user-select: none; user-select: none; }
+    textarea, input { -webkit-user-select: text; user-select: text; }
+    ::selection { background: transparent; }
+
     html, body {
       width: 100%; height: 100%;
       background: var(--sfondo); color: white;
