@@ -439,8 +439,6 @@
 
     // Su touch non esiste hover: in zoom si mostra il brand dell'immagine piu' vicina al centro
     // del viewport, aggiornato mentre si panna. Su desktop non fa nulla (li' comanda l'hover).
-    // Si saltano le tile senza brand (cartella Sept, ex sept_images): bastava una di quelle al centro
-    // per far sparire l'etichetta, e sembrava che avesse smesso di funzionare.
     const IS_TOUCH = window.matchMedia('(hover: none)').matches;
     let centerBrandItem = null;
     function updateCenterBrand() {
@@ -557,8 +555,8 @@
           nudge: { x: 0, y: 0 },           // spinta dei vicini all'hover
           anim:  { s: 1, o: 0 },           // scala e opacita' (entry, breathing, hover)
           vx: 0, vy: 0,                    // vibrazione
-          // la cartella e' il nome del brand; `Sept` (ex sept_images, rinominata 11.10.26) e' materiale di casa, non un brand
-          brand: (function(f) { return f === 'Sept' ? '' : (f || ''); })(srcs[n].split('/').slice(-2)[0]),
+          // la cartella e' il nome del brand, anche `Sept` (02.11.26 Roberto: esce come gli altri)
+          brand: srcs[n].split('/').slice(-2)[0] || '',
           vibFx: 0.6 + Math.random() * 1.4, vibFy: 0.6 + Math.random() * 1.4,
           vibPx: Math.random() * Math.PI * 2, vibPy: Math.random() * Math.PI * 2,
           vibAm: 0.7 + Math.random() * 0.6,
